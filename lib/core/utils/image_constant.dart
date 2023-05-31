@@ -9,4 +9,6 @@ class ImageConstant {
   static String imgBeforeloginicon = 'assets/images/img_beforeloginicon.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
+
+  static String imgSignupTheme = 'assets/images/img_signup_theme.svg';
 }

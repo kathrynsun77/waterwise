@@ -13,6 +13,15 @@ class AppStyle {
     fontWeight: FontWeight.w400,
   );
 
+  static TextStyle txtPoppinsSemiBold12Gray800 = TextStyle(
+    color: ColorConstant.gray800,
+    fontSize: getFontSize(
+      12,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle txtPoppinsRegular12 = TextStyle(
     color: ColorConstant.indigo100,
     fontSize: getFontSize(

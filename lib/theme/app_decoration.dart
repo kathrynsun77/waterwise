@@ -26,6 +26,15 @@ class AppDecoration {
   static BoxDecoration get fillBluegray4003d => BoxDecoration(
         color: ColorConstant.blueGray4003d,
       );
+
+  static BoxDecoration get txtOutlineGray300 => BoxDecoration(
+    border: Border.all(
+      color: ColorConstant.gray300,
+      width: getHorizontalSize(
+        1,
+      ),
+    ),
+  );
 }
 
 class BorderRadiusStyle {
@@ -39,6 +48,12 @@ class BorderRadiusStyle {
       getHorizontalSize(
         25,
       ),
+    ),
+  );
+
+  static BorderRadius txtRoundedBorder8 = BorderRadius.circular(
+    getHorizontalSize(
+      8,
     ),
   );
 }

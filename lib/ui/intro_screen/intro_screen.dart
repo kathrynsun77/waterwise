@@ -111,6 +111,12 @@ class IntroScreen extends StatelessWidget {
                         margin: getMargin(
                           top: 13,
                         ),
+                        onTap: (){
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.registerScreen,
+                          );
+                        },
                       ),
                     ],
                   ),
