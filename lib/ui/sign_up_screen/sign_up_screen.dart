@@ -39,8 +39,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print('success');
       Navigator.pushNamed(context, AppRoutes.homeScreen);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registrasi Berhasil!')),
-      );
+        const SnackBar(content: Text('Registration Success!'),backgroundColor:Color(0xFF6F9C95),
+      ));
     } else {
       print('failed bye');
     }
