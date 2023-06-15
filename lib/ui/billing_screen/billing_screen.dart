@@ -83,7 +83,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       letterSpacing: getHorizontalSize(1.0)))),
                       Padding(
                           padding: getPadding(left: 165, top: 4),
-                          child: Text("200",
+                          child: Text("${user.isEmpty?'':user['e_credit']}",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold30Gray800

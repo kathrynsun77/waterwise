@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
@@ -13,6 +16,53 @@ class UpdateAccountScreen extends StatefulWidget {
 
 // ignore_for_file: must_be_immutable
 class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
+
+  Map user = {};
+  getUser() async{
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if(userString!=null){
+      user = jsonDecode(userString);
+      setState(() {
+      });
+    }
+  }
+
+  void updateUser() async {
+    final response = await http.post(
+        Uri.parse('http://192.168.1.16/water_wise/update_account.php'),
+        body: {
+          'id': user['id'],
+          'fname': firstnameController.text,
+          'lname': lastnameController.text,
+          'email': emailController.text,
+          'password': passwordController.text
+        });
+
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+      try {
+        Map responseBody = jsonDecode(response.body);
+        Map user = responseBody['data'];
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('user', jsonEncode(user));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Update Success!'),
+            backgroundColor: Color(0xFF6F9C95),
+          ),
+        );
+      } catch (e) {
+        print('Error decoding JSON: $e');
+        // Handle the JSON decoding error here
+      }
+    } else {
+      print('failed bye');
+      // Handle the HTTP request failure here
+    }
+  }
+
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -106,7 +156,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                             focusNode: FocusNode(),
                             autofocus: true,
                             controller: emailController,
-                            hintText: "Enter your email",
+                            hintText: "Enter Email",
                             margin: getMargin(top: 4),
                             textInputType: TextInputType.emailAddress,
                           ),
@@ -144,6 +194,9 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                       text: "Save",
                       margin: getMargin(top: 51, bottom: 5),
                       alignment: Alignment.center,
+                      onTap: () {
+                        updateUser();
+                      },
                     ),
                   ],
                 ),

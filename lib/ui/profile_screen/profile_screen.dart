@@ -1,15 +1,20 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
-import 'package:WaterWise/ui/home/home__screen.dart';
+// import 'package:WaterWise/ui/home/home__screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_circleimage.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_subtitle.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
-import '../../widget/custom_bottom_bar.dart';
 import '../../widget/custom_button.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 // import '../../widget/custom_text_form_field.dart';
-import '../update_account_screen/update_account_screen.dart';
+// import '../update_account_screen/update_account_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -19,6 +24,76 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  Map user = {};
+  getUser() async{
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if(userString!=null){
+      user = jsonDecode(userString);
+      setState(() {
+
+      });
+    }
+  }
+  String fileName="";
+
+  Future<void> pickAndSaveImage() async {
+    final ImagePicker _picker = ImagePicker();
+    // Pick image from gallery
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      // No image selected
+      return;
+    }
+    // Get the app's document directory
+    final Directory appDir = await getApplicationDocumentsDirectory();
+    // Generate a unique file name
+    String fileName = path.basename(image.path);
+    // Define the destination path
+    final String destination = path.join(appDir.path, 'assets', 'images', fileName);
+    try {
+      // Save the image to the destination path
+      final File savedImage = await File(image.path).copy(destination);
+
+      // Display a success message
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Image Saved'),
+          content: Text('The image has been saved to assets/images.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } catch (error) {
+      // Display an error message
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to save the image.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
   TextEditingController dateController = TextEditingController();
 
   TextEditingController paymentmethodsController = TextEditingController();
@@ -47,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 AppbarTitle(
-                  text: "Hi, Sephie",
+                  text: "Hi, "+user['fname'],
                 ),
                 AppbarSubtitle(
                   text: "Welcome!",
@@ -60,28 +135,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             AppbarCircleimage(
-              imagePath: "assets/images/img_david1.png",
+              imagePath: "assets/images/"+user['photo'],
               margin: getMargin(
                 left: 30,
                 top: 3,
                 right: 3,
               ),
             ),
-            AppbarImage(
-              height: getSize(
-                10,
-              ),
-              width: getSize(
-                10,
-              ),
-              svgPath: "assets/images/img_edit.svg",
-              margin: getMargin(
-                left: 10,
-                top: 22,
-                right: 33,
-                bottom: 20,
+            GestureDetector(
+              onTap: pickAndSaveImage, // Replace with your desired method for handling the tap event
+              child: AppbarImage(
+                height: getSize(10),
+                width: getSize(10),
+                svgPath: "assets/images/img_edit.svg",
+                margin: getMargin(left: 10, top: 22, right: 33, bottom: 20),
               ),
             ),
+
           ],
         ),
         body: Container(

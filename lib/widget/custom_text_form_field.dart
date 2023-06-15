@@ -4,6 +4,8 @@ import '../core/utils/color_constant.dart';
 import '../core/utils/size_utils.dart';
 
 class CustomTextFormField extends StatelessWidget {
+  var labelText;
+
   CustomTextFormField(
       {this.shape,
       this.padding,
@@ -24,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       this.prefixConstraints,
       this.suffix,
       this.suffixConstraints,
+      this.labelText,
       this.validator});
 
   TextFormFieldShape? shape;
@@ -104,6 +107,7 @@ class CustomTextFormField extends StatelessWidget {
       focusedBorder: _setBorderStyle(),
       disabledBorder: _setBorderStyle(),
       prefixIcon: prefix,
+      labelText: labelText,
       prefixIconConstraints: prefixConstraints,
       suffixIcon: suffix,
       suffixIconConstraints: suffixConstraints,

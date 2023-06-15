@@ -14,7 +14,13 @@ class PopupScreen extends StatefulWidget {
 // ignore_for_file: must_be_immutable
 class _PopupScreenState extends State<PopupScreen> {
   TextEditingController promocodeinputController = TextEditingController();
+  String? selectedCard; // Selected card
 
+  List<String> cardList = [
+    '••••  ••••  ••••  1324',
+    '••••  ••••  ••••  5678',
+    '••••  ••••  ••••  9012',
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,49 +28,62 @@ class _PopupScreenState extends State<PopupScreen> {
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
             body: Container(
-                width: double.maxFinite,
-                padding: getPadding(all: 30),
+                width: 375, // Set the desired width
+                height: 500, // Set the desired height
+                alignment: Alignment.centerLeft, // Adjust the alignment as needed
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Payment Method",
+                      Text("",
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
                           style: AppStyle.txtPoppinsSemiBold14
                               .copyWith(letterSpacing: getHorizontalSize(1.0))),
                       Padding(
-                          padding: getPadding(top: 14),
-                          child: Row(children: [
-                            CustomImageView(
-                                imagePath: ImageConstant.imgVisa1,
-                                height: getVerticalSize(28),
-                                width: getHorizontalSize(45)),
-                            Padding(
-                                padding:
-                                getPadding(left: 16, top: 2, bottom: 4),
-                                child: Text("••••  ••••  ••••  1324",
+                        padding: getPadding(top: 20, left: 20),
+                        child: DropdownButtonFormField<String>(
+                          value: selectedCard,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedCard = newValue!;
+                            });
+                          },
+                          items: cardList.isNotEmpty
+                              ? cardList.map((String card) {
+                            return DropdownMenuItem<String>(
+                              value: card,
+                              child: Row(
+                                children: [
+                                  CustomImageView(
+                                    imagePath: ImageConstant.imgVisa1,
+                                    height: getVerticalSize(28),
+                                    width: getHorizontalSize(45),
+                                  ),
+                                  SizedBox(width: 16),
+                                  Text(
+                                    card,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
-                                    style: AppStyle.txtPoppinsSemiBold14
-                                        .copyWith(
-                                        letterSpacing:
-                                        getHorizontalSize(1.0)))),
-                            Spacer(),
-                            CustomImageView(
-                                svgPath: ImageConstant.imgDown2,
-                                height: getVerticalSize(9),
-                                width: getHorizontalSize(10),
-                                margin: getMargin(top: 9, bottom: 9))
-                          ])),
+                                    style: AppStyle.txtPoppinsSemiBold14.copyWith(
+                                      letterSpacing: getHorizontalSize(1.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList()
+                              : null,
+                        ),
+                      ),
                       Padding(
-                          padding: getPadding(top: 16),
+                          padding: getPadding(top: 16, left:20),
                           child: Divider(
                               height: getVerticalSize(1),
                               thickness: getVerticalSize(1),
                               color: ColorConstant.gray300)),
                       Padding(
-                          padding: getPadding(top: 18),
+                          padding: getPadding(top: 16, left:20),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -82,14 +101,14 @@ class _PopupScreenState extends State<PopupScreen> {
                                     textInputAction: TextInputAction.done)
                               ])),
                       Padding(
-                          padding: getPadding(top: 21),
+                          padding: getPadding(top: 16, left:20),
                           child: Text("Payment Summary",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold14.copyWith(
                                   letterSpacing: getHorizontalSize(1.0)))),
                       Padding(
-                          padding: getPadding(top: 2),
+                          padding: getPadding(top: 16, left:20),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -112,7 +131,7 @@ class _PopupScreenState extends State<PopupScreen> {
                                         getHorizontalSize(1.0)))
                               ])),
                       Padding(
-                          padding: getPadding(top: 3),
+                          padding: getPadding(top: 16, left:20),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -135,7 +154,7 @@ class _PopupScreenState extends State<PopupScreen> {
                                         getHorizontalSize(1.0)))
                               ])),
                       Padding(
-                          padding: getPadding(top: 3),
+                          padding: getPadding(top: 16, left:20),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -160,7 +179,7 @@ class _PopupScreenState extends State<PopupScreen> {
             bottomNavigationBar: CustomButton(
                 height: getVerticalSize(51),
                 width: getHorizontalSize(208),
-                text: "Top Up Now",
+                text: "Make Payment",
                 margin: getMargin(left: 83, right: 83, bottom: 30),
                 onTap: () {
                   onTapTopupnow(context);

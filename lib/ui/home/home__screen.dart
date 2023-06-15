@@ -46,9 +46,6 @@ getUser() async{
   void initState() {
   getUser();
     super.initState();
-    // fetchTextFromBackend();
-    // fetchTextProfilePhoto();
-    // updateAppBarTitle();
   }
 
   TextEditingController dateController = TextEditingController();
@@ -72,12 +69,12 @@ getUser() async{
                     text: 'Hi, ${user.isEmpty?'':user['fname']}',
                 ),
                           AppbarSubtitle(
-                              text: "Welcome!", margin: getMargin(right: 34))
+                              text: "Welcome!", margin: getMargin(right: 20))
                         ])),
                 actions: [
                   AppbarCircleimage(
                       // imagePath: "$profile_photo",
-                      imagePath: "assets/images/img_girl.png",
+                      imagePath: "assets/images/"+user['photo'],
                       margin: getMargin(left: 30, top: 3, right: 30, bottom: 3),
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.profileScreen);
@@ -108,7 +105,7 @@ getUser() async{
                                         getHorizontalSize(1.0))),
                                 Padding(
                                     padding: getPadding(top: 4),
-                                    child: Text("200",
+                                    child: Text("${user.isEmpty?'':user['e_credit']}",
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.left,
                                         style: AppStyle.txtPoppinsSemiBold30
