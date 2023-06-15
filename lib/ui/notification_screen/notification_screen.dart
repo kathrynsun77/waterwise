@@ -58,12 +58,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
               Container(
                 margin: getMargin(
                   top: 38,
-                  right: 14,
+                  right: 50,
                 ),
                 padding: getPadding(
                   left: 16,
                   top: 15,
-                  right: 16,
+                  right: 50,
                   bottom: 15,
                 ),
                 decoration: AppDecoration.outlineBlack90019.copyWith(
@@ -74,18 +74,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomTextFormField(
-                      focusNode: FocusNode(),
-                      autofocus: true,
-                      controller: groupseventeenController,
-                      hintText: "Bill Due",
-                      variant: TextFormFieldVariant.UnderLineGray300,
-                      fontStyle: TextFormFieldFontStyle.PoppinsRegular12Gray800,
-                    ),
+                    Text(
+                    "Bill Due",
+                    overflow: TextOverflow
+                        .ellipsis,
+                    textAlign: TextAlign
+                        .left,
+                    style: AppStyle
+                        .txtPoppinsRegular12Gray800
+                        .copyWith(letterSpacing: getHorizontalSize(1.0))),
                     Padding(
                       padding: getPadding(
-                        top: 10,
-                        bottom: 1,
+                        left: 16,
+                        top: 15,
+                        right: 50,
+                        bottom: 15,
                       ),
                       child: Text(
                         "Bill Due on 29/05/2023",
@@ -103,13 +106,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               Container(
                 margin: getMargin(
-                  top: 33,
-                  right: 14,
+                  top: 38,
+                  right: 50,
                 ),
                 padding: getPadding(
                   left: 16,
-                  top: 14,
-                  right: 16,
+                  top: 20,
+                  right: 50,
                   bottom: 14,
                 ),
                 decoration: AppDecoration.outlineBlack90019.copyWith(
@@ -120,21 +123,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomTextFormField(
-                      focusNode: FocusNode(),
-                      autofocus: true,
-                      controller: groupfifteenController,
-                      hintText: "High Usage",
-                      margin: getMargin(
-                        top: 2,
-                      ),
-                      variant: TextFormFieldVariant.UnderLineGray300,
-                      fontStyle: TextFormFieldFontStyle.PoppinsRegular12Gray800,
-                      textInputAction: TextInputAction.done,
-                    ),
+                    Text(
+                        "High Usage",
+                        overflow: TextOverflow
+                            .ellipsis,
+                        textAlign: TextAlign
+                            .left,
+                        style: AppStyle
+                            .txtPoppinsRegular12Gray800
+                            .copyWith(letterSpacing: getHorizontalSize(1.0))),
                     Padding(
                       padding: getPadding(
-                        top: 12,
+                        left: 16,
+                        top: 20,
+                        right: 50,
+                        bottom: 14,
                       ),
                       child: Text(
                         "High usage on kicthen",
@@ -150,43 +153,113 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: getPadding(
-                    top: 33,
-                    right: 14,
-                  ),
-                  child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    separatorBuilder: (
-                      context,
-                      index,
-                    ) {
-                      return SizedBox(
-                        height: getVerticalSize(
-                          26,
-                        ),
-                      );
-                    },
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return NotificationItemWidget();
-                    },
+        Container(
+          margin: getMargin(
+            top: 38,
+            right: 50,
+          ),
+          padding: getPadding(
+            left: 16,
+            top: 20,
+            right: 50,
+            bottom: 14,
+          ),
+          decoration: AppDecoration.outlineBlack90019.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder12,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  "Water Saving Weekly Advice",
+                  overflow: TextOverflow
+                      .ellipsis,
+                  textAlign: TextAlign
+                      .left,
+                  style: AppStyle
+                      .txtPoppinsRegular12Gray800
+                      .copyWith(letterSpacing: getHorizontalSize(1.0))),
+              Padding(
+                padding: getPadding(
+                  left: 16,
+                  top: 20,
+                  right: 50,
+                  bottom: 14,
+                ),
+                child: Text(
+                  "Lorem ipsum dolor sit amet",
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
+                    letterSpacing: getHorizontalSize(
+                      1.0,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
+        Container(
+          margin: getMargin(
+            top: 38,
+            right: 50,
+          ),
+          padding: getPadding(
+            left: 16,
+            top: 20,
+            right: 50,
+            bottom: 14,
+          ),
+          decoration: AppDecoration.outlineBlack90019.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder12,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  "Yearly Service Needed",
+                  overflow: TextOverflow
+                      .ellipsis,
+                  textAlign: TextAlign
+                      .left,
+                  style: AppStyle
+                      .txtPoppinsRegular12Gray800
+                      .copyWith(letterSpacing: getHorizontalSize(1.0))),
+              Padding(
+                padding: getPadding(
+                  left: 16,
+                  top: 20,
+                  right: 50,
+                  bottom: 14,
+                ),
+                child: Text(
+                  "Service due on 07/07/2023",
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
+                    letterSpacing: getHorizontalSize(
+                      1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
         // bottomNavigationBar: CustomBottomBar(
         //   onChanged: (BottomBarEnum type) {
         //     Navigator.pushNamed(
         //         navigatorKey.currentContext!, getCurrentRoute(type));
         //   },
         // ),
-      ),
-    );
+      ]),
+    )));
   }
 
   ///Handling route based on bottom click actions

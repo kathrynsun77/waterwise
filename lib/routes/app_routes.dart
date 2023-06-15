@@ -19,6 +19,8 @@ import '../ui/payment_methods_screen/payment_methods_screen.dart';
 import '../ui/contact_us_screen/contact_us_screen.dart';
 import '../ui/estimate_screen/estimate_screen.dart';
 import '../ui/popup_screen/popup_screen.dart';
+import '../ui/vouchers_screen/vouchers_screen.dart';
+
 
 
 
@@ -42,6 +44,8 @@ class AppRoutes {
   static const String contactUsScreen = '/contact_us_screen';
   static const String popUpScreen = '/pop_up_screen';
   static const String bottomBarMenu = '/bottom_bar_menu';
+  static const String vouchersScreen = '/vouchers_screen';
+
 
 
 
@@ -65,6 +69,8 @@ class AppRoutes {
     estimateScreen: (context) => EstimateScreen(),
     popUpScreen: (context) => PopupScreen(),
     bottomBarMenu: (context) => BottomBarMenu(),
+    vouchersScreen: (context) => VouchersScreen(),
+
 
 
 

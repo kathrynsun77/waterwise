@@ -104,17 +104,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //   95,
                 // ),
                 text: "Update Account",
+
                 onTap: () {
-                  navigatorKey.currentState!.push(
-                    MaterialPageRoute(
-                      builder: (context) => UpdateAccountScreen(),
-                    ),
-                  );
+                    onTapUpdateAcc(context);
                 },
+
                 margin: getMargin(
                   left: 25,
                   bottom: 10
                 ),
+
               ),
 
               CustomButton(
@@ -125,11 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // ),
                 text: "Payment Methods",
                 onTap: () {
-                  navigatorKey.currentState!.push(
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
+                  onTapPayments(context);
                 },
                 margin: getMargin(
                   left: 25,
@@ -141,11 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 300,
                 text: "Vouchers",
                 onTap: () {
-                  navigatorKey.currentState!.push(
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
+                  onTapVouchers(context);
+
                 },
                 margin: getMargin(
                   left: 25,
@@ -160,11 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // ),
                 text: "Contact Us",
                 onTap: () {
-                  navigatorKey.currentState!.push(
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
+                  onTapContactUs(context);
                 },
                 margin: getMargin(
                   left: 25,
@@ -224,4 +212,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //       return DefaultWidget();
   //   }
   // }
+  onTapUpdateAcc(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.profileScreen);
+  }
+  onTapContactUs(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.contactUsScreen);
+  }
+  onTapVouchers(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.vouchersScreen);
+  }
+  onTapPayments(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+  }
 }
