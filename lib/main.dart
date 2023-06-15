@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'water_supply',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.homeScreen,
+      initialRoute: AppRoutes.vouchersScreen,
       routes: AppRoutes.routes,
     );
   }

@@ -15,27 +15,26 @@ class _VouchersScreenState extends State<VouchersScreen> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
-            body: Container(
-                width: double.maxFinite,
-                padding: getPadding(left: 14, top: 32, right: 14, bottom: 32),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomButton(
-                          width: getHorizontalSize(159),
-                          text: "  My Vouchers",
-                          margin: getMargin(left: 16),
-                          shape: ButtonShape.Square,
-                          fontStyle: ButtonFontStyle.PoppinsSemiBold18,
-                          prefixWidget: Container(
-                              margin: getMargin(right: 21),
-                              child: CustomImageView(
-                                  svgPath:
-                                  ImageConstant.imgArrowleftIndigo800)),
-                          onTap: () {
-                            onTapMyvouchers(context);
-                          }),
+            body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: getPadding(
+                      top:25,
+                      left:30,
+                    ),
+                    child: Text(
+                      "Vouchers",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
+                        letterSpacing: getHorizontalSize(
+                          1.0,
+                        ),
+                      ),
+                    ),
+                  ),
                       Card(
                           clipBehavior: Clip.antiAlias,
                           elevation: 0,
@@ -94,15 +93,13 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                                               MainAxisAlignment
                                                                   .start,
                                                               children: [
-                                                                Text("TENOFF",
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                    style: AppStyle
-                                                                        .txtPoppinsRegular12Bluegray40001)
+                                                                Container(
+                                                                  child: SelectableText(
+                                                                    "TENOFF",
+                                                                    textAlign: TextAlign.left,
+                                                                    style: AppStyle.txtPoppinsRegular12Bluegray40001,
+                                                                  ),
+                                                                )
                                                               ])))
                                                 ]))),
                                     Align(
@@ -171,15 +168,13 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                                               MainAxisAlignment
                                                                   .start,
                                                               children: [
-                                                                Text("TENOFF",
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                    style: AppStyle
-                                                                        .txtPoppinsRegular12Bluegray40001)
+                                                                Container(
+                                                                  child: SelectableText(
+                                                                    "TENOFF",
+                                                                    textAlign: TextAlign.left,
+                                                                    style: AppStyle.txtPoppinsRegular12Bluegray40001,
+                                                                  ),
+                                                                )
                                                               ])))
                                                 ]))),
                                     Align(
@@ -190,7 +185,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                             style:
                                             AppStyle.txtPoppinsSemiBold20))
                                   ])))
-                    ]))));
+                    ])));
   }
 
   onTapMyvouchers(BuildContext context) {

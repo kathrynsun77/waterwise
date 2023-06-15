@@ -213,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //   }
   // }
   onTapUpdateAcc(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profileScreen);
+    Navigator.pushNamed(context, AppRoutes.updateAccountScreen);
   }
   onTapContactUs(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.contactUsScreen);

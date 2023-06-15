@@ -31,28 +31,28 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
-            body: Container(
-                width: double.maxFinite,
-                padding: getPadding(left: 30, top: 32, right: 30, bottom: 32),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomButton(
-                          text: "    Payment Methods",
-                          margin: getMargin(right: 93),
-                          shape: ButtonShape.Square,
-                          fontStyle: ButtonFontStyle.PoppinsSemiBold18,
-                          prefixWidget: Container(
-                              margin: getMargin(right: 30),
-                              child: CustomImageView(
-                                  svgPath:
-                                  ImageConstant.imgArrowleftIndigo800)),
-                          onTap: () {
-                            onTapPaymentmethods(context);
-                          }),
+            body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: getPadding(
+                      top:25,
+                      left:40,
+                    ),
+                    child: Text(
+                      "Payment Methods",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
+                        letterSpacing: getHorizontalSize(
+                          1.0,
+                        ),
+                      ),
+                    ),
+                  ),
                       Padding(
-                          padding: getPadding(top: 42),
+                          padding: getPadding(top: 42, left:30),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -75,19 +75,19 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                           text: "Default",
                           iconSize: getHorizontalSize(11),
                           value: isCheckbox,
-                          margin: getMargin(top: 15),
+                          margin: getMargin(top: 15,left:30),
                           fontStyle: CheckboxFontStyle.PoppinsRegular8,
                           onChange: (value) {
                             isCheckbox = value;
                           }),
                       Padding(
-                          padding: getPadding(top: 16),
+                          padding: getPadding(top: 16,left:30),
                           child: Divider(
                               height: getVerticalSize(1),
                               thickness: getVerticalSize(1),
                               color: ColorConstant.gray300)),
                       Padding(
-                          padding: getPadding(top: 21),
+                          padding: getPadding(top: 21,left:30),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -110,19 +110,19 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                           text: "Set as default",
                           iconSize: getHorizontalSize(11),
                           value: isCheckbox1,
-                          margin: getMargin(top: 15),
+                          margin: getMargin(top: 15,left:30),
                           fontStyle: CheckboxFontStyle.PoppinsRegular8,
                           onChange: (value) {
                             isCheckbox1 = value;
                           }),
                       Padding(
-                          padding: getPadding(top: 16),
+                          padding: getPadding(top: 16,left:30),
                           child: Divider(
                               height: getVerticalSize(1),
                               thickness: getVerticalSize(1),
                               color: ColorConstant.gray300)),
                       Padding(
-                          padding: getPadding(top: 21),
+                          padding: getPadding(top: 21,left:30),
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -145,8 +145,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                           text: "Set as default",
                           iconSize: getHorizontalSize(11),
                           value: isCheckbox2,
-                          margin: getMargin(top: 15),
-                          fontStyle: CheckboxFontStyle.PoppinsRegular8,
+                          margin: getMargin(top: 15, left:30),
+                          fontStyle: CheckboxFontStyle.PoppinsRegular8, // Increase the font size to 12
                           onChange: (value) {
                             isCheckbox2 = value;
                           }),
@@ -157,7 +157,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                               thickness: getVerticalSize(1),
                               color: ColorConstant.gray300)),
                       Padding(
-                          padding: getPadding(top: 68),
+                          padding: getPadding(top: 68,left:30,right:30),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -173,7 +173,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                                     margin: getMargin(top: 4))
                               ])),
                       Padding(
-                          padding: getPadding(top: 20),
+                          padding: getPadding(top: 20,left:30,right:30),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -214,7 +214,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                           text: "Add",
                           margin: getMargin(top: 20, bottom: 5),
                           alignment: Alignment.center)
-                    ]))));
+                    ])));
   }
 
   onTapPaymentmethods(BuildContext context) {
