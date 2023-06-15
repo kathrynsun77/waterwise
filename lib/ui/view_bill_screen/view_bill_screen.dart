@@ -22,7 +22,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
             resizeToAvoidBottomInset: false,
             body: Container(
                 width: double.maxFinite,
-                padding: getPadding(left: 16, top: 30, right: 16, bottom: 30),
+                padding: getPadding(left: 16, top: 22, right: 16, bottom: 20),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -38,7 +38,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                       Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                              padding: getPadding(left: 98, top: 34),
+                              padding: getPadding(left: 98, top: 30),
                               child: Text("Bill Summary",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
@@ -48,7 +48,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                       letterSpacing:
                                       getHorizontalSize(1.0))))),
                       Container(
-                          margin: getMargin(left: 14, top: 10, right: 14),
+                          margin: getMargin(left: 14, top: 8, right: 14),
                           padding: getPadding(all: 16),
                           decoration: AppDecoration.outlineBlack9003f.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder12),
@@ -58,7 +58,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
-                                    width: getHorizontalSize(66),
+                                    width: getHorizontalSize(64),
                                     child: Text("Bathroom Common",
                                         maxLines: null,
                                         textAlign: TextAlign.left,
@@ -68,13 +68,13 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                             letterSpacing:
                                             getHorizontalSize(1.0)))),
                                 Padding(
-                                    padding: getPadding(top: 7),
+                                    padding: getPadding(top: 5),
                                     child: Divider(
                                         height: getVerticalSize(1),
                                         thickness: getVerticalSize(1),
                                         color: ColorConstant.blueGray40001)),
                                 Padding(
-                                    padding: getPadding(top: 7),
+                                    padding: getPadding(top: 5),
                                     child: Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -105,7 +105,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                                           1.0))))
                                         ])),
                                 Padding(
-                                    padding: getPadding(top: 10),
+                                    padding: getPadding(top: 6),
                                     child: Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -130,7 +130,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                                       1.0)))
                                         ])),
                                 Padding(
-                                    padding: getPadding(top: 11),
+                                    padding: getPadding(top: 8),
                                     child: Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -156,9 +156,10 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                         ]))
                               ])),
                       Container(
-                          margin: getMargin(left: 14, top: 18, right: 14),
+                        //posisi table Kitchen
+                          margin: getMargin(left: 14, top: 10, right: 14),
                           padding: getPadding(
-                              left: 16, top: 15, right: 16, bottom: 15),
+                              left: 16, top: 10, right: 16, bottom: 15),
                           decoration: AppDecoration.outlineBlack9003f.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder12),
                           child: Column(
@@ -258,7 +259,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                         ]))
                               ])),
                       Container(
-                          margin: getMargin(left: 14, top: 29, right: 14),
+                          margin: getMargin(left: 14, top: 22, right: 14),
                           padding: getPadding(all: 16),
                           decoration: AppDecoration.outlineBlack9003f.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder12),
@@ -268,7 +269,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
-                                    width: getHorizontalSize(66),
+                                    width: getHorizontalSize(65),
                                     child: Text("Bathroom Master",
                                         maxLines: null,
                                         textAlign: TextAlign.left,
@@ -366,7 +367,7 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                         ]))
                               ])),
                       Container(
-                          margin: getMargin(left: 1, top: 45, bottom: 5),
+                          margin: getMargin(left: 1, top: 35, bottom: 5),
                           padding: getPadding(
                               left: 10, top: 1, right: 10, bottom: 1),
                           decoration: AppDecoration.outlineBlack9003f.copyWith(
@@ -396,10 +397,10 @@ class _ViewBillScreenState extends State <ViewBillScreen> {
                                             getHorizontalSize(1.0))))
                               ])),
                       CustomButton(
-                          height: getVerticalSize(51),
+                          height: getVerticalSize(50),
                           width: getHorizontalSize(145),
                           text: "Pay",
-                          margin: getMargin(top: 51, bottom: 5),
+                          margin: getMargin(top: 40, bottom: 6),
                           alignment: Alignment.center),
                     ]))));
   }
