@@ -5,6 +5,7 @@ import 'package:water_supply/ui/home/home__screen.dart';
 import 'package:water_supply/ui/notification_screen/notification_screen.dart';
 import 'package:water_supply/ui/profile_screen/profile_screen.dart';
 
+import '../billing_screen/billing_screen.dart';
 import '../view_bill_screen/view_bill_screen.dart';
 import 'app_data.dart';
 
@@ -13,7 +14,7 @@ class BottomBarMenu extends StatefulWidget {
 
   static List<Widget> screens = [
     const HomeScreen(),
-    const ViewBillScreen(),
+    const BillingScreen(),
     const NotificationScreen(),
     const ProfileScreen( )
   ];
