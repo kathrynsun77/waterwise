@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder(
+    return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
@@ -152,9 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                          margin: getMargin(left: 30, top: 27, right: 30),
+                          margin: getMargin(left: 30, top: 22, right: 30),
                           padding: getPadding(
-                              left: 119, top: 28, right: 119, bottom: 28),
+                              left: 119, top: 25, right: 119, bottom: 25),
                           decoration: AppDecoration.green.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder12),
                           child: Column(
@@ -443,40 +443,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ]))),
                                   ]))),
                     ])),
-            bottomNavigationBar: CustomBottomBar(
-            onChanged: (BottomBarEnum type) {
-    Navigator.pushNamed(
-    navigatorKey.currentContext!, getCurrentRoute(type));
-    },
-    ),
+    //         bottomNavigationBar: CustomBottomBar(
+    //         onChanged: (BottomBarEnum type) {
+    // Navigator.pushNamed(
+    // navigatorKey.currentContext!, getCurrentRoute(type));
+    // },
+    // ),
 
     ),
     );
   }
   ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home1:
-        return AppRoutes.homeScreen;
-      case BottomBarEnum.History1:
-        return AppRoutes.profileScreen;
-      case BottomBarEnum.Notification1:
-        return "/";
-      case BottomBarEnum.Profile1:
-        return AppRoutes.profileScreen;
-      default:
-        return "/";
-    }
-  }
+  // String getCurrentRoute(BottomBarEnum type) {
+  //   switch (type) {
+  //     case BottomBarEnum.Home1:
+  //       return AppRoutes.homeScreen;
+  //     case BottomBarEnum.History1:
+  //       return AppRoutes.profileScreen;
+  //     case BottomBarEnum.Notification1:
+  //       return "/";
+  //     case BottomBarEnum.Profile1:
+  //       return AppRoutes.profileScreen;
+  //     default:
+  //       return "/";
+  //   }
+  // }
 
   ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homeScreen:
-      default:
-        return DefaultWidget();
-    }
-  }
+  // Widget getCurrentPage(String currentRoute) {
+  //   switch (currentRoute) {
+  //     case AppRoutes.homeScreen:
+  //     default:
+  //       return DefaultWidget();
+  //   }
+  // }
 
 
   onTapWater(BuildContext context) {
