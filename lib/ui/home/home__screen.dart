@@ -51,47 +51,6 @@ getUser() async{
     // updateAppBarTitle();
   }
 
-
-//fetch cust name
-//   Future<void> fetchTextFromBackend() async {
-//     try {
-//       var response = await http.get(Uri.parse('http://192.168.1.14/water_wise/profile_name.php'));
-//       if (response.statusCode == 200) {
-//         setState(() {
-//           profile_name = response.body;
-//         });
-//       } else {
-//         setState(() {
-//           profile_name = 'Failed to retrieve text.';
-//         });
-//       }
-//     } catch (e) {
-//       setState(() {
-//         profile_name = 'Failed to retrieve text.';
-//       });
-//     }
-//   }
-//
-//   //cust photo path
-//   Future<void> fetchTextProfilePhoto() async {
-//     try {
-//       var response = await http.get(Uri.parse('http://192.168.1.14/water_wise/profile_photo.php'));
-//       if (response.statusCode == 200) {
-//         setState(() {
-//           profile_photo = response.body;
-//         });
-//       } else {
-//         setState(() {
-//           profile_photo = 'Failed to retrieve text.';
-//         });
-//       }
-//     } catch (e) {
-//       setState(() {
-//         profile_photo = 'Failed to retrieve text.';
-//       });
-//     }
-//   }
-
   TextEditingController dateController = TextEditingController();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 

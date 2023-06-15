@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';
 import '../../core/utils/size_utils.dart';
@@ -37,6 +40,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (response.statusCode == 200) {
       print('success');
+      print(response.body);
+      Map responseBody = jsonDecode(response.body);
+      Map user = responseBody['data'];
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', jsonEncode(user));
       Navigator.pushNamed(context, AppRoutes.homeScreen);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Registration Success!'),backgroundColor:Color(0xFF6F9C95),
