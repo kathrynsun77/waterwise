@@ -28,7 +28,7 @@ class AppData{
     BottomNavyBarItem(
       "Profile",
       const Icon(Icons.person),
-      const Color(0xFFEC6813),
+      const Color(0xFF6F9C95),
       Colors.grey,
     ),
   ];
