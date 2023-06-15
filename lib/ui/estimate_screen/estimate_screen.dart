@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 
+import '../../widget/custom_text_form_field.dart';
+
 class EstimateScreen extends StatefulWidget {
   const EstimateScreen({Key? key}) : super(key: key);
 
@@ -122,19 +124,12 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                   alignment: Alignment.topLeft,
                                                   child: Padding(
                                                       padding:
-                                                      getPadding(top: 1),
-                                                      child: Text(
-                                                          "Insert Usage in L",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                          TextAlign.left,
-                                                          style: AppStyle
-                                                              .txtPoppinsSemiBold18Indigo100
-                                                              .copyWith(
-                                                              letterSpacing:
-                                                              getHorizontalSize(
-                                                                  1.0))))),
+                                                      getPadding(top: 1, right:50),
+                                                      child:
+                                                      CustomTextFormField(
+                                                        maxLines: null,
+                                                        hintText: "Insert Usage in L",
+                                                      ),)),
                                               Align(
                                                   alignment: Alignment.center,
                                                   child: Column(
@@ -174,7 +169,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                                     .gray300,
                                                                 endIndent:
                                                                 getHorizontalSize(
-                                                                    1)))
+                                                                    0.5)))
                                                       ]))
                                             ]))
                                   ])))

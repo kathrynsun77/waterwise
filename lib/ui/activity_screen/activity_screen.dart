@@ -130,20 +130,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                           .OutlineRed400,
                                                       fontStyle: ButtonFontStyle
                                                           .PoppinsMedium8Red400),
-                                                  CustomTextFormField(
-                                                      focusNode: FocusNode(),
-                                                      autofocus: true,
-                                                      controller:
-                                                      groupnineteenController,
-                                                      hintText: "Kitchen",
-                                                      margin:
-                                                      getMargin(top: 11),
-                                                      variant:
-                                                      TextFormFieldVariant
-                                                          .UnderLineGray300,
-                                                      fontStyle:
-                                                      TextFormFieldFontStyle
-                                                          .PoppinsRegular12Gray800),
+                                                  Text(
+                                                      "Kicthen",
+                                                      maxLines: null,
+                                                      textAlign:
+                                                      TextAlign.left,
+                                                      style: AppStyle
+                                                          .txtPoppinsRegular12RedA400
+                                                          .copyWith(
+                                                          letterSpacing:
+                                                          getHorizontalSize(
+                                                              1.0))),
                                                   Padding(
                                                       padding:
                                                       getPadding(top: 12),
@@ -213,7 +210,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                     Container(
                                         width: double.maxFinite,
                                         child: Container(
-                                            margin: getMargin(top: 12),
+                                            margin: getMargin(top: 10),
                                             padding: getPadding(all: 16),
                                             decoration: AppDecoration.white
                                                 .copyWith(
@@ -347,20 +344,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                                 children: [
-                                                  CustomTextFormField(
-                                                      focusNode: FocusNode(),
-                                                      autofocus: true,
-                                                      controller:
-                                                      grouptwentyoneController,
-                                                      hintText: "Laundry Room",
-                                                      variant:
-                                                      TextFormFieldVariant
-                                                          .UnderLineGray300,
-                                                      fontStyle:
-                                                      TextFormFieldFontStyle
-                                                          .PoppinsRegular12Gray800,
-                                                      textInputAction:
-                                                      TextInputAction.done),
+                                                  Text(
+                                                      "Laundry",
+                                                      maxLines: null,
+                                                      textAlign:
+                                                      TextAlign.left,
+                                                      style: AppStyle
+                                                          .txtPoppinsRegular12RedA400
+                                                          .copyWith(
+                                                          letterSpacing:
+                                                          getHorizontalSize(
+                                                              1.0))),
                                                   Padding(
                                                       padding:
                                                       getPadding(top: 12),

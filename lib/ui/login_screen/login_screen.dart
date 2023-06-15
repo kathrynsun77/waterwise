@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser(String email, String password) async {
 
-    var url = 'http://192.168.1.13/water_wise/login_config.php';
+    var url = 'http://192.168.1.16/water_wise/login_config.php';
     // var url = 'http://192.168.22.16/water_wise/login_config.php'; //buat test di local
     var response = await http.post( Uri.parse(url) ,
         body: {

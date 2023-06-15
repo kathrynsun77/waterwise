@@ -30,7 +30,7 @@ class SuccessTransactionsScreen extends StatelessWidget {
                           width: getHorizontalSize(265),
                           margin: getMargin(left: 7, top: 17, right: 7),
                           child: Text(
-                              "Yes! Enjoy your bill.\nDon’t forget to give us feedback!\n\nYou may check your history.",
+                              "Yes! Enjoy our services.\nDon’t forget to give us feedback!\n\nYou may check your history.",
                               maxLines: null,
                               textAlign: TextAlign.center,
                               style: AppStyle.txtPoppinsRegular16.copyWith(
