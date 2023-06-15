@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_button2.dart';
-import 'package:water_supply/widgets/custom_text_form_field.dart';
+import 'package:WaterWise/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';

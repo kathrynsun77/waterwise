@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:water_supply/ui/home/home__screen.dart';
-import 'package:water_supply/ui/notification_screen/notification_screen.dart';
-import 'package:water_supply/ui/profile_screen/profile_screen.dart';
+import 'package:WaterWise/ui/home/home__screen.dart';
+import 'package:WaterWise/ui/notification_screen/notification_screen.dart';
+import 'package:WaterWise/ui/profile_screen/profile_screen.dart';
 
 import '../billing_screen/billing_screen.dart';
 import '../view_bill_screen/view_bill_screen.dart';

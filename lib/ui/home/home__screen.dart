@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/ui/home/widgets/home_item_widget.dart';
+import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:mysql1/mysql1.dart';
 // import 'package:http_parser/http_parser.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/core/app_export.dart';
-import 'package:water_supply/widget/custom_button.dart';
+import 'package:WaterWise/core/app_export.dart';
+import 'package:WaterWise/widget/custom_button.dart';
 
 class SuccessTransactionsScreen extends StatelessWidget {
   @override

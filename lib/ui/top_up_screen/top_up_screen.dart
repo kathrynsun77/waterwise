@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:water_supply/core/app_export.dart';
-import 'package:water_supply/widget/custom_button.dart';
+import 'package:WaterWise/core/app_export.dart';
+import 'package:WaterWise/widget/custom_button.dart';
 
 class TopUpScreen extends StatefulWidget {
   const TopUpScreen({Key? key}) : super(key: key);

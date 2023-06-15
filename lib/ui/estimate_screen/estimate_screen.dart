@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/core/app_export.dart';
+import 'package:WaterWise/core/app_export.dart';
 
 class EstimateScreen extends StatefulWidget {
   const EstimateScreen({Key? key}) : super(key: key);

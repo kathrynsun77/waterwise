@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/widgets/custom_button2.dart';
+import 'package:WaterWise/widgets/custom_button2.dart';
 import 'package:mysql1/mysql1.dart';
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';

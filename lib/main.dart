@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:water_supply/routes/app_routes.dart';
+import 'package:WaterWise/routes/app_routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.standard,
       ),
-      title: 'water_supply',
+      title: 'WaterWise',
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splashScreen,
       routes: AppRoutes.routes,

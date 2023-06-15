@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/core/app_export.dart';
+import 'package:WaterWise/core/app_export.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
 

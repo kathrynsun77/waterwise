@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/core/app_export.dart';
-import 'package:water_supply/ui/home/home__screen.dart';
+import 'package:WaterWise/core/app_export.dart';
+import 'package:WaterWise/ui/home/home__screen.dart';
 import '../../widget/custom_bottom_bar.dart';
 
 // ignore_for_file: must_be_immutable

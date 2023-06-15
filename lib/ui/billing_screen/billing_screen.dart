@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
-import 'package:water_supply/ui/home/widgets/home_item_widget.dart';
+import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import '../../widget/custom_bottom_bar.dart';
 import '../../widget/custom_text_form_field.dart';
 import 'dart:convert';

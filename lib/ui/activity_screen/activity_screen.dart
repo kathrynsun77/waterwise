@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:water_supply/core/app_export.dart';
-import 'package:water_supply/widget/custom_button.dart';
-import 'package:water_supply/widget/custom_text_form_field.dart';
+import 'package:WaterWise/core/app_export.dart';
+import 'package:WaterWise/widget/custom_button.dart';
+import 'package:WaterWise/widget/custom_text_form_field.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({Key? key}) : super(key: key);
