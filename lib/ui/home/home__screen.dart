@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:mysql1/mysql1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:http_parser/http_parser.dart';
 import '../../app_bar/appbar_circleimage.dart';
 import '../../app_bar/appbar_subtitle.dart';
@@ -18,18 +21,6 @@ import '../../widget/custom_icon_button.dart';
 import '../../widget/custom_image_view.dart';
 // import '../../widget/custom_text_form_field.dart';
 
-Future<MySqlConnection> getConnection() async {
-  final settings = ConnectionSettings(
-    host: '139.180.136.45',
-    port: 3306, // default MySQL port
-    user: 'root',
-    password: '',
-    db: 'water_wise',
-  );
-
-  final conn = await MySqlConnection.connect(settings);
-  return conn;
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,37 +30,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+Map user = {};
 
-  String profile_name = '';
-  String profile_photo ='';
+getUser() async{
+  final pref = await SharedPreferences.getInstance();
+  String? userString = pref.getString("user");
+  if(userString!=null){
+    user = jsonDecode(userString);
+    setState(() {
 
+    });
+  }
+}
   @override
   void initState() {
+  getUser();
     super.initState();
     // fetchTextFromBackend();
     // fetchTextProfilePhoto();
     // updateAppBarTitle();
-    fetchData();
-  }
-
-  Future<String> retrieveData() async {
-    final conn = await getConnection();
-
-    final results = await conn.query('SELECT fname FROM users WHERE email="a@a.com"');
-    final row = results.first;
-    final value = row['fname'] as String;
-
-    await conn.close();
-
-    return value;
-  }
-  String profileName = '';
-
-  void fetchData() async {
-    String data = await retrieveData();
-    setState(() {
-      profileName = data;
-    });
   }
 
 
@@ -131,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                     AppbarTitle(
-                    text: 'Hi, $profileName',
+                    text: 'Hi, ${user.isEmpty?'':user['fname']}',
                 ),
                           AppbarSubtitle(
                               text: "Welcome!", margin: getMargin(right: 34))

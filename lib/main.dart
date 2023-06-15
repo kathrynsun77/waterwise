@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'WaterWise',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.popUpScreen,
+      initialRoute: AppRoutes.splashScreen,
       routes: AppRoutes.routes,
     );
   }

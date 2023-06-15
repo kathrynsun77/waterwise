@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import '../../widget/custom_bottom_bar.dart';
@@ -6,27 +7,52 @@ import '../../widget/custom_text_form_field.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
 class BillingScreen extends StatefulWidget {
   const BillingScreen({Key? key}) : super(key: key);
 
   @override
   State<BillingScreen> createState() => _BillingScreenState();
 }
+
 // ignore_for_file: must_be_immutable
 class _BillingScreenState extends State<BillingScreen> {
+  Map user = {};
 
-  Future<List<dynamic>> fetchData() async {
-    final response = await http.get(Uri.parse('http://192.168.1.16/water_wise/billing_config.php'));
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString);
+      fetchData();
+      setState(() {});
+    }
+  }
+
+  List allBill = [];
+  fetchData() async {
+    final response = await http.post(
+        Uri.parse('http://192.168.1.16/water_wise/billing_config.php'),
+        body: {
+          'id': user['id'],
+        });
 
     if (response.statusCode == 200) {
       // Decode the JSON response
-      final List<dynamic> allBill = json.decode(response.body);
-
-      return allBill;
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      allBill = json.decode(response.body);
+      setState(() {
+      });
     } else {
       throw Exception('Failed to fetch data');
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUser();
+    super.initState();
   }
 
   TextEditingController groupthirtyseveController = TextEditingController();
@@ -45,7 +71,7 @@ class _BillingScreenState extends State<BillingScreen> {
                 width: double.maxFinite,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
                           padding: getPadding(left: 160, top: 20),
@@ -54,7 +80,7 @@ class _BillingScreenState extends State<BillingScreen> {
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsRegular14Gray400
                                   .copyWith(
-                                  letterSpacing: getHorizontalSize(1.0)))),
+                                      letterSpacing: getHorizontalSize(1.0)))),
                       Padding(
                           padding: getPadding(left: 165, top: 4),
                           child: Text("200",
@@ -62,7 +88,7 @@ class _BillingScreenState extends State<BillingScreen> {
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold30Gray800
                                   .copyWith(
-                                  letterSpacing: getHorizontalSize(0.3)))),
+                                      letterSpacing: getHorizontalSize(0.3)))),
                       Container(
                           width: double.maxFinite,
                           child: Container(
@@ -80,186 +106,299 @@ class _BillingScreenState extends State<BillingScreen> {
                                         style: AppStyle
                                             .txtPoppinsSemiBold18Gray800
                                             .copyWith(
-                                            letterSpacing:
-                                            getHorizontalSize(1.0))),
-                                    Container(
-                                        width: double.maxFinite,
-                                        child: GestureDetector(
+                                                letterSpacing:
+                                                    getHorizontalSize(1.0))),
+                                    ListView.builder(
+                                      itemCount: allBill.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        Map item = allBill[index];
+                                        return Container(
+                                          width: double.maxFinite,
+                                          child: GestureDetector(
                                             onTap: () {
                                               onTapListdue(context);
                                             },
                                             child: Container(
-                                                margin: getMargin(top: 10),
-                                                padding: getPadding(
-                                                    left: 16,
-                                                    top: 15,
-                                                    right: 16,
-                                                    bottom: 15),
-                                                decoration: AppDecoration.white
-                                                    .copyWith(
-                                                    borderRadius:
-                                                    BorderRadiusStyle
-                                                        .roundedBorder12),
-                                                child: Column(
-                                                    mainAxisSize:
-                                                    MainAxisSize.min,
-                                                    mainAxisAlignment:
+                                              margin: getMargin(top: 10),
+                                              padding: getPadding(
+                                                  left: 16,
+                                                  top: 15,
+                                                  right: 16,
+                                                  bottom: 15),
+                                              decoration: AppDecoration.white
+                                                  .copyWith(
+                                                      borderRadius:
+                                                          BorderRadiusStyle
+                                                              .roundedBorder12),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
                                                     MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          "June",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign: TextAlign
-                                                              .left,
-                                                          style: AppStyle
-                                                              .txtPoppinsRegular12Gray800
-                                                              .copyWith(letterSpacing: getHorizontalSize(1.0))),
-
-                                                      Padding(
-                                                          padding: getPadding(
-                                                              top: 10),
-                                                          child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: [
-                                                                Column(
-                                                                    crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                    children: [
-                                                                      Text(
-                                                                          "June Bill",
-                                                                          overflow: TextOverflow
-                                                                              .ellipsis,
-                                                                          textAlign: TextAlign
-                                                                              .left,
-                                                                          style: AppStyle
-                                                                              .txtPoppinsRegular12RedA400
-                                                                              .copyWith(letterSpacing: getHorizontalSize(1.0))),
-                                                                      Padding(
-                                                                          padding: getPadding(
-                                                                              top:
+                                                children: [
+                                                  Text(item['bill_date'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.left,
+                                                      style: AppStyle
+                                                          .txtPoppinsRegular12Gray800
+                                                          .copyWith(
+                                                              letterSpacing:
+                                                                  getHorizontalSize(
+                                                                      1.0))),
+                                                  Padding(
+                                                    padding:
+                                                        getPadding(top: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(item['inovice_number'],
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left,
+                                                                  style: AppStyle
+                                                                      .txtPoppinsRegular12RedA400
+                                                                      .copyWith(
+                                                                          letterSpacing:
+                                                                              getHorizontalSize(1.0))),
+                                                              Padding(
+                                                                  padding:
+                                                                      getPadding(
+                                                                          top:
                                                                               4),
-                                                                          child: Text(
-                                                                              "10/07/2023",
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))))
-                                                                    ]),
-                                                                Padding(
-                                                                    padding: getPadding(
-                                                                        top: 11,
-                                                                        bottom:
-                                                                        11),
-                                                                    child: Text(
-                                                                        "200",
-                                                                        overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                        textAlign:
-                                                                        TextAlign
-                                                                            .left,
-                                                                        style: AppStyle
-                                                                            .txtPoppinsRegular12RedA400
-                                                                            .copyWith(letterSpacing: getHorizontalSize(1.0))))
-                                                              ]))
-                                                    ])))),
-                                    Container(
-                                        width: double.maxFinite,
-                                        child: GestureDetector(
-                                            onTap: () {
-                                              onTapListnotdue(context);
-                                            },
-                                            child: Container(
-                                                margin: getMargin(
-                                                    top: 12, bottom: 323),
-                                                padding: getPadding(all: 16),
-                                                decoration: AppDecoration.white
-                                                    .copyWith(
-                                                    borderRadius:
-                                                    BorderRadiusStyle
-                                                        .roundedBorder12),
-                                                child: Column(
-                                                    mainAxisSize:
-                                                    MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          "May",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign: TextAlign
-                                                              .left,
-                                                          style: AppStyle
-                                                              .txtPoppinsRegular12Gray800
-                                                              .copyWith(letterSpacing: getHorizontalSize(1.0))),
-
-                                                      Padding(
-                                                          padding: getPadding(
-                                                              top: 11),
-                                                          child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: [
-                                                                Column(
-                                                                    crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                    children: [
-                                                                      Text(
-                                                                          "May Bill",
-                                                                          overflow: TextOverflow
+                                                                  child: Text(
+                                                                      item['bill_date'],
+                                                                      overflow:
+                                                                          TextOverflow
                                                                               .ellipsis,
-                                                                          textAlign: TextAlign
+                                                                      textAlign:
+                                                                          TextAlign
                                                                               .left,
-                                                                          style: AppStyle
-                                                                              .txtPoppinsRegular12Gray800
-                                                                              .copyWith(letterSpacing: getHorizontalSize(1.0))),
-                                                                      Padding(
-                                                                          padding: getPadding(
-                                                                              top:
-                                                                              2),
-                                                                          child: Text(
-                                                                              "Paid",
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: AppStyle.txtPoppinsRegular12Gray400.copyWith(letterSpacing: getHorizontalSize(1.0))))
-                                                                    ]),
-                                                                Padding(
-                                                                    padding: getPadding(
-                                                                        top: 9,
-                                                                        bottom:
-                                                                        10),
-                                                                    child: Text(
-                                                                        "250 SGD",
-                                                                        overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                        textAlign:
-                                                                        TextAlign
-                                                                            .left,
-                                                                        style: AppStyle
-                                                                            .txtPoppinsRegular12Bluegray700
-                                                                            .copyWith(letterSpacing: getHorizontalSize(1.0))))
-                                                              ]))
-                                                    ]))))
+                                                                      style: AppStyle
+                                                                          .txtPoppinsRegular12RedA400
+                                                                          .copyWith(
+                                                                              letterSpacing: getHorizontalSize(1.0))))
+                                                            ]),
+                                                        Padding(
+                                                            padding: getPadding(
+                                                                top: 11,
+                                                                bottom: 11),
+                                                            child: Text("\$"+item['amount'],
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                                style: AppStyle
+                                                                    .txtPoppinsRegular12RedA400
+                                                                    .copyWith(
+                                                                        letterSpacing:
+                                                                            getHorizontalSize(1.0))))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    // Container(
+                                    //     width: double.maxFinite,
+                                    //     child: GestureDetector(
+                                    //         onTap: () {
+                                    //           onTapListdue(context);
+                                    //         },
+                                    //         child: Container(
+                                    //             margin: getMargin(top: 10),
+                                    //             padding: getPadding(
+                                    //                 left: 16,
+                                    //                 top: 15,
+                                    //                 right: 16,
+                                    //                 bottom: 15),
+                                    //             decoration: AppDecoration.white
+                                    //                 .copyWith(
+                                    //                     borderRadius:
+                                    //                         BorderRadiusStyle
+                                    //                             .roundedBorder12),
+                                    //             child: Column(
+                                    //                 mainAxisSize:
+                                    //                     MainAxisSize.min,
+                                    //                 mainAxisAlignment:
+                                    //                     MainAxisAlignment.start,
+                                    //                 children: [
+                                    //                   Text("June",
+                                    //                       overflow: TextOverflow
+                                    //                           .ellipsis,
+                                    //                       textAlign:
+                                    //                           TextAlign.left,
+                                    //                       style: AppStyle
+                                    //                           .txtPoppinsRegular12Gray800
+                                    //                           .copyWith(
+                                    //                               letterSpacing:
+                                    //                                   getHorizontalSize(
+                                    //                                       1.0))),
+                                    //                   Padding(
+                                    //                       padding: getPadding(
+                                    //                           top: 10),
+                                    //                       child: Row(
+                                    //                           mainAxisAlignment:
+                                    //                               MainAxisAlignment
+                                    //                                   .spaceBetween,
+                                    //                           children: [
+                                    //                             Column(
+                                    //                                 crossAxisAlignment:
+                                    //                                     CrossAxisAlignment
+                                    //                                         .start,
+                                    //                                 mainAxisAlignment:
+                                    //                                     MainAxisAlignment
+                                    //                                         .start,
+                                    //                                 children: [
+                                    //                                   Text(
+                                    //                                       "June Bill",
+                                    //                                       overflow: TextOverflow
+                                    //                                           .ellipsis,
+                                    //                                       textAlign: TextAlign
+                                    //                                           .left,
+                                    //                                       style: AppStyle
+                                    //                                           .txtPoppinsRegular12RedA400
+                                    //                                           .copyWith(letterSpacing: getHorizontalSize(1.0))),
+                                    //                                   Padding(
+                                    //                                       padding: getPadding(
+                                    //                                           top:
+                                    //                                               4),
+                                    //                                       child: Text(
+                                    //                                           "10/07/2023",
+                                    //                                           overflow: TextOverflow.ellipsis,
+                                    //                                           textAlign: TextAlign.left,
+                                    //                                           style: AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))))
+                                    //                                 ]),
+                                    //                             Padding(
+                                    //                                 padding: getPadding(
+                                    //                                     top: 11,
+                                    //                                     bottom:
+                                    //                                         11),
+                                    //                                 child: Text(
+                                    //                                     "200",
+                                    //                                     overflow:
+                                    //                                         TextOverflow
+                                    //                                             .ellipsis,
+                                    //                                     textAlign:
+                                    //                                         TextAlign
+                                    //                                             .left,
+                                    //                                     style: AppStyle
+                                    //                                         .txtPoppinsRegular12RedA400
+                                    //                                         .copyWith(letterSpacing: getHorizontalSize(1.0))))
+                                    //                           ]))
+                                    //                 ])))),
+                                    // Container(
+                                    //     width: double.maxFinite,
+                                    //     child: GestureDetector(
+                                    //         onTap: () {
+                                    //           onTapListnotdue(context);
+                                    //         },
+                                    //         child: Container(
+                                    //             margin: getMargin(
+                                    //                 top: 12, bottom: 323),
+                                    //             padding: getPadding(all: 16),
+                                    //             decoration: AppDecoration.white
+                                    //                 .copyWith(
+                                    //                     borderRadius:
+                                    //                         BorderRadiusStyle
+                                    //                             .roundedBorder12),
+                                    //             child: Column(
+                                    //                 mainAxisSize:
+                                    //                     MainAxisSize.min,
+                                    //                 mainAxisAlignment:
+                                    //                     MainAxisAlignment.start,
+                                    //                 children: [
+                                    //                   Text("May",
+                                    //                       overflow: TextOverflow
+                                    //                           .ellipsis,
+                                    //                       textAlign:
+                                    //                           TextAlign.left,
+                                    //                       style: AppStyle
+                                    //                           .txtPoppinsRegular12Gray800
+                                    //                           .copyWith(
+                                    //                               letterSpacing:
+                                    //                                   getHorizontalSize(
+                                    //                                       1.0))),
+                                    //                   Padding(
+                                    //                       padding: getPadding(
+                                    //                           top: 11),
+                                    //                       child: Row(
+                                    //                           mainAxisAlignment:
+                                    //                               MainAxisAlignment
+                                    //                                   .spaceBetween,
+                                    //                           children: [
+                                    //                             Column(
+                                    //                                 crossAxisAlignment:
+                                    //                                     CrossAxisAlignment
+                                    //                                         .start,
+                                    //                                 mainAxisAlignment:
+                                    //                                     MainAxisAlignment
+                                    //                                         .start,
+                                    //                                 children: [
+                                    //                                   Text(
+                                    //                                       "May Bill",
+                                    //                                       overflow: TextOverflow
+                                    //                                           .ellipsis,
+                                    //                                       textAlign: TextAlign
+                                    //                                           .left,
+                                    //                                       style: AppStyle
+                                    //                                           .txtPoppinsRegular12Gray800
+                                    //                                           .copyWith(letterSpacing: getHorizontalSize(1.0))),
+                                    //                                   Padding(
+                                    //                                       padding: getPadding(
+                                    //                                           top:
+                                    //                                               2),
+                                    //                                       child: Text(
+                                    //                                           "Paid",
+                                    //                                           overflow: TextOverflow.ellipsis,
+                                    //                                           textAlign: TextAlign.left,
+                                    //                                           style: AppStyle.txtPoppinsRegular12Gray400.copyWith(letterSpacing: getHorizontalSize(1.0))))
+                                    //                                 ]),
+                                    //                             Padding(
+                                    //                                 padding: getPadding(
+                                    //                                     top: 9,
+                                    //                                     bottom:
+                                    //                                         10),
+                                    //                                 child: Text(
+                                    //                                     "250 SGD",
+                                    //                                     overflow:
+                                    //                                         TextOverflow
+                                    //                                             .ellipsis,
+                                    //                                     textAlign:
+                                    //                                         TextAlign
+                                    //                                             .left,
+                                    //                                     style: AppStyle
+                                    //                                         .txtPoppinsRegular12Bluegray700
+                                    //                                         .copyWith(letterSpacing: getHorizontalSize(1.0))))
+                                    //                           ]))
+                                    //                 ]))))
                                   ])))
                     ]))));
-            // bottomNavigationBar:
-            // CustomBottomBar(onChanged: (BottomBarEnum type) {
-            //   Navigator.pushNamed(
-            //       navigatorKey.currentContext!, getCurrentRoute(type));
-            // })));
+    // bottomNavigationBar:
+    // CustomBottomBar(onChanged: (BottomBarEnum type) {
+    //   Navigator.pushNamed(
+    //       navigatorKey.currentContext!, getCurrentRoute(type));
+    // })));
   }
 
   ///Handling route based on bottom click actions

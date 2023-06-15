@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/custom_button2.dart';
 import 'package:WaterWise/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +22,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser(String email, String password) async {
-
     var url = 'http://192.168.1.16/water_wise/login_config.php';
     // var url = 'http://192.168.22.16/water_wise/login_config.php'; //buat test di local
     var response = await http.post( Uri.parse(url) ,
@@ -30,6 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.statusCode == 200) {
       print('success');
+      print(response.body);
+      Map responseBody = jsonDecode(response.body);
+      Map user = responseBody['data'];
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', jsonEncode(user));
       Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
