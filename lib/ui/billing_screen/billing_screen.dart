@@ -118,7 +118,9 @@ class _BillingScreenState extends State<BillingScreen> {
                                           width: double.maxFinite,
                                           child: GestureDetector(
                                             onTap: () {
-                                              onTapListdue(context);
+                                              if (int.parse(item['bill_status']) == 2) {
+                                                onTapListdue(context);
+                                              }
                                             },
                                             child: Container(
                                               margin: getMargin(top: 10),
@@ -138,15 +140,12 @@ class _BillingScreenState extends State<BillingScreen> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Text(item['bill_date'],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      overflow: TextOverflow.ellipsis,
                                                       textAlign: TextAlign.left,
-                                                      style: AppStyle
-                                                          .txtPoppinsRegular12Gray800
-                                                          .copyWith(
-                                                              letterSpacing:
-                                                                  getHorizontalSize(
-                                                                      1.0))),
+                                                    style: int.parse(item['bill_status']) == 2
+                                                        ? AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))
+                                                        : AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0)),
+                                                  ),
                                                   Padding(
                                                     padding:
                                                         getPadding(top: 10),
@@ -170,28 +169,27 @@ class _BillingScreenState extends State<BillingScreen> {
                                                                   textAlign:
                                                                       TextAlign
                                                                           .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular12RedA400
-                                                                      .copyWith(
-                                                                          letterSpacing:
-                                                                              getHorizontalSize(1.0))),
+                                                                style: DateTime.parse(item['bill_date']).isAfter(DateTime.now()) && int.parse(item['bill_status']) == 2
+                                                                    ? AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))
+                                                                    : AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0)),                                                              ),
                                                               Padding(
                                                                   padding:
                                                                       getPadding(
                                                                           top:
                                                                               4),
                                                                   child: Text(
-                                                                      item['bill_date'],
+                                                                      int.parse(item['bill_status']) == 1 ? "Paid" : "Outstanding",
                                                                       overflow:
                                                                           TextOverflow
                                                                               .ellipsis,
                                                                       textAlign:
                                                                           TextAlign
                                                                               .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsRegular12RedA400
-                                                                          .copyWith(
-                                                                              letterSpacing: getHorizontalSize(1.0))))
+                                                                    style: DateTime.parse(item['bill_date']).isAfter(DateTime.now()) && int.parse(item['bill_status']) == 2
+                                                                        ? AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))
+                                                                        : AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0)),
+                                                                  )
+                                                              )
                                                             ]),
                                                         Padding(
                                                             padding: getPadding(
@@ -204,11 +202,10 @@ class _BillingScreenState extends State<BillingScreen> {
                                                                 textAlign:
                                                                     TextAlign
                                                                         .left,
-                                                                style: AppStyle
-                                                                    .txtPoppinsRegular12RedA400
-                                                                    .copyWith(
-                                                                        letterSpacing:
-                                                                            getHorizontalSize(1.0))))
+                                                              style: DateTime.parse(item['bill_date']).isAfter(DateTime.now()) && int.parse(item['bill_status']) == 2
+                                                                  ? AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0))
+                                                                  : AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0)),
+                                                            ))
                                                       ],
                                                     ),
                                                   ),
@@ -430,7 +427,5 @@ class _BillingScreenState extends State<BillingScreen> {
     Navigator.pushNamed(context, AppRoutes.viewBillScreen);
   }
 
-  onTapListnotdue(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.viewBillScreen);
-  }
+
 }
