@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser(String email, String password) async {
     var url = 'http://192.168.1.16/water_wise/login_config.php';
+    // var url = 'https://waterwisee.netlify.app/login_config.php';
     var response = await http.post(Uri.parse(url), body: {
       'email': email,
       'password': password,
