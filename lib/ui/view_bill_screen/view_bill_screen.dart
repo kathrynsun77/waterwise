@@ -60,7 +60,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
 
     int totalMeter = 0;
     for (var item in allBill) {
-      totalMeter += int.parse(item['meter']);
+      totalMeter += int.parse(item['meter_value']);
     }
     double totalAmount = totalMeter * 1.19;
 
@@ -156,7 +156,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
                                   Padding(
                                     padding: getPadding(bottom: 1),
                                     child: Text(
-                                      "${item['meter']}L",
+                                      "${item['meter_value']}L",
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsRegular12Bluegray700.copyWith(
@@ -205,7 +205,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
                                     ),
                                   ),
                                   Text(
-                                    "${(int.parse(item['meter']) * 1.19).toStringAsFixed(2)}",                                    textAlign: TextAlign.left,
+                                    "${(int.parse(item['meter_value']) * 1.19).toStringAsFixed(2)}",                                    textAlign: TextAlign.left,
                                     style: AppStyle.txtPoppinsRegular12Bluegray700.copyWith(
                                       letterSpacing: getHorizontalSize(1.0),
                                     ),
