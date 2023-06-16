@@ -45,14 +45,17 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
     }
   }
 
+  void saveBillSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String jsonData = jsonEncode(allBill);
+    await prefs.setString('bill_amount', jsonData);
+  }
+
   @override
   void initState() {
     getUser();
     super.initState();
   }
-
-
-  TextEditingController groupfortytwoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -256,6 +259,8 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
                   height: getVerticalSize(50),
                   width: getHorizontalSize(145),
                   text: "Pay",
+                  onTap: () { onTapPay(context);
+                  },
                   margin: getMargin(top: 40, bottom: 6),
                   alignment: Alignment.center,
                 ),
@@ -269,5 +274,9 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
 
   onTapImgArrowleft(BuildContext context) {
     Navigator.pop(context);
+  }
+  onTapPay(BuildContext context) {
+    saveBillSharedPreferences();
+    Navigator.pushNamed(context, AppRoutes.popUpScreen);
   }
 }

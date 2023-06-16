@@ -196,21 +196,20 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                 child: CustomButton(
                                                   height: getVerticalSize(32),
                                                   width: getHorizontalSize(100),
-                                                  text: "Request Technician",
+                                                  text: isButtonPressed ? "Technician Requested" : "Request Technician",
                                                   onTap: isButtonPressed
                                                       ? null
                                                       : () {
-                                                    if (_formKey.currentState?.validate() ??
-                                                        false) {
-                                                      requestTech();
-                                                    } else {
-                                                      print("Not Validated");
-                                                    }
+                                                    setState(() {
+                                                      isButtonPressed = true;
+                                                    });
+                                                    onTapRequestTech(context);
                                                   },
                                                   variant: ButtonVariant.OutlineRed400,
                                                   fontStyle: ButtonFontStyle.PoppinsMedium8Red400,
                                                 ),
                                               ),
+
 
                                               Text(
                                                 item['pipe_name'],
@@ -291,7 +290,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
   onTapImgArrowleft(BuildContext context) {
     Navigator.pop(context);
   }
-
+  onTapRequestTech(BuildContext context) {
+    requestTech();
+  }
   onTapTrends(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.activityTrendsScreen);
   }
