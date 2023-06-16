@@ -28,6 +28,12 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
     }
   }
 
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
   void updateUser() async {
     final response = await http.post(
         Uri.parse('http://192.168.1.16/water_wise/update_account.php'),
@@ -47,6 +53,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
         Map user = responseBody['data'];
         final pref = await SharedPreferences.getInstance();
         pref.setString('user', jsonEncode(user));
+        Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Update Success!'),
@@ -62,7 +69,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
       // Handle the HTTP request failure here
     }
   }
-
+  String currentValue = '';
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -125,14 +132,14 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                                 focusNode: FocusNode(),
                                 autofocus: true,
                                 controller: firstnameController,
-                                hintText: "First name ",
+                                hintText: user['fname'],
                                 margin: getMargin(top: 4),
                               ),
                               CustomTextFormField(
                                 width: getHorizontalSize(150),
                                 autofocus: true,
                                 controller: lastnameController,
-                                hintText: "Last name",
+                                hintText: user['lname'],
                                 margin: getMargin(top: 4),
                               ),
                             ],
@@ -156,7 +163,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                             focusNode: FocusNode(),
                             autofocus: true,
                             controller: emailController,
-                            hintText: "Enter Email",
+                            hintText: user['email'],
                             margin: getMargin(top: 4),
                             textInputType: TextInputType.emailAddress,
                           ),
@@ -179,7 +186,6 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                             focusNode: FocusNode(),
                             autofocus: true,
                             controller: passwordController,
-                            hintText: "Password here",
                             margin: getMargin(top: 4),
                             textInputAction: TextInputAction.done,
                             textInputType: TextInputType.visiblePassword,

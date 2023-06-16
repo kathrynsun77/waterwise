@@ -23,31 +23,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser(String email, String password) async {
     var url = 'http://192.168.1.16/water_wise/login_config.php';
-    // var url = 'http://192.168.22.16/water_wise/login_config.php'; //buat test di local
-    var response = await http.post( Uri.parse(url) ,
-        body: {
-          'email': email,
-          'password': password,
-        });
+    var response = await http.post(Uri.parse(url), body: {
+      'email': email,
+      'password': password,
+    });
 
     if (response.statusCode == 200) {
       print('success');
       print(response.body);
-      Map responseBody = jsonDecode(response.body);
-      Map user = responseBody['data'];
-      final pref = await SharedPreferences.getInstance();
-      pref.setString('user', jsonEncode(user));
-      Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login Successful'),
-          backgroundColor: Color(0xFF6F9C95),
-        ),
-      );
+      try {
+        Map responseBody = jsonDecode(response.body);
+        Map user = responseBody['data'];
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('user', jsonEncode(user));
+        Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Success!'),
+            backgroundColor: Color(0xFF6F9C95),
+          ),
+        );
+      } catch (e) {
+        print('Error decoding JSON: $e');
+        // Handle the JSON decoding error here
+      }
     } else {
       print('failed bye');
+      // Handle the HTTP request failure here
     }
   }
+
+
 
   TextEditingController emailController = TextEditingController();
 

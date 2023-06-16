@@ -5,6 +5,7 @@ import '../core/utils/size_utils.dart';
 
 class CustomTextFormField extends StatelessWidget {
   var labelText;
+  var initialValue;
 
   CustomTextFormField(
       {this.shape,
@@ -24,7 +25,7 @@ class CustomTextFormField extends StatelessWidget {
       this.hintText,
       this.prefix,
       this.prefixConstraints,
-      this.suffix,
+      this.suffix, this.initialValue,
       this.suffixConstraints,
       this.labelText,
       this.validator});
