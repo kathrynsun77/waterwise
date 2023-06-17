@@ -55,6 +55,25 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     }
   }
 
+  deleteCard() async {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.16/water_wise/delete_card.php'),
+      body: {
+        // 'card-id': ,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      allCard = json.decode(response.body);
+      setState(() {});
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
