@@ -262,6 +262,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 variant: ButtonVariant.OutlineBluegray700,
                 fontStyle: ButtonFontStyle.PoppinsMedium15,
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.loginScreen);
+                  if (mounted) {
+                    setState(() {
+                      // _isLoading = false;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Logged out Sukses",
+                          ),
+                        ),
+                      );
+                    });
+                  }
+                },
               ),
             ],
           ),

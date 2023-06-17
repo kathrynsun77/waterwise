@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser(String email, String password) async {
-    var url = 'http://172.20.10.4/water_wise/login_config.php';
+    var url = 'http://192.168.100.4/water_wise/login_config.php';
     // var url = 'https://waterwisee.netlify.app/login_config.php';
     var response = await http.post(Uri.parse(url), body: {
       'email': email,

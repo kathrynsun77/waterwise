@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void registerUser(String fname,String lname, String email, String password) async {
-    var url = 'http://192.168.1.16/water_wise/register_config.php';
+    var url = 'http://192.168.100.4/water_wise/register_config.php';
     var response = await http.post(Uri.parse(url), body: {
       'fname': fname,
       'lname': lname,
