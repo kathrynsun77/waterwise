@@ -59,7 +59,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     final response = await http.post(
       Uri.parse('http://192.168.1.16/water_wise/delete_card.php'),
       body: {
-        // 'card-id': ,
+        // 'card-id': , /masukin card_payment_id
+        'cust-id': user['customer_id'],
       },
     );
 
