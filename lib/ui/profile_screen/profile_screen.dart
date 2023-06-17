@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? userString = pref.getString("user");
     if(userString!=null){
       user = jsonDecode(userString);
-      pickAndSaveImage();
+      // pickAndSaveImage();
       setState(() {
 
       });
@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     }
-    var url = 'http://192.168.1.16/water_wise/register_config.php';
+    var url = 'http://172.20.10.4/water_wise/register_config.php';
     var response = await http.post(Uri.parse(url), body: {
       'id': user['id'],
       'photo': fileName,
