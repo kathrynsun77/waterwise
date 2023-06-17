@@ -5,6 +5,7 @@ import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_circleimage.dart';
 import '../../app_bar/appbar_image.dart';
+import 'package:http/http.dart' as http;
 import '../../app_bar/appbar_subtitle.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
@@ -31,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? userString = pref.getString("user");
     if(userString!=null){
       user = jsonDecode(userString);
+      pickAndSaveImage();
       setState(() {
 
       });
@@ -86,6 +88,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     }
+    var url = 'http://192.168.1.16/water_wise/register_config.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'id': user['id'],
+      'photo': fileName,
+    });
+
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+    } else {
+      print('failed bye');
+    }
+
   }
 
   @override
@@ -147,6 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: AppbarImage(
                 height: getSize(10),
                 width: getSize(10),
+                onTap: () {
+                  onTapEditPhoto(context);
+                },
                 svgPath: "assets/images/img_edit.svg",
                 margin: getMargin(left: 10, top: 22, right: 33, bottom: 20),
               ),
@@ -293,5 +311,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   onTapPayments(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+  }
+  onTapEditPhoto(BuildContext context) {
+    pickAndSaveImage();
   }
 }

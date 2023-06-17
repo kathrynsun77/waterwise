@@ -308,7 +308,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               text: "Add",
               onTap: () {
                 addPayment();
-              },              margin: getMargin(top: 20, bottom: 5),
+              },
+              margin: getMargin(top: 20, bottom: 5),
               alignment: Alignment.center,
             ),
           ],
