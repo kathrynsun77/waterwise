@@ -105,6 +105,7 @@ class CustomCheckbox extends StatelessWidget {
           onChange!(value!);
         },
         checkColor: ColorConstant.blueGray10002,
+        activeColor: Colors.green, // Set the color of the checkmark
         visualDensity: VisualDensity(
           vertical: -4,
           horizontal: -4,

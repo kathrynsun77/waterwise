@@ -277,10 +277,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     setState(() {
                       // _isLoading = false;
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "Logged Out",
-                          ),
+                        const SnackBar(
+                          content: Text('Logged Out'),
+                          backgroundColor: Color(0xFF6F9C95),
                         ),
                       );
                     });

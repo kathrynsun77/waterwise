@@ -23,6 +23,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   TextEditingController frameoneController = TextEditingController();
   TextEditingController frameoneoneController = TextEditingController();
   TextEditingController frameonetwoController = TextEditingController();
+  TextEditingController getIdController = TextEditingController();
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map user = {};
 
@@ -56,11 +58,11 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     }
   }
 
-  deleteCard() async {
+  deleteCard(String cardID) async {
     final response = await http.post(
       Uri.parse('http://192.168.1.12/water_wise/delete_card.php'),
       body: {
-        // 'card-id': , /masukin card_payment_id
+        'card-id': cardID,
         'cust-id': user['customer_id'],
       },
     );
@@ -130,6 +132,38 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     }
   }
 
+  void setDefaultCard(String cardID) async {
+    var url = 'http://192.168.1.12/water_wise/set_default_card.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'card-id': cardID,
+      'cust-id': user['customer_id'],
+    });
+
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+      try {
+        Map responseBody = jsonDecode(response.body);
+        Map user = responseBody['data'];
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('user', jsonEncode(user));
+        Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Default Changed!'),
+            backgroundColor: Color(0xFF6F9C95),
+          ),
+        );
+      } catch (e) {
+        print('Error decoding JSON: $e');
+        // Handle the JSON decoding error here
+      }
+    } else {
+      print('failed bye');
+      // Handle the HTTP request failure here
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -165,6 +199,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   Map item = allCard[index];
                   return Container(
                     width: double.maxFinite,
+
                     child: Padding(
                       padding: getPadding(top: 42, left: 30),
                       child: Row(
@@ -198,16 +233,25 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                                   ),
                                 ),
                                 CustomCheckbox(
-                                  // value: isDefaultCard(item),
+                                  value: item['card_payment_id'] == user['default_payment_method_type'],
                                   onChange: (value) {
-                                    // setDefaultCard(item, value);
+                                    setState(() {
+                                      setDefaultCard(item['card_payment_id']);
+                                    });
                                   },
                                   fontStyle: CheckboxFontStyle.PoppinsRegular8,
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
-                                    // deleteCard(item);
+                                    deleteCard(item['card_payment_id']);
+                                    Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Card Deleted'),
+                                        backgroundColor: Color(0xFF6F9C95),
+                                      ),
+                                    );
                                   },
                                 ),
                               ],
