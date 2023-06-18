@@ -40,6 +40,7 @@ class _PopupScreenState extends State<PopupScreen> {
     }
   }
 
+
   List<Map<String, dynamic>> allCard = [];
 
   fetchData() async {
@@ -88,6 +89,7 @@ class _PopupScreenState extends State<PopupScreen> {
       'cust-id': user['customer_id'],
       'usage': amountMeter().toString(),
       'amount': amountBill().toString(),
+      // 'payment-id':id.toString()
     });
 
     if (response.statusCode == 200) {
@@ -107,6 +109,7 @@ class _PopupScreenState extends State<PopupScreen> {
     }
     double totalAmount = totalMeter * 1.19;
     double totalAll = totalAmount+2.5;
+    var card = int.parse(user['default_payment_method']);
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -120,7 +123,7 @@ class _PopupScreenState extends State<PopupScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "", // Add your text here
+                card.toString(), // Convert the integer to a string using toString()
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
                 style: AppStyle.txtPoppinsSemiBold14.copyWith(
@@ -138,7 +141,8 @@ class _PopupScreenState extends State<PopupScreen> {
                   },
                   items: allCard.map<DropdownMenuItem<String>>((item) {
                     return DropdownMenuItem<String>(
-                      value: item['card_name'][0], // Replace with your card value
+                      value: "••••  ••••  ••••  ${item['card_name'][0].substring(item['card_name'][0].length - 4)}",
+                      // Replace with your card value
                       child: Row(
                         children: [
                           CustomImageView(
