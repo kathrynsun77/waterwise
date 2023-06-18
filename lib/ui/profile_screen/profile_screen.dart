@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (_) => AlertDialog(
           title: Text('Image Saved'),
-          content: Text('The image has been saved to assets/images.'),
+          content: Text('The image has been updated'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -97,6 +97,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (response.statusCode == 200) {
       print('success');
       print(response.body);
+      Map responseBody = jsonDecode(response.body);
+      Map user = responseBody['data'];
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('user', jsonEncode(user));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Update Photo Success'),
+            backgroundColor: Color(0xFF6F9C95),
+          ),
+      );
     } else {
       print('failed bye');
     }
@@ -270,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            "Logged out Sukses",
+                            "Logged Out",
                           ),
                         ),
                       );
