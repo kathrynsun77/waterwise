@@ -29,7 +29,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.16/water_wise/bill_detail.php'),
+      Uri.parse('http://192.168.1.12/water_wise/bill_detail.php'),
       body: {
         'id': user['id'],
       },

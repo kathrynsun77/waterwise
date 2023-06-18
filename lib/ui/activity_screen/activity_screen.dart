@@ -35,7 +35,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     setState(() {
       isButtonPressed = true; // Set the button pressed state to true
     });
-    var url = 'http://192.168.1.16/water_wise/request_tech.php';
+    var url = 'http://192.168.1.12/water_wise/request_tech.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
     });

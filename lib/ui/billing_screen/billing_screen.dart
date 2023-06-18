@@ -31,7 +31,7 @@ class _BillingScreenState extends State<BillingScreen> {
   List allBill = [];
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://192.168.1.16/water_wise/billing_config.php'),
+        Uri.parse('http://192.168.1.12/water_wise/billing_config.php'),
         body: {
           'id': user['id'],
         });

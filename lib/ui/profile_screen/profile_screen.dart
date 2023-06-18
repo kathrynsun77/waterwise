@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     }
-    var url = 'http://172.20.10.4/water_wise/register_config.php';
+    var url = 'http://192.168.1.12/water_wise/register_config.php';
     var response = await http.post(Uri.parse(url), body: {
       'id': user['id'],
       'photo': fileName,
