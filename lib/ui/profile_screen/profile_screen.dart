@@ -34,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       user = jsonDecode(userString);
       // pickAndSaveImage();
       setState(() {
-
       });
     }
   }

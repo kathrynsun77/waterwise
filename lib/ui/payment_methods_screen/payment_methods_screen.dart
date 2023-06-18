@@ -19,6 +19,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   bool isCheckbox = false;
   bool isCheckbox1 = false;
   bool isCheckbox2 = false;
+  TextEditingController bankNameController = TextEditingController();
   TextEditingController frameoneController = TextEditingController();
   TextEditingController frameoneoneController = TextEditingController();
   TextEditingController frameonetwoController = TextEditingController();
@@ -83,20 +84,13 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   String getCardType(String cardNumber) {
-    // Remove any spaces or dashes from the card number
     cardNumber = cardNumber.replaceAll(RegExp(r'\s+\b|\b\s'), '');
     if (RegExp(r'^4[0-9]{12}(?:[0-9]{3})?$').hasMatch(cardNumber)) {
       return '1';
     } else if (RegExp(r'^5[1-5][0-9]{14}$').hasMatch(cardNumber)) {
       return '2';
-    // } else if (RegExp(r'^3[47][0-9]{13}$').hasMatch(cardNumber)) {
-    //   return 'American Express';
-    // } else if (RegExp(r'^(?:2131|1800|35\d{3})\d{11}$').hasMatch(cardNumber)) {
-    //   return 'JCB';
-    // } else if (RegExp(r'^(?:5[0678]\d\d|6304|6390|67\d\d)\d{8,15}$').hasMatch(cardNumber)) {
-    //   return 'Maestro';
     } else {
-      return 'Unknown';
+      return '0';
     }
   }
 
@@ -107,7 +101,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       'number': frameoneController.text,
       'month': frameoneoneController.text,
       'cvv': frameonetwoController.text,
-      'type':getCardType(frameoneController.text)
+      'type':getCardType(frameoneController.text),
+      'bank_name': bankNameController.text
     });
 
     if (response.statusCode == 200) {
@@ -190,13 +185,14 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                                 letterSpacing: getHorizontalSize(1.0),
                               ),
                             ),
+
                           ),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  "Default",
+                                  item['bank_name'],
                                   style: AppStyle.txtPoppinsSemiBold12.copyWith(
                                     letterSpacing: getHorizontalSize(1.0),
                                   ),
@@ -206,7 +202,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                                   onChange: (value) {
                                     // setDefaultCard(item, value);
                                   },
-                                  // margin: getMargin(top:10),
                                   fontStyle: CheckboxFontStyle.PoppinsRegular8,
                                 ),
                                 IconButton(
@@ -216,6 +211,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                                   },
                                 ),
                               ],
+
                             ),
                           ),
                         ],
@@ -234,7 +230,27 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               ),
             ),
             Padding(
-              padding: getPadding(top: 68, left: 30, right: 30),
+              padding: getPadding(top: 20, left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Bank Name",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppStyle.txtPoppinsSemiBold12,
+                  ),
+                  CustomTextFormField(
+                    autofocus: true,
+                    controller: bankNameController,
+                    margin: getMargin(top: 4),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: getPadding(top: 10, left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -247,7 +263,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   ),
                   CustomTextFormField(
                     focusNode: FocusNode(),
-                    autofocus: true,
                     controller: frameoneController,
                     margin: getMargin(top: 4),
                   ),
