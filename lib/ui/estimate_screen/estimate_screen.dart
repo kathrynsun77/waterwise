@@ -177,6 +177,6 @@ class _EstimateScreenState extends State<EstimateScreen> {
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
 }

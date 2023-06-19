@@ -174,6 +174,14 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            CustomImageView(
+                svgPath: ImageConstant.imgArrowleft,
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                margin: getMargin(left: 16,top:20),
+                onTap: () {
+                  onTapImgArrowleft(context);
+                }),
             Padding(
               padding: getPadding(
                 top: 25,
@@ -378,6 +386,10 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   onTapPaymentmethods(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.profileScreen);
+  }
+
+  void onTapImgArrowleft(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.profileScreen);
   }
 }

@@ -86,12 +86,21 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            CustomImageView(
+                svgPath: ImageConstant.imgArrowleft,
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                margin: getMargin(left: 16,top:20),
+                onTap: () {
+                  onTapImgArrowleft(context);
+                }),
             Padding(
               padding: getPadding(
                 top:25,
                 left:30,
               ),
-              child: Text(
+              child:
+              Text(
                 "Update Account",
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
@@ -212,6 +221,11 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
         ),
       ),
     );
+  }
+
+  void onTapImgArrowleft(BuildContext context) {
+      Navigator.pushNamed(context, AppRoutes.profileScreen);
+
   }
 
   // onTapUpdateaccount(BuildContext context) {
