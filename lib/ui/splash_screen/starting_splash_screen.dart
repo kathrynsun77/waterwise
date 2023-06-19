@@ -115,7 +115,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                       CustomImageView(
                         imagePath: ImageConstant.imgWaterwiselogo,
                         height: getVerticalSize(
-                          62,
+                          64,
                         ),
                         width: getHorizontalSize(
                           303,

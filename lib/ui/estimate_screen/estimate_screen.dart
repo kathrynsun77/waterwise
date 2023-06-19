@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 
+import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
 
 class EstimateScreen extends StatefulWidget {
@@ -16,9 +17,11 @@ class _EstimateScreenState extends State<EstimateScreen> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
-            body: Container(
+
+            body: SingleChildScrollView(
+        child: Container(
                 width: double.maxFinite,
-                padding: getPadding(left: 14, top: 30, right: 14, bottom: 30),
+                padding: getPadding(left: 14, top: 30, right: 14, bottom: 10),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -102,6 +105,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                   children: [
                                     Container(
                                         width: getHorizontalSize(107),
+                                        height: getVerticalSize(50),
                                         margin: getMargin(left: 1),
                                         child: Text("Manual \nEstimation",
                                             maxLines: null,
@@ -116,7 +120,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                         height: getVerticalSize(38),
                                         width: getHorizontalSize(316),
                                         margin: getMargin(
-                                            left: 1, top: 26, bottom: 15),
+                                            left: 1, top: 26, bottom: 20),
                                         child: Stack(
                                             alignment: Alignment.center,
                                             children: [
@@ -133,14 +137,9 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                               Align(
                                                   alignment: Alignment.center,
                                                   child: Column(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .end,
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
                                                       children: [
                                                         Text("200",
                                                             overflow:
@@ -169,11 +168,18 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                                     .gray300,
                                                                 endIndent:
                                                                 getHorizontalSize(
-                                                                    0.5)))
+                                                                    0.5))),
+                                                        CustomButton(
+                                                            height: getVerticalSize(51),
+                                                            width: getHorizontalSize(184),
+                                                            text: "Estimate",
+                                                            margin: getMargin(left: 95, right: 96, top:100),
+                                                            onTap: () {
+                                                            })
                                                       ]))
                                             ]))
                                   ])))
-                    ]))));
+                    ])))));
   }
 
   onTapImgArrowleft(BuildContext context) {
