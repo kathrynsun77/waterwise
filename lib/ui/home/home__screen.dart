@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
@@ -7,6 +8,7 @@ import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:http_parser/http_parser.dart';
 import '../../app_bar/appbar_circleimage.dart';
+import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_subtitle.dart';
 import '../../widget/custom_bottom_bar.dart';
 import '../../app_bar/appbar_title.dart';
@@ -77,11 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               AppbarCircleimage(
                 // imagePath: "$profile_photo",
-                  imagePath: "assets/images/"+user['photo'],
+                  imagePath: user['photo'],
                   margin: getMargin(left: 30, top: 3, right: 30, bottom: 3),
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.profileScreen);
-                  }
+                  },
               )
             ]),
         body: Container(

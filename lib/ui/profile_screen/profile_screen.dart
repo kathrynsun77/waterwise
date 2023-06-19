@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   String fileName="";
 
-  Future<void> pickAndSaveImage() async {
+  Future<void> pickAndSaveImage(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
     // Pick image from gallery
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -47,12 +47,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // No image selected
       return;
     }
-    // Get the app's document directory
-    final Directory appDir = await getApplicationDocumentsDirectory();
+    // Get the app's temporary directory
+    final Directory appDir = await getTemporaryDirectory();
     // Generate a unique file name
     String fileName = path.basename(image.path);
     // Define the destination path
-    final String destination = path.join(appDir.path, 'assets', 'images', fileName);
+    final String destination = path.join(appDir.path, fileName);
     try {
       // Save the image to the destination path
       final File savedImage = await File(image.path).copy(destination);
@@ -87,29 +87,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     }
-    var url = 'http://192.168.1.12/water_wise/register_config.php';
-    var response = await http.post(Uri.parse(url), body: {
-      'id': user['id'],
-      'photo': fileName,
-    });
+    final response = await http.post(
+        Uri.parse('http://192.168.1.12/water_wise/upload_photo.php'),
+        body: {
+          'id': user['id'],
+          'photo':destination.toString(),
+        });
 
     if (response.statusCode == 200) {
       print('success');
       print(response.body);
-      Map responseBody = jsonDecode(response.body);
-      Map user = responseBody['data'];
-      final pref = await SharedPreferences.getInstance();
-      pref.setString('user', jsonEncode(user));
-      ScaffoldMessenger.of(context).showSnackBar(
+      try {
+        Map responseBody = jsonDecode(response.body);
+        Map user = responseBody['data'];
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('user', jsonEncode(user));
+        Navigator.pushNamed(context, AppRoutes.profileScreen);
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Update Photo Success'),
+            content: Text('Success!'),
             backgroundColor: Color(0xFF6F9C95),
           ),
-      );
+        );
+      } catch (e) {
+        print('Error decoding JSON: $e');
+        // Handle the JSON decoding error here
+      }
     } else {
       print('failed bye');
+      // Handle the HTTP request failure here
     }
-
   }
 
   @override
@@ -159,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             AppbarCircleimage(
-              imagePath: "assets/images/"+user['photo'],
+              imagePath: user['photo'],
               margin: getMargin(
                 left: 30,
                 top: 3,
@@ -167,7 +174,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             GestureDetector(
-              onTap: pickAndSaveImage, // Replace with your desired method for handling the tap event
               child: AppbarImage(
                 height: getSize(10),
                 width: getSize(10),
@@ -336,6 +342,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
   }
   onTapEditPhoto(BuildContext context) {
-    pickAndSaveImage();
+    pickAndSaveImage(context);
   }
 }
