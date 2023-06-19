@@ -78,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ])),
             actions: [
               AppbarCircleimage(
-                // imagePath: "$profile_photo",
                   imagePath: user['photo'],
                   margin: getMargin(left: 30, top: 3, right: 30, bottom: 3),
                   onTap: () {
@@ -345,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 controller: dateController,
                                                 enabled: false, // Set enabled to false to make it uneditable
                                                 decoration: InputDecoration(
-                                                  hintText: "Last Transaction",
+                                                  hintText: "Recent Transactions",
                                                   enabledBorder: UnderlineInputBorder(
                                                     borderSide: BorderSide(color: Colors.grey[300]!),
                                                   ),

@@ -162,7 +162,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                                                 MainAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Text(item['inovice_number'],
+                                                              Text("Invoice: "+item['inovice_number'],
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,

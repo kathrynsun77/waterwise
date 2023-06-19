@@ -89,6 +89,7 @@ class _PopupScreenState extends State<PopupScreen> {
       'cust-id': user['customer_id'],
       'usage': amountMeter().toString(),
       'amount': amountBill().toString(),
+      // 'invoice': allBill['']
       // 'payment-id':id.toString()
     });
 
