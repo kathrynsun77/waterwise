@@ -48,6 +48,12 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
+  void saveAmountSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String jsonData = jsonEncode(allBill);
+    await prefs.setString('customerBill', jsonData);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
