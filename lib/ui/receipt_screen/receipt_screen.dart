@@ -259,29 +259,25 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                         TextOverflow.ellipsis,
                                         textAlign: TextAlign
                                             .left,
-                                        style: AppStyle
-                                            .txtPoppinsRegular12
-                                            .copyWith(
-                                            letterSpacing:
-                                            getHorizontalSize(
-                                                1.0))),
+                                      style: AppStyle.txtPoppinsBold12.copyWith(
+                                        letterSpacing: getHorizontalSize(1.0),
+                                      ),
+                                    ),
                                     Padding(
                                         padding: getPadding(
                                             top: 10,
                                             bottom: 10),
                                         child: Text(
-                                            item['transaction_amount'],
+                                            "\$"+item['transaction_amount'],
                                             overflow:
                                             TextOverflow
                                                 .ellipsis,
                                             textAlign: TextAlign
                                                 .left,
-                                            style: AppStyle
-                                                .txtPoppinsRegular12Bluegray700
-                                                .copyWith(
-                                                letterSpacing:
-                                                getHorizontalSize(
-                                                    1.0))))
+                                          style: AppStyle.txtPoppinsBold12.copyWith(
+                                            letterSpacing: getHorizontalSize(1.0),
+                                          ),
+                                        ))
                                   ]))
                         ],
                       ),
@@ -293,7 +289,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                 height: getVerticalSize(29),
                 width: getHorizontalSize(133),
                 text: "Report a problem",
-                margin: getMargin(left: 2, top: 35, bottom: 5),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.contactUsScreen);
+                },                margin: getMargin(left: 2, top: 35, bottom: 5),
               ),
             ],
           ),
@@ -303,6 +301,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
 }
