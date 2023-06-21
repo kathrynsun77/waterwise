@@ -127,6 +127,8 @@ class _BillingScreenState extends State<BillingScreen> {
                                               if (int.parse(item['bill_status']) == 2) {
                                                 saveInvoice(item['inovice_number']);
                                                 onTapListdue(context);
+                                              } else {
+                                                onTapListPaid(context);
                                               }
                                             },
                                             child: Container(
@@ -404,5 +406,8 @@ class _BillingScreenState extends State<BillingScreen> {
     Navigator.pushNamed(context, AppRoutes.viewBillScreen);
   }
 
+  onTapListPaid(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.receiptScreen);
+  }
 
 }

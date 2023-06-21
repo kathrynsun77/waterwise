@@ -4,10 +4,11 @@ import '../core/utils/color_constant.dart';
 import '../core/utils/size_utils.dart';
 
 class AppStyle {
-  static TextStyle txtPoppinsRegular10 = TextStyle(
-    color: ColorConstant.deepPurpleA200,
+
+  static TextStyle txtPoppinsRegular12 = TextStyle(
+    color: ColorConstant.gray800,
     fontSize: getFontSize(
-      10,
+      12,
     ),
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w400,
@@ -21,6 +22,33 @@ class AppStyle {
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w400,
   );
+
+  static TextStyle txtPoppinsSemiBold18 = TextStyle(
+    color: ColorConstant.blueGray700,
+    fontSize: getFontSize(
+      18,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsBold12 = TextStyle(
+    color: ColorConstant.gray800,
+    fontSize: getFontSize(
+      12,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w700,
+  );
+  static TextStyle txtPoppinsRegular10 = TextStyle(
+    color: ColorConstant.deepPurpleA200,
+    fontSize: getFontSize(
+      10,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+  );
+
 
   static TextStyle txtPoppinsRegular12Gray400 = TextStyle(
     color: ColorConstant.gray400,
@@ -49,14 +77,6 @@ class AppStyle {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle txtPoppinsRegular12 = TextStyle(
-    color: ColorConstant.indigo100,
-    fontSize: getFontSize(
-      12,
-    ),
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w400,
-  );
 
   static TextStyle txtPoppinsMedium12 = TextStyle(
     color: ColorConstant.blueGray400,
@@ -80,15 +100,6 @@ class AppStyle {
     color: ColorConstant.gray800,
     fontSize: getFontSize(
       12,
-    ),
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w600,
-  );
-
-  static TextStyle txtPoppinsSemiBold18 = TextStyle(
-    color: ColorConstant.black900,
-    fontSize: getFontSize(
-      18,
     ),
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w600,
