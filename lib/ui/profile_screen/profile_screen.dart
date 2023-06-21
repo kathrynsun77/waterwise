@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return;
     }
     // Get the app's temporary directory
-    final Directory appDir = await getTemporaryDirectory();
+    final Directory appDir = await getApplicationDocumentsDirectory();
     // Generate a unique file name
     String fileName = path.basename(image.path);
     // Define the destination path
@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
     final response = await http.post(
-        Uri.parse('http://192.168.1.12/water_wise/upload_photo.php'),
+        Uri.parse('http://192.168.1.8/water_wise/upload_photo.php'),
         body: {
           'id': user['id'],
           'photo':destination.toString(),
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Map user = responseBody['data'];
         final pref = await SharedPreferences.getInstance();
         pref.setString('user', jsonEncode(user));
-        Navigator.pushNamed(context, AppRoutes.profileScreen);
+        Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Success!'),
@@ -305,30 +305,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  ///Handling route based on bottom click actions
-  // String getCurrentRoute(BottomBarEnum type) {
-  //   switch (type) {
-  //     case BottomBarEnum.Home1:
-  //       return AppRoutes.homeScreen;
-  //     case BottomBarEnum.History1:
-  //       return AppRoutes.billingScreen;
-  //     case BottomBarEnum.Notification1:
-  //       return "/";
-  //     case BottomBarEnum.Profile1:
-  //       return AppRoutes.profileScreen;
-  //     default:
-  //       return "/";
-  //   }
-  // }
-
-  ///Handling page based on route
-  // Widget getCurrentPage(String currentRoute) {
-  //   switch (currentRoute) {
-  //     case AppRoutes.profileScreen:
-  //     default:
-  //       return DefaultWidget();
-  //   }
-  // }
   onTapUpdateAcc(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.updateAccountScreen);
   }

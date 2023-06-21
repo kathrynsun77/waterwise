@@ -41,7 +41,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   List allCard = [];
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.12/water_wise/payment_method.php'),
+      Uri.parse('http://192.168.1.8/water_wise/payment_method.php'),
       body: {
         'cust-id': user['customer_id'],
       },
@@ -60,7 +60,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
   deleteCard(String cardID) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.12/water_wise/delete_card.php'),
+      Uri.parse('http://192.168.1.8/water_wise/delete_card.php'),
       body: {
         'card-id': cardID,
         'cust-id': user['customer_id'],
@@ -97,7 +97,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void addPayment() async {
-    var url = 'http://192.168.1.12/water_wise/add_payment.php';
+    var url = 'http://192.168.1.8/water_wise/add_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'number': frameoneController.text,
@@ -133,7 +133,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void setDefaultCard(String cardID) async {
-    var url = 'http://192.168.1.12/water_wise/set_default_card.php';
+    var url = 'http://192.168.1.8/water_wise/set_default_card.php';
     var response = await http.post(Uri.parse(url), body: {
       'card-id': cardID,
       'cust-id': user['customer_id'],

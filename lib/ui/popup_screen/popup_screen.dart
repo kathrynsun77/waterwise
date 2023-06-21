@@ -26,7 +26,10 @@ class _PopupScreenState extends State<PopupScreen> {
     if (userString != null) {
       allBill = jsonDecode(userString);
       fetchData();
-      setState(() {});
+      amountMeter();
+      amountBill();
+      setState(() {
+      });
     }
   }
 
@@ -45,7 +48,7 @@ class _PopupScreenState extends State<PopupScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.12/water_wise/payment_method.php'),
+      Uri.parse('http://192.168.1.8/water_wise/payment_method.php'),
       body: {
         'cust-id': user['customer_id'],
       },
@@ -67,16 +70,18 @@ class _PopupScreenState extends State<PopupScreen> {
     super.initState();
     getUser();
     getBill();
+    amountMeter();
+    amountBill();
   }
-
-  Future<int> amountMeter() async {
-    int totalMeter = 0;
+  int totalMeter = 0;
+ amountMeter() async {
     for (var item in allBill) {
       totalMeter += int.parse(item['meter_value']);
     }
     return totalMeter;
   }
-  Future<int> amountBill() async {
+
+  amountBill() async {
     int totalMeter = await amountMeter();
     double totalBill = totalMeter * 1.19;
     return totalBill.round();
@@ -84,10 +89,10 @@ class _PopupScreenState extends State<PopupScreen> {
 
 
   void addTransaction() async {
-    var url = 'http://192.168.1.12/water_wise/make_payment.php';
+    var url = 'http://192.168.1.8/water_wise/make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
-      'usage': amountMeter().toString(),
+      'usage': amountMeter(),
       'amount': amountBill().toString(),
       // 'invoice': allBill['']
       // 'payment-id':id.toString()

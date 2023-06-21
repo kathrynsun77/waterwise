@@ -49,6 +49,6 @@ class SuccessTransactionsScreen extends StatelessWidget {
   }
 
   onTapBacktohome(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeScreen);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
 }
