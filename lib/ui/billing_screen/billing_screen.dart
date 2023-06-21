@@ -128,6 +128,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                                 saveInvoice(item['inovice_number']);
                                                 onTapListdue(context);
                                               } else {
+                                                saveInvoice(item['inovice_number']);
                                                 onTapListPaid(context);
                                               }
                                             },
