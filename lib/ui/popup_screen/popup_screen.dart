@@ -26,12 +26,18 @@ class _PopupScreenState extends State<PopupScreen> {
     if (userString != null) {
       allBill = jsonDecode(userString);
       fetchData();
-      amountMeter();
-      amountBill();
       setState(() {
       });
     }
   }
+
+  getInvoice() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? invoice = prefs.getString("invoice");
+    setState(() {});
+    return invoice;
+  }
+
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -70,32 +76,32 @@ class _PopupScreenState extends State<PopupScreen> {
     super.initState();
     getUser();
     getBill();
-    amountMeter();
-    amountBill();
-  }
-  int totalMeter = 0;
- amountMeter() async {
-    for (var item in allBill) {
-      totalMeter += int.parse(item['meter_value']);
-    }
-    return totalMeter;
+    getInvoice();
   }
 
-  amountBill() async {
-    int totalMeter = await amountMeter();
-    double totalBill = totalMeter * 1.19;
-    return totalBill.round();
-  }
+  void handleCardSelection(String id) async {
+    var url = 'http://192.168.1.8/water_wise/make_payment.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'payment-id':id,
+    });
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+    } else {
+      print('failed bye');
+      // Handle the HTTP request failure here
+    }  }
 
 
-  void addTransaction() async {
+  void addTransaction(String amount, String usage) async {
+    String? savedInvoice = await getInvoice();
     var url = 'http://192.168.1.8/water_wise/make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
-      'usage': amountMeter(),
-      'amount': amountBill().toString(),
-      // 'invoice': allBill['']
-      // 'payment-id':id.toString()
+      'usage': usage,
+      'amount': amount,
+      'invoice': savedInvoice,
+    // 'payment-id':id.toString()
     });
 
     if (response.statusCode == 200) {
@@ -109,13 +115,14 @@ class _PopupScreenState extends State<PopupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // selectedCard = user['default_payment_method_type'];
     int totalMeter = 0;
     for (var item in allBill) {
       totalMeter += int.parse(item['meter_value']);
     }
     double totalAmount = totalMeter * 1.19;
     double totalAll = totalAmount+2.5;
-    var card = int.parse(user['default_payment_method_type']);
+    var card = user['default_payment_method_type'];
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -139,16 +146,16 @@ class _PopupScreenState extends State<PopupScreen> {
               Padding(
                 padding: getPadding(top: 20, left: 20),
                 child: DropdownButtonFormField<String>(
-                  value: selectedCard,
+                  value: card.toString(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      selectedCard = newValue!;
+                      card = newValue!;
                     });
                   },
                   items: allCard.map<DropdownMenuItem<String>>((item) {
                     return DropdownMenuItem<String>(
                       value: (item['card_payment_id'].toString() == user['default_payment_method_type'].toString())
-                          ? item['card_value']
+                          ? item['card_payment_id']
                           : '',
                       child: Row(
                         children: [
@@ -156,7 +163,7 @@ class _PopupScreenState extends State<PopupScreen> {
                             imagePath: int.parse(item['card_type']) == 1 ? "assets/images/img_visa1.png" : "assets/images/master.png",
                             height: getVerticalSize(28),
                             width: getHorizontalSize(45),
-                          ),
+                                       ),
                           SizedBox(width: 16),
                           Text(
                             "••••  ••••  ••••  ${item['card_name'].substring(item['card_name'].length - 4)}",
@@ -301,6 +308,7 @@ class _PopupScreenState extends State<PopupScreen> {
           text: "Make Payment",
           margin: getMargin(left: 83, right: 83, bottom: 350),
           onTap: () {
+            addTransaction(totalAll.toStringAsFixed(2),totalMeter.toStringAsFixed(2));
             onTapTopupnow(context);
           },
         ),
@@ -309,7 +317,6 @@ class _PopupScreenState extends State<PopupScreen> {
   }
 
   onTapTopupnow(BuildContext context) {
-    addTransaction();
     Navigator.pushNamed(context, AppRoutes.successTransactionsScreen);
   }
 }

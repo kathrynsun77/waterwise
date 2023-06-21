@@ -48,11 +48,11 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
-  // void saveAmountSharedPreferences() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final String jsonData = jsonEncode(allBill);
-  //   await prefs.setString('customerBill', jsonData);
-  // }
+  saveInvoice(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("invoice", value);
+    print('String saved to SharedPreferences: $value');
+  }
 
   @override
   void initState() {
@@ -125,6 +125,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                           child: GestureDetector(
                                             onTap: () {
                                               if (int.parse(item['bill_status']) == 2) {
+                                                saveInvoice(item['inovice_number']);
                                                 onTapListdue(context);
                                               }
                                             },
@@ -397,37 +398,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                     //                 ]))))
                                   ])))
                     ]))));
-    // bottomNavigationBar:
-    // CustomBottomBar(onChanged: (BottomBarEnum type) {
-    //   Navigator.pushNamed(
-    //       navigatorKey.currentContext!, getCurrentRoute(type));
-    // })));
   }
-
-  ///Handling route based on bottom click actions
-  // String getCurrentRoute(BottomBarEnum type) {
-  //   switch (type) {
-  //     case BottomBarEnum.Home1:
-  //       return AppRoutes.homeScreen;
-  //     case BottomBarEnum.History1:
-  //       return AppRoutes.billingScreen;
-  //     case BottomBarEnum.Notification1:
-  //       return "/";
-  //     case BottomBarEnum.Profile1:
-  //       return AppRoutes.profileScreen;
-  //     default:
-  //       return "/";
-  //   }
-  // }
-
-  ///Handling page based on route
-  // Widget getCurrentPage(String currentRoute) {
-  //   switch (currentRoute) {
-  //     case AppRoutes.homeScreen:
-  //     default:
-  //       return DefaultWidget();
-  //   }
-  // }
 
   onTapListdue(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.viewBillScreen);
