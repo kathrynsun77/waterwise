@@ -330,12 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Padding(
                                               padding: getPadding(
                                                   top: 4, bottom: 4),
-                                              child: Text("Details",
-                                                  overflow:
-                                                  TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.left,
-                                                  style: AppStyle
-                                                      .txtPoppinsSemiBold12)))
+                                              ))
                                     ]),
                                     ListView.builder(
                                     itemCount: allBill.length,

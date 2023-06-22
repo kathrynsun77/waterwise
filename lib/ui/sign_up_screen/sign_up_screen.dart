@@ -25,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void registerUser(String fname, String lname, String email, String password) async {
-    var url = 'http://192.168.1.13/water_wise/register_config.php';
+    var url = 'http://192.168.1.13/water_wise/register_config1.php';
     // var url = 'https://master--waterwise-api.netlify.app/register_config?';
     var response = await http.post(Uri.parse(url), body: {
       'fname': fname,
