@@ -109,11 +109,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                     Text("Your Billing",
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtPoppinsSemiBold18Gray800
-                                            .copyWith(
-                                                letterSpacing:
-                                                    getHorizontalSize(1.0))),
+                                        style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(letterSpacing: getHorizontalSize(1.0))),
                                     ListView.builder(
                                       itemCount: allBill.length,
                                       shrinkWrap: true,

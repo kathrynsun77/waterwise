@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +20,7 @@ import '../../theme/app_decoration.dart';
 import '../../theme/app_style.dart';
 import '../../widget/custom_icon_button.dart';
 import '../../widget/custom_image_view.dart';
+import '../../widget/custom_text_form_field.dart';
 // import '../../widget/custom_text_form_field.dart';
 
 
@@ -33,15 +33,34 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map user = {};
-
   getUser() async{
     final pref = await SharedPreferences.getInstance();
     String? userString = pref.getString("user");
     if(userString!=null){
       user = jsonDecode(userString);
+      fetchData();
       setState(() {
-
       });
+    }
+  }
+
+  List allBill = [];
+  fetchData() async {
+    final response = await http.post(
+        Uri.parse('http://192.168.1.13/water_wise/show_transaction.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      allBill = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
     }
   }
   @override
@@ -298,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.left,
                                           style: AppStyle
-                                              .txtPoppinsSemiBold18Gray800
+                                              .txtPoppinsSemiBold18
                                               .copyWith(
                                               letterSpacing:
                                               getHorizontalSize(
@@ -316,76 +335,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   TextOverflow.ellipsis,
                                                   textAlign: TextAlign.left,
                                                   style: AppStyle
-                                                      .txtPoppinsSemiBold12Bluegray700)))
+                                                      .txtPoppinsSemiBold12)))
                                     ]),
-                                Container(
-                                    width: double.maxFinite,
-                                    child: Container(
-                                        margin:
-                                        getMargin(top: 12, bottom: 15),
-                                        padding: getPadding(
-                                            left: 16,
-                                            top: 15,
-                                            right: 16,
-                                            bottom: 15),
-                                        decoration: AppDecoration.white
-                                            .copyWith(
-                                            borderRadius:
-                                            BorderRadiusStyle
-                                                .roundedBorder12),
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            children: [
-                                              TextFormField(
-                                                focusNode: FocusNode(),
-                                                autofocus: true,
-                                                controller: dateController,
-                                                enabled: false, // Set enabled to false to make it uneditable
-                                                decoration: InputDecoration(
-                                                  hintText: "Recent Transactions",
-                                                  enabledBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(color: Colors.grey[300]!),
-                                                  ),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(color: Colors.grey[300]!),
-                                                  ),
-                                                ),
-                                                style: TextStyle(
-                                                  fontFamily: 'PoppinsRegular',
-                                                  fontSize: 12,
-                                                  color: Colors.grey[800],
-                                                ),
-                                                textInputAction: TextInputAction.done,
-                                              ),
-
-                                              Padding(
-                                                  padding:
-                                                  getPadding(top: 12),
-                                                  child: ListView.separated(
-                                                      physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      separatorBuilder:
-                                                          (context, index) {
-                                                        return SizedBox(
-                                                            height:
-                                                            getVerticalSize(
-                                                                12));
-                                                      },
-                                                      itemCount: 2,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return HomeItemWidget();
-                                                      })),
-                                            ]))),
-                              ]))),
-                ])),
-      ),
-    );
+                                    ListView.builder(
+                                    itemCount: allBill.length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      Map item = allBill[index];
+                                      return Container(
+                                          width: double.maxFinite,
+                                          child: Container(
+                                              margin:
+                                              getMargin(top: 12, bottom: 15),
+                                              padding: getPadding(
+                                                  left: 16,
+                                                  top: 15,
+                                                  right: 16,
+                                                  bottom: 15),
+                                              decoration: AppDecoration.white
+                                                  .copyWith(
+                                                  borderRadius:
+                                                  BorderRadiusStyle
+                                                      .roundedBorder12),
+                                              child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Recent Transaction",
+                                                      style: AppStyle
+                                                          .txtPoppinsRegular12Gray800
+                                                          .copyWith(
+                                                          letterSpacing: getHorizontalSize(
+                                                              1.0)),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                      getPadding(top: 11),
+                                                      child:
+                                                      Text(
+                                                        (int.parse(item['transaction_type']) == 1 ? "Bill Payment" : "Point Redeem") +
+                                                            "       \$${item['transaction_amount']}    ${item['transaction_date']}",
+                                                        style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
+                                                          letterSpacing: getHorizontalSize(1.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ])));
+                                    })])))
+                ]))));
   }
-
 
   onTapWater(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.estimateScreen);
