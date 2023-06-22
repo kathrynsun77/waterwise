@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
     final response = await http.post(
-        Uri.parse('http://192.168.1.8/water_wise/upload_photo.php'),
+        Uri.parse('http://192.168.1.13/water_wise/upload_photo.php'),
         body: {
           'id': user['id'],
           'photo':destination.toString(),

@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
 
@@ -11,10 +14,51 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
+
+  Map user = {};
+
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString) as Map;
+      addPayment();
+      setState(() {});
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUser();
+    super.initState();
+  }
+
+
+    addPayment() async {
+    var url = 'http://192.168.1.13/water_wise/feedback.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'cust-id': user['customer_id'],
+      'message': messageController.text,
+    });
+
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+      Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Feedback Sent!'),
+          backgroundColor: Color(0xFF6F9C95),
+        ),
+      );
+    } else {
+      print('failed bye');
+      // Handle the HTTP request failure here
+    }
+  }
+
   TextEditingController firstnameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   TextEditingController messageController = TextEditingController();
-  TextEditingController selectoptionController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -80,53 +124,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         focusNode: FocusNode(),
                         autofocus: true,
                         controller: firstnameController,
-                        hintText: "First name",
+                        hintText: " Name",
                         margin: getMargin(top: 4),
                       ),
                     ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Last Name",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtPoppinsSemiBold12,
-                      ),
-                      CustomTextFormField(
-                        width: getHorizontalSize(150),
-                        focusNode: FocusNode(),
-                        autofocus: true,
-                        controller: firstnameController,
-                        hintText: "First name",
-                        margin: getMargin(top: 4),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 19,left:30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Email",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: AppStyle.txtPoppinsSemiBold12,
-                  ),
-                  CustomTextFormField(
-                    focusNode: FocusNode(),
-                    autofocus: true,
-                    controller: emailController,
-                    hintText: "Enter your email",
-                    margin: getMargin(top: 4),
-                    textInputType: TextInputType.emailAddress,
                   ),
                 ],
               ),
@@ -153,34 +154,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 19, left:30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Remarks",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: AppStyle.txtPoppinsSemiBold12,
-                  ),
-                  CustomTextFormField(
-                    focusNode: FocusNode(),
-                    autofocus: true,
-                    controller: selectoptionController,
-                    hintText: "Select an option",
-                    margin: getMargin(top: 4),
-                    textInputAction: TextInputAction.done,
-                  ),
-                ],
-              ),
-            ),
             CustomButton(
               height: getVerticalSize(51),
               width: getHorizontalSize(146),
               text: "Send",
               margin: getMargin(top: 58),
+              onTap: () {
+                addPayment();
+              },
               alignment: Alignment.center,
             ),
             Padding(
@@ -236,5 +217,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
   onTapContactus(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.profileScreen);
+  }
+  onTapContactSend(BuildContext context) {
+    addPayment();
   }
 }

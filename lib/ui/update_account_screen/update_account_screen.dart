@@ -36,7 +36,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
 
   void updateUser() async {
     final response = await http.post(
-        Uri.parse('http://192.168.1.8/water_wise/update_account.php'),
+        Uri.parse('http://192.168.1.13/water_wise/update_account.php'),
         body: {
           'id': user['id'],
           'fname': firstnameController.text,

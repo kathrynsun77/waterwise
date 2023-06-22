@@ -44,7 +44,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
   fetchData() async {
     String? savedInvoice = await getInvoice();
     final response = await http.post(
-      Uri.parse('http://192.168.1.8/water_wise/receipt.php'),
+      Uri.parse('http://192.168.1.13/water_wise/receipt.php'),
       body: {
         'cust-id': user['customer_id'].toString(), // Convert to string
         'invoice': savedInvoice.toString(), // Convert to string
