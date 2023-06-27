@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
 
@@ -12,6 +14,44 @@ class EstimateScreen extends StatefulWidget {
 }
 // ignore_for_file: must_be_immutable
 class _EstimateScreenState extends State<EstimateScreen> {
+
+  Map user = {};
+  List allBill = [];
+
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString);
+      fetchData();
+      setState(() {});
+    }
+  }
+
+  fetchData() async {
+    final response = await http.post(
+      Uri.parse('http://172.28.200.128/water_wise/bill_detail.php'),
+      body: {
+        'id': user['id'],
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      allBill = json.decode(response.body);
+      setState(() {});
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
   TextEditingController userInputController = TextEditingController();
 
   String result = '';
@@ -33,10 +73,15 @@ class _EstimateScreenState extends State<EstimateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int totalMeter = 0;
+    for (var item in allBill) {
+      totalMeter += int.parse(item['meter_value']);
+    }
+    double totalAmount = totalMeter * 1.19;
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
-
+            resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
         child: Container(
                 width: double.maxFinite,
@@ -71,7 +116,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                               Stack(alignment: Alignment.center, children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text("200L",
+                                    child: Text(totalMeter.toStringAsFixed(2),
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.left,
                                         style: AppStyle
@@ -88,7 +133,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.start,
                                         children: [
-                                          Text("200",
+                                          Text("\$"+totalAmount.toStringAsFixed(2),
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.left,
                                               style: AppStyle
@@ -136,7 +181,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                 getHorizontalSize(
                                                     1.0)))),
                                     Container(
-                                        height: getVerticalSize(38),
+                                        height: getVerticalSize(200),
                                         width: getHorizontalSize(316),
                                         margin: getMargin(
                                             left: 1, top: 26, bottom: 20),
@@ -161,7 +206,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                       crossAxisAlignment: CrossAxisAlignment.end,
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: [
-                                                        Text("200",
+                                                        Text(result,
                                                             overflow:
                                                             TextOverflow
                                                                 .ellipsis,
@@ -194,7 +239,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                             width: getHorizontalSize(184),
                                                             text: "Estimate",
                                                             margin: getMargin(left: 95, right: 96, top:100),
-                                                            onTap: () {
+                                                            onTap: () { estimate(context);
                                                             })
                                                       ]))
                                             ]))
@@ -204,5 +249,9 @@ class _EstimateScreenState extends State<EstimateScreen> {
 
   onTapImgArrowleft(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+  }
+
+  estimate(BuildContext context) {
+    calculateValue();
   }
 }
