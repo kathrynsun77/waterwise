@@ -12,6 +12,25 @@ class EstimateScreen extends StatefulWidget {
 }
 // ignore_for_file: must_be_immutable
 class _EstimateScreenState extends State<EstimateScreen> {
+  TextEditingController userInputController = TextEditingController();
+
+  String result = '';
+
+  void calculateValue() {
+    double userInput = double.tryParse(userInputController.text) ?? 0;
+    double calculatedValue = userInput * 1.19;
+    setState(() {
+      result = calculatedValue.toStringAsFixed(2);
+    });
+  }
+
+  @override
+  void dispose() {
+    userInputController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -133,6 +152,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                       CustomTextFormField(
                                                         maxLines: null,
                                                         hintText: "Insert Usage in L",
+                                                        controller: userInputController,
                                                       ),)),
                                               Align(
                                                   alignment: Alignment.center,

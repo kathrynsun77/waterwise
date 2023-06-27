@@ -335,12 +335,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width: double.maxFinite,
                                           child: Container(
                                               margin:
-                                              getMargin(top: 12, bottom: 15),
+                                              getMargin(top: 5, bottom: 5),
                                               padding: getPadding(
                                                   left: 16,
-                                                  top: 15,
+                                                  top: 5,
                                                   right: 16,
-                                                  bottom: 15),
+                                                  bottom: 5),
                                               decoration: AppDecoration.white
                                                   .copyWith(
                                                   borderRadius:
@@ -352,17 +352,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      "Recent Transaction",
-                                                      style: AppStyle
-                                                          .txtPoppinsRegular12Gray800
-                                                          .copyWith(
-                                                          letterSpacing: getHorizontalSize(
-                                                              1.0)),
-                                                    ),
                                                     Padding(
                                                       padding:
-                                                      getPadding(top: 11),
+                                                      getPadding(top:0),
                                                       child:
                                                       Text(
                                                         (int.parse(item['transaction_type']) == 1 ? "Bill Payment" : "Point Redeem") +

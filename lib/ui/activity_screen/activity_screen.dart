@@ -76,10 +76,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
     super.initState();
   }
 
-
-
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     int totalMeter = 0;
@@ -93,8 +89,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
             body: Container(
                 width: double.maxFinite,
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
                           padding: getPadding(left: 30, top: 16, right: 18),
