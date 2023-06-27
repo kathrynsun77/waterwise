@@ -86,7 +86,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
-            body: Container(
+            body: SingleChildScrollView(
+        child: Container(
                 width: double.maxFinite,
                 child: Column(
                     children: [
@@ -167,6 +168,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                 letterSpacing:
                                                 getHorizontalSize(
                                                     1.0)))),
+
                                     ListView.builder(
                                     itemCount: allBill.length,
                                     shrinkWrap: true,
@@ -245,7 +247,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                             '${int.parse(item['leak_status']) == 2 ? "Pipe Leaking" : "No Leak"}',
                                                             overflow: TextOverflow.ellipsis,
                                                             textAlign: TextAlign.left,
-                                                            style: (int.parse(item['meter_value']) >= 100 || item['leak_status'] == 2)
+                                                            style: (int.parse(item['meter_value']) >= 100 || int.parse(item['leak_status']) == 2)
                                                                 ? AppStyle.txtPoppinsRegular12RedA400.copyWith(
                                                               letterSpacing: getHorizontalSize(1.0),
                                                             )
@@ -278,7 +280,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                           ),
                                         ),
                                     );})])))
-                    ]))));
+                    ])))));
   }
 
   onTapImgArrowleft(BuildContext context) {
