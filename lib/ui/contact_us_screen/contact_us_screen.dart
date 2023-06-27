@@ -35,7 +35,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
 
     addPayment() async {
-    var url = 'http://192.168.1.13/water_wise/feedback.php';
+    var url = 'http://172.28.200.128/water_wise/feedback.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'message': messageController.text,

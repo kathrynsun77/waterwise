@@ -1,15 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
 import 'package:http/http.dart' as http;
-import 'package:mysql1/mysql1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:http_parser/http_parser.dart';
 import '../../app_bar/appbar_circleimage.dart';
-import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_subtitle.dart';
-import '../../widget/custom_bottom_bar.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../core/utils/color_constant.dart';
@@ -20,7 +14,6 @@ import '../../theme/app_decoration.dart';
 import '../../theme/app_style.dart';
 import '../../widget/custom_icon_button.dart';
 import '../../widget/custom_image_view.dart';
-import '../../widget/custom_text_form_field.dart';
 // import '../../widget/custom_text_form_field.dart';
 
 
@@ -47,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List allBill = [];
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://192.168.1.13/water_wise/show_transaction.php'),
+        Uri.parse('http://172.28.200.128/water_wise/show_transaction.php'),
         body: {
           'cust-id': user['customer_id'],
         });

@@ -54,7 +54,7 @@ class _PopupScreenState extends State<PopupScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.13/water_wise/payment_method.php'),
+      Uri.parse('http://172.28.200.128/water_wise/payment_method.php'),
       body: {
         'cust-id': user['customer_id'],
       },
@@ -80,7 +80,7 @@ class _PopupScreenState extends State<PopupScreen> {
   }
 
   void handleCardSelection(String id) async {
-    var url = 'http://192.168.1.13/water_wise/make_payment.php';
+    var url = 'http://172.28.200.128/water_wise/make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'payment-id':id,
     });
@@ -95,7 +95,7 @@ class _PopupScreenState extends State<PopupScreen> {
 
   void addTransaction(String amount, String usage) async {
     String? savedInvoice = await getInvoice();
-    var url = 'http://192.168.1.13/water_wise/make_payment.php';
+    var url = 'http://172.28.200.128/water_wise/make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'usage': usage,
