@@ -73,7 +73,8 @@ class _BillingScreenState extends State<BillingScreen> {
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
-            body: Container(
+            body: SingleChildScrollView(
+                child:Container(
                 width: double.maxFinite,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,7 +224,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       },
                                     ),
                                   ])))
-                    ]))));
+                    ])))));
   }
 
   onTapListdue(BuildContext context) {
