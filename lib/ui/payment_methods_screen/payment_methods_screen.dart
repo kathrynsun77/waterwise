@@ -25,7 +25,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   TextEditingController frameonetwoController = TextEditingController();
   TextEditingController getIdController = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map user = {};
 
   getUser() async {
@@ -150,7 +149,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Default Changed!'),
+            content: Text('Default Card Changed!'),
             backgroundColor: Color(0xFF6F9C95),
           ),
         );
@@ -198,7 +197,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                 ),
               ),
             ),
-            Expanded(
+            Flexible(
               child: ListView.builder(
                 itemCount: allCard.length,
                 shrinkWrap: true,
@@ -207,8 +206,12 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   Map item = allCard[index];
                   return Container(
                     width: double.maxFinite,
-
-                    child: Padding(
+                    child: SingleChildScrollView(
+                      child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                    Padding(
                       padding: getPadding(top: 42, left: 30),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +272,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                         ],
                       ),
                     ),
-                  );
+                  ])));
                 },
               ),
             ),
