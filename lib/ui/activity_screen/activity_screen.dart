@@ -29,12 +29,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   void requestTech() async {
-    if (isButtonPressed) {
-      return; // Exit early if button is already pressed
-    }
-    setState(() {
-      isButtonPressed = true; // Set the button pressed state to true
-    });
     var url = 'http://172.28.200.128/water_wise/request_tech.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
@@ -199,7 +193,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                     setState(() {
                                                       isButtonPressed = true;
                                                     });
-                                                    onTapRequestTech(context);
+                                                    // onTapRequestTech(context);
+                                                    print('Button tapped'); // Test statement
+                                                    requestTech();
                                                   },
                                                   variant: ButtonVariant.OutlineRed400,
                                                   fontStyle: ButtonFontStyle.PoppinsMedium8Red400,
