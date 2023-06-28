@@ -1,12 +1,13 @@
-import '../home/home__screen.dart';
-import '../notification_screen/widgets/notification_item_widget.dart';
+// import '../home/home__screen.dart';
+// import '../notification_screen/widgets/notification_item_widget.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
-import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
-import '../../widget/custom_bottom_bar.dart';
-import '../../widget/custom_text_form_field.dart';
-
-
+import 'package:http/http.dart' as http;
+// import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
+// import '../../widget/custom_bottom_bar.dart';
+// import '../../widget/custom_text_form_field.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -16,11 +17,43 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  TextEditingController groupseventeenController = TextEditingController();
+  Map user = {};
 
-  TextEditingController groupfifteenController = TextEditingController();
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString);
+      fetchData();
+      setState(() {});
+    }
+  }
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  List allBill = [];
+  fetchData() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/show_notification.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      allBill = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +61,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
         resizeToAvoidBottomInset: false,
-        body: Container(
+        body: SingleChildScrollView(
+        child:Container(
           width: double.maxFinite,
           padding: getPadding(
             left: 23,
@@ -55,235 +89,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ),
                 ),
               ),
-              Container(
-                margin: getMargin(
-                  top: 38,
-                  right: 50,
-                ),
-                padding: getPadding(
-                  left: 16,
-                  top: 15,
-                  right: 50,
-                  bottom: 15,
-                ),
-                decoration: AppDecoration.outlineBlack90019.copyWith(
-                  borderRadius: BorderRadiusStyle.roundedBorder12,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                    "Bill Due",
-                    overflow: TextOverflow
-                        .ellipsis,
-                    textAlign: TextAlign
-                        .left,
-                    style: AppStyle
-                        .txtPoppinsRegular12Gray800
-                        .copyWith(letterSpacing: getHorizontalSize(1.0))),
-                    Padding(
-                      padding: getPadding(
-                        left: 16,
-                        top: 15,
-                        right: 50,
-                        bottom: 15,
-                      ),
-                      child: Text(
-                        "Bill Due on 29/05/2023",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
-                          letterSpacing: getHorizontalSize(
-                            1.0,
+                ListView.builder(
+                itemCount: allBill.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  Map item = allBill[index];
+                  return Container(
+                    width: double.maxFinite,
+                    margin: getMargin(
+                      top: 38,
+                      right: 50,
+                    ),
+                    padding: getPadding(
+                      left: 16,
+                      top: 15,
+                      right: 50,
+                      bottom: 15,
+                    ),
+                    decoration: AppDecoration.outlineBlack90019.copyWith(
+                      borderRadius: BorderRadiusStyle.roundedBorder12,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                         Text(
+                            item['message'],
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
+                              letterSpacing: getHorizontalSize(1.0),
+                            ),
                           ),
-                        ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: getMargin(
-                  top: 38,
-                  right: 50,
-                ),
-                padding: getPadding(
-                  left: 16,
-                  top: 20,
-                  right: 50,
-                  bottom: 14,
-                ),
-                decoration: AppDecoration.outlineBlack90019.copyWith(
-                  borderRadius: BorderRadiusStyle.roundedBorder12,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                        "High Usage",
-                        overflow: TextOverflow
-                            .ellipsis,
-                        textAlign: TextAlign
-                            .left,
-                        style: AppStyle
-                            .txtPoppinsRegular12Gray800
-                            .copyWith(letterSpacing: getHorizontalSize(1.0))),
-                    Padding(
-                      padding: getPadding(
-                        left: 16,
-                        top: 20,
-                        right: 50,
-                        bottom: 14,
-                      ),
-                      child: Text(
-                        "High usage on kicthen",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
-                          letterSpacing: getHorizontalSize(
-                            1.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-        Container(
-          margin: getMargin(
-            top: 38,
-            right: 50,
+                  );
+                }
+                )]
           ),
-          padding: getPadding(
-            left: 16,
-            top: 20,
-            right: 50,
-            bottom: 14,
-          ),
-          decoration: AppDecoration.outlineBlack90019.copyWith(
-            borderRadius: BorderRadiusStyle.roundedBorder12,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                  "Water Saving Weekly Advice",
-                  overflow: TextOverflow
-                      .ellipsis,
-                  textAlign: TextAlign
-                      .left,
-                  style: AppStyle
-                      .txtPoppinsRegular12Gray800
-                      .copyWith(letterSpacing: getHorizontalSize(1.0))),
-              Padding(
-                padding: getPadding(
-                  left: 16,
-                  top: 20,
-                  right: 50,
-                  bottom: 14,
-                ),
-                child: Text(
-                  "Lorem ipsum dolor sit amet",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
-                    letterSpacing: getHorizontalSize(
-                      1.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: getMargin(
-            top: 38,
-            right: 50,
-          ),
-          padding: getPadding(
-            left: 16,
-            top: 20,
-            right: 50,
-            bottom: 14,
-          ),
-          decoration: AppDecoration.outlineBlack90019.copyWith(
-            borderRadius: BorderRadiusStyle.roundedBorder12,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                  "Yearly Service Needed",
-                  overflow: TextOverflow
-                      .ellipsis,
-                  textAlign: TextAlign
-                      .left,
-                  style: AppStyle
-                      .txtPoppinsRegular12Gray800
-                      .copyWith(letterSpacing: getHorizontalSize(1.0))),
-              Padding(
-                padding: getPadding(
-                  left: 16,
-                  top: 20,
-                  right: 50,
-                  bottom: 14,
-                ),
-                child: Text(
-                  "Service due on 07/07/2023",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
-                    letterSpacing: getHorizontalSize(
-                      1.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // bottomNavigationBar: CustomBottomBar(
-        //   onChanged: (BottomBarEnum type) {
-        //     Navigator.pushNamed(
-        //         navigatorKey.currentContext!, getCurrentRoute(type));
-        //   },
-        // ),
-      ]),
-    )));
+    ))));
   }
-
-  ///Handling route based on bottom click actions
-  // String getCurrentRoute(BottomBarEnum type) {
-  //   switch (type) {
-  //     case BottomBarEnum.Home1:
-  //       return AppRoutes.homeScreen;
-  //     case BottomBarEnum.History1:
-  //       return "/";
-  //     case BottomBarEnum.Notification1:
-  //       return "/";
-  //     case BottomBarEnum.Profile1:
-  //       return "/";
-  //     default:
-  //       return "/";
-  //   }
-  // }
-
-  ///Handling page based on route
-  // Widget getCurrentPage(String currentRoute) {
-  //   switch (currentRoute) {
-  //     case AppRoutes.homeScreen:
-  //     default:
-  //       return DefaultWidget();
-  //   }
-  // }
 }

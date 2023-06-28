@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:WaterWise/core/app_export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
-
+import 'package:fl_chart/fl_chart.dart';
 
 class ActivityTrendsScreen extends StatefulWidget {
   const ActivityTrendsScreen({Key? key}) : super(key: key);
@@ -12,6 +15,55 @@ class ActivityTrendsScreen extends StatefulWidget {
   State<ActivityTrendsScreen> createState() => _ActivityTrendsScreenState();
 }
 class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
+
+  Map user = {};
+  getUser() async{
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if(userString!=null){
+      user = jsonDecode(userString);
+      fetchData();
+      setState(() {
+      });
+    }
+  }
+
+  List<BarData> barDataList = [];
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  fetchData() async {
+    final response = await http.post(
+      Uri.parse('http://172.28.200.128/water_wise/show_transaction.php'),
+      body: {
+        'cust-id': user['customer_id']
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the response data
+      final jsonData = jsonDecode(response.body);
+      List<BarData> data = [];
+      for (var item in jsonData) {
+        final barData = BarData(
+          label: item['transaction_date'],
+          value: item['usage_amount'].toInt(),
+        );
+        data.add(barData);
+      }
+
+      setState(() {
+        barDataList = data;
+      });
+    } else {
+      // Error handling
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,8 +97,10 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                       margin:
                       getMargin(left: 18, top: 12, right: 18, bottom: 12),
                       variant: ButtonVariant.OutlineBluegray40001,
-                      fontStyle: ButtonFontStyle.PoppinsMedium8)
-                ]),
+                      fontStyle: ButtonFontStyle.PoppinsMedium8
+                  )
+                ]
+            ),
             body: Container(
                 width: double.maxFinite,
                 child: Container(
@@ -59,15 +113,18 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Water Usage",
+                          Text(
+                              "Water Usage",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold18Bluegray700
                                   .copyWith(
-                                  letterSpacing: getHorizontalSize(1.0))),
+                                  letterSpacing: getHorizontalSize(1.0))
+                          ),
                           Padding(
                               padding: getPadding(top: 9),
-                              child: Row(children: [
+                              child: Row(
+                                  children: [
                                 CustomButton(
                                     height: getVerticalSize(38),
                                     width: getHorizontalSize(59),
@@ -77,373 +134,25 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                                     ButtonFontStyle.PoppinsMedium12Gray400,
                                     onTap: () {
                                       onTapUsage(context);
-                                    }),
+                                    }
+                                    ),
                                 CustomButton(
                                     height: getVerticalSize(38),
                                     width: getHorizontalSize(62),
                                     text: "Trends",
                                     margin: getMargin(left: 16),
                                     variant: ButtonVariant.OutlineBluegray400,
-                                    fontStyle: ButtonFontStyle.PoppinsMedium12)
+                                    fontStyle: ButtonFontStyle.PoppinsMedium12
+                                )
                               ])),
-                          Padding(
-                              padding: getPadding(top: 11),
-                              child: Text("Water Meter : 12000",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: AppStyle.txtPoppinsRegular12Bluegray900
-                                      .copyWith(
-                                      letterSpacing:
-                                      getHorizontalSize(1.0)))),
                           Container(
                               margin: getMargin(
                                   left: 1, top: 30, right: 7, bottom: 5),
                               padding: getPadding(
                                   left: 24, top: 25, right: 24, bottom: 25),
-                              decoration: AppDecoration.outlineBlack9003f1
-                                  .copyWith(
-                                  borderRadius:
-                                  BorderRadiusStyle.roundedBorder8),
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                        padding: getPadding(left: 49),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                  height: getVerticalSize(2),
-                                                  width: getHorizontalSize(35),
-                                                  margin: getMargin(
-                                                      top: 7, bottom: 6),
-                                                  decoration: BoxDecoration(
-                                                      color: ColorConstant
-                                                          .lightBlueA700,
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          getHorizontalSize(
-                                                              1)))),
-                                              Padding(
-                                                  padding: getPadding(left: 8),
-                                                  child: Text("Line One",
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      textAlign: TextAlign.left,
-                                                      style: AppStyle
-                                                          .txtRobotoRegular1333
-                                                          .copyWith(
-                                                          letterSpacing:
-                                                          getHorizontalSize(
-                                                              0.16)))),
-                                              Container(
-                                                  height: getVerticalSize(2),
-                                                  width: getHorizontalSize(35),
-                                                  margin: getMargin(
-                                                      left: 12,
-                                                      top: 7,
-                                                      bottom: 6),
-                                                  decoration: BoxDecoration(
-                                                      color: ColorConstant
-                                                          .orange500,
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          getHorizontalSize(
-                                                              1)))),
-                                              Padding(
-                                                  padding: getPadding(left: 8),
-                                                  child: Text("Line Two",
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      textAlign: TextAlign.left,
-                                                      style: AppStyle
-                                                          .txtRobotoRegular1333
-                                                          .copyWith(
-                                                          letterSpacing:
-                                                          getHorizontalSize(
-                                                              0.16))))
-                                            ])),
-                                    Padding(
-                                        padding: getPadding(top: 14, bottom: 1),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                  padding: getPadding(
-                                                      top: 2, bottom: 20),
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Text("3.00",
-                                                                overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                                textAlign:
-                                                                TextAlign
-                                                                    .left,
-                                                                style: AppStyle
-                                                                    .txtInterRegular123)),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Padding(
-                                                                padding:
-                                                                getPadding(
-                                                                    top:
-                                                                    25),
-                                                                child: Text(
-                                                                    "2.50",
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                    style: AppStyle
-                                                                        .txtInterRegular123))),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Padding(
-                                                                padding:
-                                                                getPadding(
-                                                                    top:
-                                                                    25),
-                                                                child: Text(
-                                                                    "2.00",
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                    style: AppStyle
-                                                                        .txtInterRegular123))),
-                                                        Padding(
-                                                            padding: getPadding(
-                                                                top: 25),
-                                                            child: Text("1.50",
-                                                                overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                                textAlign:
-                                                                TextAlign
-                                                                    .left,
-                                                                style: AppStyle
-                                                                    .txtInterRegular123)),
-                                                        Padding(
-                                                            padding: getPadding(
-                                                                top: 25),
-                                                            child: Text("1.00",
-                                                                overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                                textAlign:
-                                                                TextAlign
-                                                                    .left,
-                                                                style: AppStyle
-                                                                    .txtInterRegular123)),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Padding(
-                                                                padding:
-                                                                getPadding(
-                                                                    top:
-                                                                    25),
-                                                                child: Text(
-                                                                    "0.50",
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                    style: AppStyle
-                                                                        .txtInterRegular123)))
-                                                      ])),
-                                              Expanded(
-                                                  child: Padding(
-                                                      padding:
-                                                      getPadding(left: 12),
-                                                      child: Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                          children: [
-                                                            Container(
-                                                                height:
-                                                                getVerticalSize(
-                                                                    49),
-                                                                width:
-                                                                getHorizontalSize(
-                                                                    218),
-                                                                child: Stack(
-                                                                    alignment:
-                                                                    Alignment
-                                                                        .bottomCenter,
-                                                                    children: [
-                                                                      Align(
-                                                                          alignment: Alignment
-                                                                              .topCenter,
-                                                                          child: Container(
-                                                                              height: getVerticalSize(8),
-                                                                              width: getHorizontalSize(218),
-                                                                              decoration: BoxDecoration(color: ColorConstant.whiteA700))),
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgFrame2035,
-                                                                          height: getVerticalSize(
-                                                                              41),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment:
-                                                                          Alignment.bottomCenter)
-                                                                    ])),
-                                                            CustomImageView(
-                                                                svgPath:
-                                                                ImageConstant
-                                                                    .imgFrame2035,
-                                                                height:
-                                                                getVerticalSize(
-                                                                    41),
-                                                                width:
-                                                                getHorizontalSize(
-                                                                    218)),
-                                                            Container(
-                                                                height:
-                                                                getVerticalSize(
-                                                                    123),
-                                                                width:
-                                                                getHorizontalSize(
-                                                                    219),
-                                                                child: Stack(
-                                                                    alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                    children: [
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgFrame2035,
-                                                                          height: getVerticalSize(
-                                                                              41),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment:
-                                                                          Alignment.topCenter),
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgFrame2035,
-                                                                          height: getVerticalSize(
-                                                                              41),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment:
-                                                                          Alignment.center),
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgFrame2035,
-                                                                          height: getVerticalSize(
-                                                                              41),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment:
-                                                                          Alignment.bottomCenter),
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgLine4,
-                                                                          height: getVerticalSize(
-                                                                              74),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment: Alignment
-                                                                              .bottomCenter,
-                                                                          margin:
-                                                                          getMargin(bottom: 3)),
-                                                                      CustomImageView(
-                                                                          svgPath: ImageConstant
-                                                                              .imgLine3,
-                                                                          height: getVerticalSize(
-                                                                              74),
-                                                                          width: getHorizontalSize(
-                                                                              218),
-                                                                          alignment: Alignment
-                                                                              .topCenter,
-                                                                          margin:
-                                                                          getMargin(top: 6))
-                                                                    ])),
-                                                            CustomImageView(
-                                                                svgPath:
-                                                                ImageConstant
-                                                                    .imgFrame2033,
-                                                                height:
-                                                                getVerticalSize(
-                                                                    8),
-                                                                width:
-                                                                getHorizontalSize(
-                                                                    218)),
-                                                            Padding(
-                                                                padding:
-                                                                getPadding(
-                                                                    left:
-                                                                    15,
-                                                                    top: 2,
-                                                                    right:
-                                                                    18),
-                                                                child: Row(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                    children: [
-                                                                      Padding(
-                                                                          padding: getPadding(
-                                                                              top:
-                                                                              1),
-                                                                          child: Text(
-                                                                              "Aug 30",
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: AppStyle.txtInterRegular123)),
-                                                                      Padding(
-                                                                          padding: getPadding(
-                                                                              left:
-                                                                              30,
-                                                                              top:
-                                                                              1),
-                                                                          child: Text(
-                                                                              "Sep 30",
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: AppStyle.txtInterRegular123)),
-                                                                      Padding(
-                                                                          padding: getPadding(
-                                                                              left:
-                                                                              33,
-                                                                              bottom:
-                                                                              1),
-                                                                          child: Text(
-                                                                              "Oct 31",
-                                                                              overflow: TextOverflow.ellipsis,
-                                                                              textAlign: TextAlign.left,
-                                                                              style: AppStyle.txtInterRegular123))
-                                                                    ]))
-                                                          ])))
-                                            ]))
-                                  ]))
+                              decoration: AppDecoration.outlineBlack9003f1.copyWith(
+                                  borderRadius: BorderRadiusStyle.roundedBorder8),
+                          ),
                         ])))));
   }
 
@@ -454,4 +163,11 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
   onTapArrowleft(BuildContext context) {
     Navigator.pop(context);
   }
+}
+
+class BarData {
+  final String label;
+  final double value;
+
+  BarData({required this.label, required this.value});
 }
