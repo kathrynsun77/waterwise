@@ -24,8 +24,28 @@ class _BillingScreenState extends State<BillingScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchData();
-      fetchPoint();
+      fetchPoints();
       setState(() {});
+    }
+  }
+
+  List points = [];
+  fetchPoints() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      points = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
     }
   }
 
@@ -49,26 +69,6 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
-  List points = [];
-  void fetchPoint() async {
-    final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
-        body: {
-          'cust-id': user['customer_id'],
-        });
-
-    if (response.statusCode == 200) {
-      // Decode the JSON response
-      print(response.body);
-      // List list = jsonDecode(response.body);
-      points = json.decode(response.body);
-      setState(() {
-      });
-    } else {
-      throw Exception('Failed to fetch data');
-    }
-  }
-
   saveInvoice(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("invoice", value);
@@ -84,7 +84,7 @@ class _BillingScreenState extends State<BillingScreen> {
   bool _isRefreshing = false;
   Future<void> _refreshData() async {
     fetchData();
-    fetchPoint();
+    fetchPoints();
     // Simulating a delay of 2 seconds for demonstration purposes
     await Future.delayed(Duration(seconds: 2));
     setState(() {
@@ -105,7 +105,13 @@ class _BillingScreenState extends State<BillingScreen> {
         onRefresh: _refreshData,
         child: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
-                child:Container(
+                child: ListView.builder(
+                itemCount: points.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                Map balance = points[index];
+                return Container(
                 width: double.maxFinite,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,15 +119,15 @@ class _BillingScreenState extends State<BillingScreen> {
                     children: [
                       Padding(
                           padding: getPadding(left: 160, top: 20),
-                          child: Text("Balance",
+                          child: Text("Points",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsRegular14Gray400
                                   .copyWith(
                                       letterSpacing: getHorizontalSize(1.0)))),
                       Padding(
-                          padding: getPadding(left: 165, top: 4),
-                          child: Text("0",
+                          padding: getPadding(left: 160, top: 4),
+                          child: Text(balance['total_point'],
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold30Gray800
@@ -255,7 +261,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       },
                                     ),
                                   ])))
-                    ]))))));
+                    ]));})))));
   }
 
   onTapListdue(BuildContext context) {

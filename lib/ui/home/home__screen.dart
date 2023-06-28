@@ -31,8 +31,29 @@ class _HomeScreenState extends State<HomeScreen> {
     if(userString!=null){
       user = jsonDecode(userString);
       fetchData();
+      fetchPoints();
       setState(() {
       });
+    }
+  }
+
+  List points = [];
+  fetchPoints() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      points = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
     }
   }
 
@@ -99,7 +120,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
+                      ListView.builder(
+                      itemCount: points.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                      Map item = points[index];
+                      return Container(
                         margin: getMargin(left: 30, top: 22, right: 30),
                         padding: getPadding(
                             left: 119, top: 25, right: 119, bottom: 25),
@@ -109,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Balance",
+                              Text("Points",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtPoppinsRegular14
@@ -118,32 +145,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                       getHorizontalSize(1.0))),
                               Padding(
                                   padding: getPadding(top: 4),
-                                  child: Text("0",
+                                  child: Text(item['total_point'],
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsSemiBold30
                                           .copyWith(
                                           letterSpacing:
                                           getHorizontalSize(0.3)))),
-                              CustomIconButton(
-                                  height: 45,
-                                  width: 45,
-                                  margin: getMargin(top: 30),
-                                  variant: IconButtonVariant.White,
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgBag)),
-                              Padding(
-                                  padding: getPadding(top: 13),
-                                  child: Text("Top Up",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
-                                      style: AppStyle
-                                          .txtPoppinsRegular12WhiteA700
-                                          .copyWith(
-                                          letterSpacing:
-                                          getHorizontalSize(0.12))))
-                            ])),
-                    Align(
+                            ]
+                          )
+                      );
+                      }
+                        )
+                    ,Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                             padding: getPadding(left: 30, top: 21),
