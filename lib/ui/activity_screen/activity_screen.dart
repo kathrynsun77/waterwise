@@ -295,7 +295,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   onTapImgArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
   onTapRequestTech(BuildContext context) {
     requestTech();

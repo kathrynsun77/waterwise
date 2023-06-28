@@ -224,7 +224,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
   }
 
   onTapArrowleft(BuildContext context) {
-    Navigator.pop(context);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
 }
 
