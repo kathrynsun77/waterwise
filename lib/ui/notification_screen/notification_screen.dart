@@ -1,13 +1,8 @@
-// import '../home/home__screen.dart';
-// import '../notification_screen/widgets/notification_item_widget.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 import 'package:http/http.dart' as http;
-// import 'package:WaterWise/ui/home/widgets/home_item_widget.dart';
-// import '../../widget/custom_bottom_bar.dart';
-// import '../../widget/custom_text_form_field.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -99,7 +94,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     width: double.maxFinite,
                     margin: getMargin(
                       top: 38,
-                      right: 50,
+                      right: 5,
+                      left: 10,
                     ),
                     padding: getPadding(
                       left: 16,
@@ -119,9 +115,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             item['message'],
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
-                            style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
-                              letterSpacing: getHorizontalSize(1.0),
-                            ),
+                            style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
+                    letterSpacing: getHorizontalSize(1.0),
+                  ),
                           ),
                         Text(
                           item['notification_date'].toString(),
