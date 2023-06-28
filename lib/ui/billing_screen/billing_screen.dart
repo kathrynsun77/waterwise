@@ -60,12 +60,18 @@ class _BillingScreenState extends State<BillingScreen> {
     getUser();
     super.initState();
   }
+  bool _isRefreshing = false;
+  Future<void> _refreshData() async {
+    fetchData();
+    // Simulating a delay of 2 seconds for demonstration purposes
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // Update your data variables here
 
-  TextEditingController groupthirtyseveController = TextEditingController();
+      _isRefreshing = false;
+    });
+  }
 
-  TextEditingController groupthirtynineController = TextEditingController();
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +79,10 @@ class _BillingScreenState extends State<BillingScreen> {
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
                 child:Container(
                 width: double.maxFinite,
                 child: Column(
@@ -224,7 +233,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       },
                                     ),
                                   ])))
-                    ])))));
+                    ]))))));
   }
 
   onTapListdue(BuildContext context) {

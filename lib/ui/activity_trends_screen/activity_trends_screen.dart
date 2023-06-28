@@ -45,17 +45,19 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
         });
 
     if (response.statusCode == 200) {
-      final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/water_usage_report.pdf';
-
-      final file = File(filePath);
-      await file.writeAsBytes(response.bodyBytes);
-
-      if (await canLaunch(filePath)) {
-        await launch(filePath);
-      } else {
-        print('Unable to open PDF file');
-      }
+      FileDownloader.downloadFile(
+          url: 'http://172.28.200.128:8000/api/pdf'.trim(),
+          // onProgress: (name, progress) {
+          //   setState(() {
+          //     _progress = progress;
+          //   });
+          // },
+          onDownloadCompleted: (value) {
+            print('path  $value ');
+            // setState(() {
+            //   _progress = null;
+            // });
+          });
     } else {
       print('Failed to download PDF. Status code: ${response.statusCode}');
     }

@@ -44,6 +44,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       // Handle the HTTP request failure here
     }
   }
+
   bool _isRefreshing = false;
   fetchData() async {
     final response = await http.post(
