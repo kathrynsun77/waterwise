@@ -136,22 +136,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Points",
+                              Text(
+                                  "Points",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  style: AppStyle.txtPoppinsRegular14
-                                      .copyWith(
-                                      letterSpacing:
-                                      getHorizontalSize(1.0))),
+                                  style: AppStyle.txtPoppinsRegular14.copyWith(letterSpacing: getHorizontalSize(1.0))
+                              ),
+                              Text(
+                                  "1 Point = \$1",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style: AppStyle.txtPoppinsRegular12.copyWith(letterSpacing: getHorizontalSize(1.0)),
+                              ),
                               Padding(
                                   padding: getPadding(top: 4),
-                                  child: Text(item['total_point'],
+                                  child: Text(
+                                      item['total_point'],
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsSemiBold30
                                           .copyWith(
                                           letterSpacing:
-                                          getHorizontalSize(0.3)))),
+                                          getHorizontalSize(0.3))),
+                              ),
                             ]
                           )
                       );
@@ -364,11 +371,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         getPadding(top:0),
                                                         child:
                                                         Text(
-                                                          (int.parse(item['transaction_type']) == 1 ? "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
+                                                          (int.parse(item['transaction_type']) == 1 ?
+                                                                "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
                                                               : "Point Redeem         -${item['transaction_amount']}    ${item['transaction_date']}"),
-                                                          style: int.parse(item['transaction_type']) == 1 ?
-                                                          AppStyle.txtPoppinsRegular12Gray800.copyWith
-                                                            (letterSpacing: getHorizontalSize(1.0),):AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0)),
+                                                          style: int.parse(item['transaction_type']) == 1 ? AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0),)
+                                                              :AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0)),
                                                         ),
                                                       ),
                                                     ])));
