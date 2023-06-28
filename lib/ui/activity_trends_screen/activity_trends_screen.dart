@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:d_chart/d_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -11,9 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
-
 
 
 class ActivityTrendsScreen extends StatefulWidget {
@@ -43,26 +43,25 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
         body: {
           'cust-id': user['customer_id'],
         });
-
+    print('send data:');
+    print(response.body);
     if (response.statusCode == 200) {
-      FileDownloader.downloadFile(
-          url: 'http://172.28.200.128:8000/api/pdf'.trim(),
-          // onProgress: (name, progress) {
-          //   setState(() {
-          //     _progress = progress;
-          //   });
-          // },
-          onDownloadCompleted: (value) {
-            print('path  $value ');
-            // setState(() {
-            //   _progress = null;
-            // });
-          });
+     print('bisa');
     } else {
       print('Failed to download PDF. Status code: ${response.statusCode}');
     }
   }
 
+  static var httpClient = new HttpClient();
+  downloadPdf(String url, String filename) async{
+      var request = await httpClient.getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      String dir = (await getApplicationDocumentsDirectory()).path;
+      File file = new File('$dir/$filename');
+      await file.writeAsBytes(bytes);
+      return file;
+  }
 
 
   List<BarData> barDataList = [];
@@ -79,7 +78,8 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
         'cust-id': user['customer_id']
       },
     );
-
+    print('fetch data trends');
+    print(response.body);
     if (response.statusCode == 200) {
       // Parse the response data
       final jsonData = jsonDecode(response.body);
@@ -87,7 +87,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       for (var item in jsonData) {
         final barData = BarData(
           label: item['transaction_date'],
-          value: item['usage_amount'].toInt(),
+          value: int.parse(item['usage_amount']),
         );
         data.add(barData);
       }
@@ -95,6 +95,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       setState(() {
         barDataList = data;
       });
+      print('bar data list: ${barDataList.length}');
     } else {
       // Error handling
       print('Failed to fetch data: ${response.statusCode}');
@@ -136,7 +137,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                       variant: ButtonVariant.OutlineBluegray40001,
                       fontStyle: ButtonFontStyle.PoppinsMedium8,
                     onTap: () {
-                        sendData();
+                        downloadPdf('http://172.28.200.128:8000/api/pdf', 'water_usage');
                     },
                   )
                 ]
@@ -192,7 +193,29 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                                   left: 24, top: 25, right: 24, bottom: 25),
                               decoration: AppDecoration.outlineBlack9003f1.copyWith(
                                   borderRadius: BorderRadiusStyle.roundedBorder8),
+                            child: AspectRatio(
+                              aspectRatio: 16/9,
+                              child: DChartBar(
+                                data: [
+                                  {
+                                    'id': 'Bar',
+                                    'data': barDataList.map((e){
+                                      return {'domain': e.label, 'measure': e.value};
+                                    }).toList(),
+                                  },
+                                ],
+                                domainLabelPaddingToAxisLine: 16,
+                                axisLineTick: 2,
+                                axisLinePointTick: 2,
+                                axisLinePointWidth: 10,
+                                axisLineColor: Colors.green,
+                                measureLabelPaddingToAxisLine: 16,
+                                barColor: (barData, index, id) => Colors.green,
+                                showBarValue: true,
+                              ),
+                            ),
                           ),
+
                         ])))));
   }
 
@@ -207,7 +230,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
 
 class BarData {
   final String label;
-  final double value;
+  final int value;
 
   BarData({required this.label, required this.value});
 }
