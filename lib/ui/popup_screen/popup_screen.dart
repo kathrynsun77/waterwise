@@ -201,29 +201,6 @@ class _PopupScreenState extends State<PopupScreen> {
               ),
               Padding(
                 padding: getPadding(top: 16, left: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Promo Code",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: AppStyle.txtPoppinsSemiBold12,
-                    ),
-                    CustomTextFormField(
-                      focusNode: FocusNode(),
-                      autofocus: true,
-                      controller: promocodeinputController,
-                      hintText: "Enter your code",
-                      margin: getMargin(top: 4),
-                      textInputAction: TextInputAction.done,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: getPadding(top: 16, left: 20),
                 child: Text(
                   "Payment Summary",
                   overflow: TextOverflow.ellipsis,
