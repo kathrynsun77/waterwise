@@ -320,12 +320,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Text("Last Transaction",
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
-                                            style: AppStyle
-                                                .txtPoppinsSemiBold18
-                                                .copyWith(
-                                                letterSpacing:
-                                                getHorizontalSize(
-                                                    1.0))),
+                                            style: AppStyle.txtPoppinsSemiBold18.copyWith
+                                              (letterSpacing: getHorizontalSize(1.0))),
                                         GestureDetector(
                                             onTap: () {
                                               onTapTxtSmalllabelheavy(
@@ -368,11 +364,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         getPadding(top:0),
                                                         child:
                                                         Text(
-                                                          (int.parse(item['transaction_type']) == 1 ? "Bill Payment" : "Point Redeem") +
-                                                              "       \$${item['transaction_amount']}    ${item['transaction_date']}",
-                                                          style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
-                                                            letterSpacing: getHorizontalSize(1.0),
-                                                          ),
+                                                          (int.parse(item['transaction_type']) == 1 ? "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
+                                                              : "Point Redeem         -${item['transaction_amount']}    ${item['transaction_date']}"),
+                                                          style: int.parse(item['transaction_type']) == 1 ?
+                                                          AppStyle.txtPoppinsRegular12Gray800.copyWith
+                                                            (letterSpacing: getHorizontalSize(1.0),):AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0)),
                                                         ),
                                                       ),
                                                     ])));
