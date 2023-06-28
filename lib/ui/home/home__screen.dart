@@ -89,7 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
               )
             ]),
-        body: Container(
+        body: SingleChildScrollView(
+    child:Container(
             width: double.maxFinite,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     getHorizontalSize(1.0))),
                             Padding(
                                 padding: getPadding(top: 4),
-                                child: Text("${user.isEmpty?'':user['e_credit']}",
+                                child: Text("0",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
                                     style: AppStyle.txtPoppinsSemiBold30
@@ -358,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ])));
                                     })])))
-                ]))));
+                ])))));
   }
 
   onTapWater(BuildContext context) {

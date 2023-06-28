@@ -24,6 +24,7 @@ class _BillingScreenState extends State<BillingScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchData();
+      fetchPoint();
       setState(() {});
     }
   }
@@ -48,6 +49,26 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
+  List points = [];
+  void fetchPoint() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      points = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
   saveInvoice(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("invoice", value);
@@ -63,6 +84,7 @@ class _BillingScreenState extends State<BillingScreen> {
   bool _isRefreshing = false;
   Future<void> _refreshData() async {
     fetchData();
+    fetchPoint();
     // Simulating a delay of 2 seconds for demonstration purposes
     await Future.delayed(Duration(seconds: 2));
     setState(() {
@@ -99,7 +121,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                       letterSpacing: getHorizontalSize(1.0)))),
                       Padding(
                           padding: getPadding(left: 165, top: 4),
-                          child: Text("${user.isEmpty?'':user['e_credit']}",
+                          child: Text("0",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: AppStyle.txtPoppinsSemiBold30Gray800
