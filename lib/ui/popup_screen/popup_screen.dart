@@ -38,12 +38,13 @@ class _PopupScreenState extends State<PopupScreen> {
     return invoice;
   }
 
-
+  var card;
   getUser() async {
     final pref = await SharedPreferences.getInstance();
     String? userString = pref.getString("user");
     if (userString != null) {
       user = jsonDecode(userString);
+      card = user['default_payment_method_type'];
       fetchData();
       setState(() {});
     }
@@ -101,9 +102,11 @@ class _PopupScreenState extends State<PopupScreen> {
       'usage': usage,
       'amount': amount,
       'invoice': savedInvoice,
-    // 'payment-id':id.toString()
+    'payment-id': card,
     });
-
+    print('transaction added');
+    print(card);
+    print(response.body);
     if (response.statusCode == 200) {
       print('success');
       print(response.body);
@@ -122,7 +125,7 @@ class _PopupScreenState extends State<PopupScreen> {
     }
     double totalAmount = totalMeter * 1.19;
     double totalAll = totalAmount+2.5;
-    var card = user['default_payment_method_type'];
+    // var card = user['default_payment_method_type'];
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -151,12 +154,14 @@ class _PopupScreenState extends State<PopupScreen> {
                     setState(() {
                       card = newValue!;
                     });
+                    print('dropdown: $card');
                   },
                   items: allCard.map<DropdownMenuItem<String>>((item) {
                     return DropdownMenuItem<String>(
-                      value: (item['card_payment_id'].toString() == user['default_payment_method_type'].toString())
-                          ? item['card_payment_id']
-                          : '',
+                      // value: (item['card_payment_id'].toString() == user['default_payment_method_type'].toString())
+                      //     ? item['card_payment_id']
+                      //     : '',
+                      value: item['card_payment_id'].toString(),
                       child: Row(
                         children: [
                           CustomImageView(
