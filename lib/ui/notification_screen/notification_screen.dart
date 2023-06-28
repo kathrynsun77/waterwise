@@ -123,6 +123,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               letterSpacing: getHorizontalSize(1.0),
                             ),
                           ),
+                        Text(
+                          item['notification_date'].toString(),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: AppStyle.txtPoppinsRegular12Gray400.copyWith(
+                            letterSpacing: getHorizontalSize(1.0),
+                          ),
+                        ),
                       ],
                     ),
                   );
