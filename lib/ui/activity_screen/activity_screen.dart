@@ -45,7 +45,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       // Handle the HTTP request failure here
     }
   }
-
+  bool _isRefreshing = false;
   fetchData() async {
     final response = await http.post(
       Uri.parse('http://172.28.200.128/water_wise/bill_detail.php'),
@@ -58,10 +58,22 @@ class _ActivityScreenState extends State<ActivityScreen> {
       // Decode the JSON response
       print(response.body);
       allBill = json.decode(response.body);
-      setState(() {});
+      setState(() {
+      });
     } else {
       throw Exception('Failed to fetch data');
     }
+  }
+
+  Future<void> _refreshData() async {
+    fetchData();
+    // Simulating a delay of 2 seconds for demonstration purposes
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // Update your data variables here
+
+      _isRefreshing = false;
+    });
   }
 
   @override
@@ -80,7 +92,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Container(
                 width: double.maxFinite,
                 child: Column(
@@ -276,7 +291,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                           ),
                                         ),
                                     );})])))
-                    ])))));
+                    ]))))));
   }
 
   onTapImgArrowleft(BuildContext context) {
