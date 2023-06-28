@@ -192,7 +192,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                   alignment: Alignment.topLeft,
                                                   child: Padding(
                                                       padding:
-                                                      getPadding(top: 1, right:50),
+                                                      getPadding(top: 1, right:100),
                                                       child:
                                                       CustomTextFormField(
                                                         maxLines: null,
