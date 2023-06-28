@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,10 +9,7 @@ import '../../app_bar/appbar_image.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:path/path.dart' as path;
 import 'dart:io';
-import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 
 
 class ActivityTrendsScreen extends StatefulWidget {
@@ -31,24 +27,8 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     if(userString!=null){
       user = jsonDecode(userString);
       fetchData();
-      sendData();
       setState(() {
       });
-    }
-  }
-
-  sendData() async {
-    final response = await http.post(
-        Uri.parse('http://172.28.200.128:8000/api/pdf'),
-        body: {
-          'cust-id': user['customer_id'],
-        });
-    print('send data:');
-    print(response.body);
-    if (response.statusCode == 200) {
-     print('bisa');
-    } else {
-      print('Failed to download PDF. Status code: ${response.statusCode}');
     }
   }
 
@@ -62,7 +42,6 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       await file.writeAsBytes(bytes);
       return file;
   }
-
 
   List<BarData> barDataList = [];
   @override
