@@ -60,14 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     getUser();
     super.initState();
-    // fetchTextFromBackend();
-    // fetchTextProfilePhoto();
-    // updateAppBarTitle();
   }
-
-  TextEditingController dateController = TextEditingController();
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
 
   @override
   Widget build(BuildContext context) {

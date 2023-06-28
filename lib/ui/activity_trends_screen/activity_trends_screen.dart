@@ -1,12 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as path;
+import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+
+
 
 class ActivityTrendsScreen extends StatefulWidget {
   const ActivityTrendsScreen({Key? key}) : super(key: key);
@@ -23,10 +31,37 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     if(userString!=null){
       user = jsonDecode(userString);
       fetchData();
+      sendData();
       setState(() {
       });
     }
   }
+
+  sendData() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128:8000/api/pdf'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+
+    if (response.statusCode == 200) {
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/water_usage_report.pdf';
+
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      if (await canLaunch(filePath)) {
+        await launch(filePath);
+      } else {
+        print('Unable to open PDF file');
+      }
+    } else {
+      print('Failed to download PDF. Status code: ${response.statusCode}');
+    }
+  }
+
+
 
   List<BarData> barDataList = [];
   @override
@@ -97,7 +132,10 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                       margin:
                       getMargin(left: 18, top: 12, right: 18, bottom: 12),
                       variant: ButtonVariant.OutlineBluegray40001,
-                      fontStyle: ButtonFontStyle.PoppinsMedium8
+                      fontStyle: ButtonFontStyle.PoppinsMedium8,
+                    onTap: () {
+                        sendData();
+                    },
                   )
                 ]
             ),
