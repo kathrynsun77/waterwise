@@ -133,6 +133,14 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                               letterSpacing: getHorizontalSize(1.0),
                             ),
                           ),
+                          Text(
+                            "Payment Method: ••••  ••••  ••••  ${item['card_name'].substring(item['card_name'].length - 4)}",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtPoppinsBold12.copyWith(
+                              letterSpacing: getHorizontalSize(1.0),
+                            ),
+                          ),
                           Padding(
                             padding: getPadding(top: 13),
                             child: Text(

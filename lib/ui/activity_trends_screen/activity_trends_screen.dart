@@ -70,7 +70,6 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
         );
         data.add(barData);
       }
-
       setState(() {
         barDataList = data;
       });
@@ -121,7 +120,10 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                   )
                 ]
             ),
-            body: Container(
+            body:  RefreshIndicator(
+    onRefresh: () async {
+    fetchData();
+    }, child:Container(
                 width: double.maxFinite,
                 child: Container(
                     width: double.maxFinite,
@@ -195,7 +197,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                             ),
                           ),
 
-                        ])))));
+                        ]))))));
   }
 
   onTapUsage(BuildContext context) {

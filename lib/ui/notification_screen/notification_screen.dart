@@ -31,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         body: {
           'cust-id': user['customer_id'],
         });
-    print('fethced notif');
+    // print('fethced notif');
     if (response.statusCode == 200) {
       // Decode the JSON response
       print(response.body);

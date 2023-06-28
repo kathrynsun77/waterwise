@@ -104,8 +104,8 @@ class _PopupScreenState extends State<PopupScreen> {
       'invoice': savedInvoice,
     'payment-id': card,
     });
-    print('transaction added');
-    print(card);
+    // print('transaction added');
+    // print(card);
     print(response.body);
     if (response.statusCode == 200) {
       print('success');
