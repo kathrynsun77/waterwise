@@ -19,6 +19,9 @@ class _PopupScreenState extends State<PopupScreen> {
   String? selectedCard; // Selected card
   Map<String, dynamic> user = {};
   List allBill=[];
+  bool isSwitched = false;
+  var card;
+  var point_value;
 
   getBill() async {
     final pref = await SharedPreferences.getInstance();
@@ -38,7 +41,6 @@ class _PopupScreenState extends State<PopupScreen> {
     return invoice;
   }
 
-  var card;
   getUser() async {
     final pref = await SharedPreferences.getInstance();
     String? userString = pref.getString("user");
@@ -46,10 +48,30 @@ class _PopupScreenState extends State<PopupScreen> {
       user = jsonDecode(userString);
       card = user['default_payment_method_type'];
       fetchData();
+      fetchPoints();
       setState(() {});
     }
   }
 
+  List points = [];
+  fetchPoints() async {
+    final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      points = json.decode(response.body);
+      setState(() {
+      });
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
 
   List<Map<String, dynamic>> allCard = [];
 
@@ -80,21 +102,7 @@ class _PopupScreenState extends State<PopupScreen> {
     getInvoice();
   }
 
-  void handleCardSelection(String id) async {
-    var url = 'http://172.28.200.128/water_wise/make_payment.php';
-    var response = await http.post(Uri.parse(url), body: {
-      'payment-id':id,
-    });
-    if (response.statusCode == 200) {
-      print('success');
-      print(response.body);
-    } else {
-      print('failed bye');
-      // Handle the HTTP request failure here
-    }  }
-
-
-  void addTransaction(String amount, String usage) async {
+  void addTransaction(String amount, String usage, String point) async {
     String? savedInvoice = await getInvoice();
     var url = 'http://172.28.200.128/water_wise/make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
@@ -102,7 +110,8 @@ class _PopupScreenState extends State<PopupScreen> {
       'usage': usage,
       'amount': amount,
       'invoice': savedInvoice,
-    'payment-id': card,
+      'payment-id': card,
+      'point': point,
     });
     // print('transaction added');
     // print(card);
@@ -118,14 +127,12 @@ class _PopupScreenState extends State<PopupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // selectedCard = user['default_payment_method_type'];
     int totalMeter = 0;
     for (var item in allBill) {
       totalMeter += int.parse(item['meter_value']);
     }
     double totalAmount = totalMeter * 1.19;
     double totalAll = totalAmount+2.5;
-    // var card = user['default_payment_method_type'];
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
@@ -280,6 +287,40 @@ class _PopupScreenState extends State<PopupScreen> {
                   ],
                 ),
               ),
+                ListView.builder(
+                itemCount: points.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                Map balance = points[index];
+                return Padding(
+                padding: getPadding(top: 16, left: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Redeem Points: "+balance['total_point'],
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtPoppinsSemiBold14Bluegray700.copyWith(
+                        letterSpacing: getHorizontalSize(1.0),
+                      ),
+                    ),
+                    Switch(
+                      value: isSwitched, // Replace isSwitched with your own variable controlling the switch state
+                      onChanged: (value) {
+                        setState(() {
+                          point_value= int.parse(balance['total_point']);
+                          isSwitched = value; // Replace isSwitched with your own variable controlling the switch state
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
+                }
+                ),
+
               Padding(
                 padding: getPadding(top: 16, left: 20),
                 child: Row(
@@ -294,7 +335,7 @@ class _PopupScreenState extends State<PopupScreen> {
                       ),
                     ),
                     Text(
-                      "\$"+totalAll.toStringAsFixed(2),
+                      isSwitched ? "\$" + (totalAll - point_value).toStringAsFixed(2) : "\$" + totalAll.toStringAsFixed(2),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: AppStyle.txtPoppinsSemiBold14Bluegray700.copyWith(
@@ -313,7 +354,9 @@ class _PopupScreenState extends State<PopupScreen> {
           text: "Make Payment",
           margin: getMargin(left: 83, right: 83, bottom: 350),
           onTap: () {
-            addTransaction(totalAll.toStringAsFixed(2),totalMeter.toStringAsFixed(2));
+            double fin_total = isSwitched ? totalAll - point_value : totalAll;
+            var point_red = isSwitched ? point_value : 0;
+            addTransaction(fin_total.toStringAsFixed(2), totalMeter.toStringAsFixed(2), point_red.toString());
             onTapTopupnow(context);
           },
         ),
