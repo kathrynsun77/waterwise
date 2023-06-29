@@ -371,12 +371,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         getPadding(top:0),
                                                         child:
                                                         Text(
-                                                          (int.parse(item['transaction_type']) == 1 ?
-                                                                "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
-                                                              : "Point Redeem         -${item['transaction_amount']}    ${item['transaction_date']}"),
-                                                          style: int.parse(item['transaction_type']) == 1 ? AppStyle.txtPoppinsRegular12Gray800.copyWith(letterSpacing: getHorizontalSize(1.0),)
-                                                              :AppStyle.txtPoppinsRegular12RedA400.copyWith(letterSpacing: getHorizontalSize(1.0)),
-                                                        ),
+                                                          int.parse(item['transaction_type']) == 1
+                                                              ? "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
+                                                              : int.parse(item['transaction_type']) == 2
+                                                              ? "Point Redeem         -${item['transaction_amount']}    ${item['transaction_date']}"
+                                                              : "Point Earned         +${item['transaction_amount']}    ${item['transaction_date']}",
+                                                          style: int.parse(item['transaction_type']) == 2
+                                                              ? AppStyle.txtPoppinsRegular12RedA400.copyWith(
+                                                            letterSpacing: getHorizontalSize(1.0),
+                                                          )
+                                                              : AppStyle.txtPoppinsRegular12Gray800.copyWith(
+                                                            letterSpacing: getHorizontalSize(1.0),
+                                                          ),
+                                                        )
                                                       ),
                                                     ])));
                                       })])))

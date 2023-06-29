@@ -125,16 +125,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  TextEditingController dateController = TextEditingController();
-
-  TextEditingController paymentmethodsController = TextEditingController();
-
-  TextEditingController vouchersController = TextEditingController();
-
-  TextEditingController contactusController = TextEditingController();
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -237,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               CustomButton(
                 height: 50 ,
                 width: 300,
-                text: "Vouchers",
+                text: "Points",
                 onTap: () {
                   onTapVouchers(context);
 
