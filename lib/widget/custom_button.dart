@@ -148,6 +148,7 @@ class CustomButton extends StatelessWidget {
             1.00,
           ),
         );
+
       case ButtonVariant.OutlineGray300:
         return BorderSide(
           color: ColorConstant.gray300,

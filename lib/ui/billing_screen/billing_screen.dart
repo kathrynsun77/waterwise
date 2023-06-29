@@ -115,7 +115,6 @@ class _BillingScreenState extends State<BillingScreen> {
                 width: double.maxFinite,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
                           padding: getPadding(left: 160, top: 20),
