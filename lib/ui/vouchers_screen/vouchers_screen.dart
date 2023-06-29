@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../app_bar/appbar_title.dart';
+import '../../app_bar/custom_app_bar.dart';
 
 class VouchersScreen extends StatefulWidget {
   const VouchersScreen({Key? key}) : super(key: key);
@@ -14,8 +16,8 @@ class VouchersScreen extends StatefulWidget {
 
 class _VouchersScreenState extends State<VouchersScreen> {
   bool checkInClicked = false;
-
   Map user = {};
+  DateTime lastCheckInDate = DateTime.now();
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -76,55 +78,77 @@ class _VouchersScreenState extends State<VouchersScreen> {
   }
 
   void onStepChanged(int currentStep) async {
-    String data = currentStep == 7 ? '0.4' : '0.1';
+    DateTime currentDate = DateTime.now();
+    // Check if the current date is different from the last check-in date
+    if (currentDate.day != lastCheckInDate.day) {
+      String data = currentStep == 7 ? '0.4' : '0.1';
 
-    final response = await http.post(
-      Uri.parse('YOUR_API_URL'),
-      body: {
-        'data': data,
-      },
-    );
+      final response = await http.post(
+        Uri.parse('YOUR_API_URL'),
+        body: {
+          'cust-id': user['customer_id'],
+          'value': data,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      // Data sent successfully
-      print('Data sent to API: $data');
+      if (response.statusCode == 200) {
+        // Data sent successfully
+        print('Data sent to API: $data');
+        setState(() {
+          lastCheckInDate = currentDate; // Update the last check-in date
+        });
+      } else {
+        // Failed to send data
+        print('Failed to send data to API');
+      }
     } else {
-      // Failed to send data
-      print('Failed to send data to API');
+      // Check-in already done today, show a message or perform any desired action
+      print('Check-in already done today');
     }
   }
 
+  bool _isRefreshing = false;
+  Future<void> _refreshData() async {
+    fetchData();
+    fetchPoints();
+    // Simulating a delay of 2 seconds for demonstration purposes
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // Update your data variables here
 
-
+      _isRefreshing = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.whiteA700,
+                      child: Scaffold(
+                      backgroundColor: ColorConstant.whiteA700,
+                      resizeToAvoidBottomInset: false,
+                      appBar: CustomAppBar(
+                      height: getVerticalSize(
+                      83,
+                  ),
+                  title: Padding(
+                  padding: getPadding(
+                  left: 30,
+                  ),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                  AppbarTitle(
+                  text: "Points",
+                  ),
+                  ],
+                  ),
+                  ),
+                      ),
         body: RefreshIndicator(
-        onRefresh: () async {
-      fetchData();
-    },
-    child: SingleChildScrollView(
+          onRefresh: _refreshData,
+          child:  SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: getPadding(
-                  top: 25,
-                  left: 30,
-                ),
-                child: Text(
-                  "Points",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
-                    letterSpacing: getHorizontalSize(
-                      1.0,
-                    ),
-                  ),
-                ),
-              ),
                 ListView.builder(
                 itemCount: points.length,
                 shrinkWrap: true,
@@ -136,7 +160,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                       Container(
                         color: Colors.white,
                         padding: getPadding(
-                          top: 30,
+                          top: 10,
                           left: 10,
                           right: 10,
                           bottom: 20,
@@ -171,7 +195,6 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                   width: getHorizontalSize(80),
                                   text: "Check In",
                                   fontStyle: ButtonFontStyle.PoppinsWhite800,
-                                  // variant: ButtonVariant.OutlineBluegray40001,
                                   onTap: () {
                                     setState(() {
                                       checkInClicked = true;
@@ -243,7 +266,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
 
 class ProgressBarSteppers extends StatelessWidget {
   final bool checkInClicked;
-  final Function(int) onStepChanged; // New callback function
+  final Function(int) onStepChanged;
 
   ProgressBarSteppers({
     required this.checkInClicked,
@@ -252,13 +275,16 @@ class ProgressBarSteppers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime lastCheckInDate = DateTime.now();
+    DateTime currentDate = DateTime.now();
+    int currentStep = currentDate.difference(lastCheckInDate).inDays + 1;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         for (int i = 1; i <= 7; i++)
           CircleAvatar(
-            backgroundColor:
-            checkInClicked && i <= 7 ? Color(0xFF6F9C95) : Colors.grey,
+            backgroundColor: i <= currentStep ? Color(0xFF6F9C95) : Colors.grey,
             child: Text(
               i == 7 ? '+0.4' : '+0.1',
               style: TextStyle(color: Colors.white),
@@ -268,7 +294,6 @@ class ProgressBarSteppers extends StatelessWidget {
     );
   }
 }
-
 
 
 
