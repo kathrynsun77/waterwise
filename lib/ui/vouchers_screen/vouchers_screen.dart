@@ -38,6 +38,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
   }
 
   List points = [];
+
   fetchPoints() async {
     final response = await http.post(
         Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
@@ -50,14 +51,14 @@ class _VouchersScreenState extends State<VouchersScreen> {
       print(response.body);
       // List list = jsonDecode(response.body);
       points = json.decode(response.body);
-      setState(() {
-      });
+      setState(() {});
     } else {
       throw Exception('Failed to fetch data');
     }
   }
 
   List allBill = [];
+
   fetchData() async {
     final response = await http.post(
         Uri.parse('http://172.28.200.128/water_wise/points_page.php'),
@@ -70,8 +71,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
       print(response.body);
       // List list = jsonDecode(response.body);
       allBill = json.decode(response.body);
-      setState(() {
-      });
+      setState(() {});
     } else {
       throw Exception('Failed to fetch data');
     }
@@ -108,6 +108,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
   }
 
   bool _isRefreshing = false;
+
   Future<void> _refreshData() async {
     fetchData();
     fetchPoints();
@@ -119,37 +120,34 @@ class _VouchersScreenState extends State<VouchersScreen> {
       _isRefreshing = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-                      child: Scaffold(
-                      backgroundColor: ColorConstant.whiteA700,
-                      resizeToAvoidBottomInset: false,
-                      appBar: CustomAppBar(
-                      height: getVerticalSize(
-                      83,
-                  ),
-                  title: Padding(
-                  padding: getPadding(
-                  left: 30,
-                  ),
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                  AppbarTitle(
-                  text: "Points",
-                  ),
-                  ],
-                  ),
-                  ),
-                      ),
-        body: RefreshIndicator(
-          onRefresh: _refreshData,
-          child:  SingleChildScrollView(
+        child: Scaffold(
+      backgroundColor: ColorConstant.whiteA700,
+      resizeToAvoidBottomInset: false,
+      appBar: CustomAppBar(
+        height: getVerticalSize(83),
+        title: Padding(
+          padding: getPadding(left: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AppbarTitle(
+                text: "Points",
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                ListView.builder(
+              ListView.builder(
                 itemCount: points.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -181,10 +179,10 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                   color: Color(0xFF6F9C95),
                                 ),
                                 Text(
-                                  'Total Points: '+item['total_point'],
+                                  'Total Points: ' + item['total_point'],
                                   textAlign: TextAlign.left,
-                                  style:
-                                  AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
+                                  style: AppStyle.txtPoppinsSemiBold18Gray800
+                                      .copyWith(
                                     letterSpacing: getHorizontalSize(
                                       1.0,
                                     ),
@@ -200,18 +198,16 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                       checkInClicked = true;
                                     });
                                     if (onStepChanged != null) {
-                                      onStepChanged(7); // Pass the current step as an argument
+                                      onStepChanged(
+                                          7); // Pass the current step as an argument
                                     }
                                   },
                                 ),
-
                               ],
                             ),
                           ],
-
                         ),
                       ),
-
                       SizedBox(height: 16),
                       Align(
                         child: Text(
@@ -224,45 +220,47 @@ class _VouchersScreenState extends State<VouchersScreen> {
                         ),
                       ),
                       SizedBox(height: 8),
-                            ListView.builder(
-                        itemCount: allBill.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                              Map item = allBill[index];
-                              return
-                              Container(
+                      ListView.builder(
+                          itemCount: allBill.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            Map item = allBill[index];
+                            return Container(
                               color: Colors.white,
-                              padding: getPadding(top: 16, right: 100,left: 30),
+                              padding:
+                                  getPadding(top: 16, right: 100, left: 30),
                               child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                              PointHistoryItem(
-                              text: int.parse(item['transaction_type'])==3 ? "Points Earned" : "Point Used",
-                              points: int.parse(item['transaction_amount']),
-                              date: item['transaction_date'],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  PointHistoryItem(
+                                    text:
+                                        int.parse(item['transaction_type']) == 3
+                                            ? "Points Earned"
+                                            : "Point Used",
+                                    points:
+                                        int.parse(item['transaction_amount']),
+                                    date: item['transaction_date'],
+                                  ),
+                                ],
                               ),
-                              ],
-                              ),
-                              );
-                              })],
-                              );
+                            );
+                          })
+                    ],
+                  );
                 },
-                ),
+              ),
             ],
           ),
         ),
       ),
-    )
-    );
+    ));
   }
 }
 
-
-  onTapMyvouchers(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
-  }
-
+onTapMyvouchers(BuildContext context) {
+  Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+}
 
 class ProgressBarSteppers extends StatelessWidget {
   final bool checkInClicked;
@@ -294,8 +292,6 @@ class ProgressBarSteppers extends StatelessWidget {
     );
   }
 }
-
-
 
 class PointHistoryItem extends StatelessWidget {
   final String text;
