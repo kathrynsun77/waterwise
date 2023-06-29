@@ -270,6 +270,15 @@ class CustomButton extends StatelessWidget {
           fontFamily: 'Poppins',
           fontWeight: FontWeight.w600,
         );
+      case ButtonFontStyle.PoppinsWhite800:
+        return TextStyle(
+          color: ColorConstant.whiteA700,
+          fontSize: getFontSize(
+            12,
+          ),
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
+        );
       default:
         return TextStyle(
           color: ColorConstant.whiteA700,
@@ -312,5 +321,5 @@ enum ButtonFontStyle {
   PoppinsMedium8Red400,
   PoppinsMedium8Gray600,
   PoppinsMedium15,
-  PoppinsSemiBold18,
+  PoppinsSemiBold18, PoppinsWhite800,
 }

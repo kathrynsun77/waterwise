@@ -15,7 +15,8 @@ class _VouchersScreenState extends State<VouchersScreen> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
-            body: Column(
+            body: SingleChildScrollView(
+        child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -25,7 +26,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                       left:30,
                     ),
                     child: Text(
-                      "Vouchers",
+                      "Points",
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
@@ -34,161 +35,145 @@ class _VouchersScreenState extends State<VouchersScreen> {
                         ),
                       ),
                     ),
+
                   ),
-                      Card(
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 0,
-                          margin: getMargin(left: 1, top: 48),
-                          color: ColorConstant.whiteA700,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusStyle.roundedBorder20),
-                          child: Container(
-                              height: getVerticalSize(114),
-                              width: getHorizontalSize(345),
-                              padding: getPadding(
-                                  left: 15, top: 9, right: 15, bottom: 9),
-                              decoration: AppDecoration.outlineBlack9003f
-                                  .copyWith(
-                                  borderRadius:
-                                  BorderRadiusStyle.roundedBorder20),
-                              child: Stack(
-                                  alignment: Alignment.topLeft,
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.topCenter,
-                                        child: Container(
-                                            decoration: AppDecoration.white,
-                                            child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                      width: double.maxFinite,
-                                                      child: Container(
-                                                          width:
-                                                          getHorizontalSize(
-                                                              315),
-                                                          margin: getMargin(
-                                                              top: 34),
-                                                          padding: getPadding(
-                                                              left: 16,
-                                                              top: 10,
-                                                              right: 16,
-                                                              bottom: 10),
-                                                          decoration: AppDecoration
-                                                              .outlineGray300
-                                                              .copyWith(
-                                                              borderRadius:
-                                                              BorderRadiusStyle
-                                                                  .roundedBorder8),
-                                                          child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize
-                                                                  .min,
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                              children: [
-                                                                Container(
-                                                                  child: SelectableText(
-                                                                    "TENOFF",
-                                                                    textAlign: TextAlign.left,
-                                                                    style: AppStyle.txtPoppinsRegular12Bluegray40001,
-                                                                  ),
-                                                                )
-                                                              ])))
-                                                ]))),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text("10 Dollar off",
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.left,
-                                            style:
-                                            AppStyle.txtPoppinsSemiBold20))
-                                  ]))),
-                      Card(
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 0,
-                          margin: getMargin(top: 23, bottom: 5),
-                          color: ColorConstant.whiteA700,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusStyle.roundedBorder20),
-                          child: Container(
-                              height: getVerticalSize(114),
-                              width: getHorizontalSize(345),
-                              padding: getPadding(
-                                  left: 15, top: 9, right: 15, bottom: 9),
-                              decoration: AppDecoration.outlineBlack9003f
-                                  .copyWith(
-                                  borderRadius:
-                                  BorderRadiusStyle.roundedBorder20),
-                              child: Stack(
-                                  alignment: Alignment.topLeft,
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.topCenter,
-                                        child: Container(
-                                            decoration: AppDecoration.white,
-                                            child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                      width: double.maxFinite,
-                                                      child: Container(
-                                                          width:
-                                                          getHorizontalSize(
-                                                              315),
-                                                          margin: getMargin(
-                                                              top: 34),
-                                                          padding: getPadding(
-                                                              left: 16,
-                                                              top: 10,
-                                                              right: 16,
-                                                              bottom: 10),
-                                                          decoration: AppDecoration
-                                                              .outlineGray300
-                                                              .copyWith(
-                                                              borderRadius:
-                                                              BorderRadiusStyle
-                                                                  .roundedBorder8),
-                                                          child: Column(
-                                                              mainAxisSize:
-                                                              MainAxisSize
-                                                                  .min,
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                              children: [
-                                                                Container(
-                                                                  child: SelectableText(
-                                                                    "TENOFF",
-                                                                    textAlign: TextAlign.left,
-                                                                    style: AppStyle.txtPoppinsRegular12Bluegray40001,
-                                                                  ),
-                                                                )
-                                                              ])))
-                                                ]))),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text("10 Dollar off",
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.left,
-                                            style:
-                                            AppStyle.txtPoppinsSemiBold20))
-                                  ])))
-                    ])));
+      Column(
+        children: [
+          Container(
+            color: Colors.white,
+            padding: getPadding(top: 30, left:10, right: 10,bottom: 20),
+            child: Column(
+              children: [
+                ProgressBarSteppers(),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.account_balance_wallet,
+                      size: 35,
+                      color: Color(0xFF6F9C95),
+                    ),
+                    Text(
+                      'Total Points: 500',
+                      textAlign: TextAlign.left,
+                      style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
+                    letterSpacing: getHorizontalSize(
+                      1.0,
+                    ),
+                    ),
+                    ),
+                    CustomButton(
+                      height: getVerticalSize(40),
+                      width: getHorizontalSize(80),
+                      text: "Check In",
+                      fontStyle: ButtonFontStyle.PoppinsWhite800,
+                      onTap: () {
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16),
+          Align(
+            // alignment: Alignment.centerLeft,
+            child: Text(
+              'Points History',
+              style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(
+                letterSpacing: getHorizontalSize(
+                  1.0,
+                )
+              )
+            ),
+          ),
+          SizedBox(height: 8),
+          Container(
+            color: Colors.white,
+            padding:getPadding(top: 16, right: 130),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PointHistoryItem(
+                  text: 'Points Earned',
+                  points: 50,
+                  date: 'June 28, 2023',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ]
+        )
+            )
+        )
+    );
   }
+}
 
   onTapMyvouchers(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profileScreen);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+  }
+
+
+class ProgressBarSteppers extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        for (int i = 1; i <= 7; i++)
+          CircleAvatar(
+            backgroundColor: i <= 3 ? Color(0xFF6F9C95) : Colors.grey,
+            child: Text(
+              i == 7 ? '+0.4' : '+0.1',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+
+class PointHistoryItem extends StatelessWidget {
+  final String text;
+  final int points;
+  final String date;
+
+  const PointHistoryItem({
+    required this.text,
+    required this.points,
+    required this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          text,
+          style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
+            letterSpacing: getHorizontalSize(1.0),
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          '$points points',
+          style: TextStyle(fontSize: 20),
+        ),
+        SizedBox(height: 4),
+        Text(
+          'Earned on $date',
+          style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
+            letterSpacing: getHorizontalSize(1.0),
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
+    );
   }
 }
