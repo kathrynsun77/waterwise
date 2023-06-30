@@ -244,8 +244,8 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                         int.parse(item['transaction_type']) == 3
                                             ? "Points Earned"
                                             : "Point Used",
-                                    points:
-                                        double.parse(item['transaction_amount']),
+                                    points: double.parse(
+                                        item['transaction_amount']),
                                     date: item['transaction_date'],
                                   ),
                                 ],
