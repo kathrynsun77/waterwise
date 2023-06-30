@@ -84,7 +84,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
       String data = currentStep == 7 ? '0.4' : '0.1';
 
       final response = await http.post(
-        Uri.parse('YOUR_API_URL'),
+        Uri.parse('http://172.28.200.128/water_wise/check_in.php'),
         body: {
           'cust-id': user['customer_id'],
           'value': data,
@@ -103,6 +103,12 @@ class _VouchersScreenState extends State<VouchersScreen> {
       }
     } else {
       // Check-in already done today, show a message or perform any desired action
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Check-in already done today'),
+          backgroundColor: Color(0xFF6F9C95),
+        ),
+      );
       print('Check-in already done today');
     }
   }
@@ -239,7 +245,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                             ? "Points Earned"
                                             : "Point Used",
                                     points:
-                                        int.parse(item['transaction_amount']),
+                                        double.parse(item['transaction_amount']),
                                     date: item['transaction_date'],
                                   ),
                                 ],
@@ -295,7 +301,7 @@ class ProgressBarSteppers extends StatelessWidget {
 
 class PointHistoryItem extends StatelessWidget {
   final String text;
-  final int points;
+  final double points;
   final String date;
 
   const PointHistoryItem({
