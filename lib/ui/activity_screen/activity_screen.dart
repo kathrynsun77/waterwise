@@ -33,7 +33,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
       'cust-id': user['customer_id'],
     });
     if (response.statusCode == 200) {
-      print('success bro');
       print(response.body);
       // Disable the button after it has been pressed once
       setState(() {
@@ -58,6 +57,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
       // Decode the JSON response
       print(response.body);
       allBill = json.decode(response.body);
+      final prefs = await SharedPreferences.getInstance();
+      final encodedList = jsonEncode(allBill);
+      await prefs.setString('pipeData', encodedList);
       setState(() {
       });
     } else {

@@ -7,9 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'package:open_file/open_file.dart';
+import 'package:flutter/services.dart';
+
+
 
 class ActivityTrendsScreen extends StatefulWidget {
   const ActivityTrendsScreen({Key? key}) : super(key: key);
@@ -21,6 +26,7 @@ class ActivityTrendsScreen extends StatefulWidget {
 class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
   Map user = {};
   List<BarData> barDataList = [];
+  Map pipeData = {};
 
   @override
   void initState() {
@@ -34,75 +40,104 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchData();
-      downloadAndOpenPDF();
+      generatePdf();
       setState(() {});
     }
   }
 
-  downloadAndOpenPDF() async {
-    try {
-      final dio = Dio();
-      final response = await dio.post(
-        'http://172.28.200.128:8000/api/pdf',
-        data: {
+  void getPipe() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("pipeData");
+    if (userString != null) {
+      pipeData = jsonDecode(userString);
+      fetchData();
+      generatePdf();
+      setState(() {});
+    }
+  }
+
+  generatePdf() async {
+    final pdf = pw.Document();
+    // Create a table
+    final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status'];
+    final tableRows = pipeData.entries.map((entry) {
+      final pipeName = entry.value['pipe_name'].toString();
+      final meterValue = entry.value['meter_value'].toString();
+      final leakStatus = entry.value['leak_status'].toString();
+      return [pipeName, meterValue, leakStatus];
+    }).toList();
+
+    pdf.addPage(pw.Page(
+      build: (pw.Context context) => pw.TableHelper.fromTextArray(
+        headers: tableHeaders,
+        data: tableRows,
+        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+        cellAlignment: pw.Alignment.center,
+      ),
+    ));
+    print('generateddddd');
+
+    // // Get the directory for saving the PDF file
+    // final directory = await getApplicationDocumentsDirectory();
+    // final path = '${directory.path}/data_table.pdf';
+
+    // PdfApi.openFile(pdf as File);
+
+    // // Save the PDF file
+    // final file = File(path);
+    // await file.writeAsBytes(await pdf.save());
+    //
+    // // Check if the file exists
+    // if (await file.exists()) {
+    //   print('file exists');
+    //   // Open the PDF file using the open_file package
+    //   OpenFile.open(file.path);
+    // } else {
+    //   print('Failed to open PDF: File does not exist.');
+    // }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('PDF generated'),
+        backgroundColor: Color(0xFF6F9C95),
+      ),
+    );
+  }
+
+
+
+
+  fetchData() async {
+      final response = await http.post(
+        Uri.parse('http://172.28.200.128/water_wise/water_trends.php'),
+        body: {
           'cust-id': user['customer_id'],
         },
       );
-      print('data sent');
-
+      print('fetch data trends');
+      print(response.body);
       if (response.statusCode == 200) {
-        final directory = await getTemporaryDirectory();
-        final filePath = '${directory.path}/report.pdf';
-        await dio.download("http://172.28.200.128:8000/api/pdf", filePath);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => PDFView(
-              filePath: filePath,
-            ),
-          ),
-        );
-        print('success');
+        // Parse the response data
+        final jsonData = jsonDecode(response.body);
+        List<BarData> data = [];
+        for (var item in jsonData) {
+          final barData = BarData(
+            label: item['transaction_date'],
+            value: int.parse(item['usage_amount']),
+          );
+          data.add(barData);
+        }
+        setState(() {
+          barDataList = data;
+        });
+        print('bar data list: ${barDataList.length}');
       } else {
-        // Handle error
-        print('Failed to download PDF: ${response.statusCode}');
+        // Error handling
+        print('Failed to fetch data: ${response.statusCode}');
       }
-    } catch (e) {
-      // Handle error
-      print('Failed to download PDF: $e');
     }
-  }
 
-  fetchData() async {
-    final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/water_trends.php'),
-      body: {
-        'cust-id': user['customer_id'],
-      },
-    );
-    print('fetch data trends');
-    print(response.body);
-    if (response.statusCode == 200) {
-      // Parse the response data
-      final jsonData = jsonDecode(response.body);
-      List<BarData> data = [];
-      for (var item in jsonData) {
-        final barData = BarData(
-          label: item['transaction_date'],
-          value: int.parse(item['usage_amount']),
-        );
-        data.add(barData);
-      }
-      setState(() {
-        barDataList = data;
-      });
-      print('bar data list: ${barDataList.length}');
-    } else {
-      // Error handling
-      print('Failed to fetch data: ${response.statusCode}');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +179,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
               variant: ButtonVariant.OutlineBluegray40001,
               fontStyle: ButtonFontStyle.PoppinsMedium8,
               onTap: () {
-                downloadAndOpenPDF();
+                generatePdf();
               },
             ),
           ],

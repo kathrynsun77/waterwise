@@ -16,9 +16,9 @@ void main()  {
 //   await Firebase.initializeApp(
 //     options: firebaseOptions
 //   );
-//   SystemChrome.setPreferredOrientations([
-//     DeviceOrientation.portraitUp,
-//   ]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 //   final fcmToken = await FirebaseMessaging.instance.getToken();
 // print (fcmToken);
   runApp(MyApp());

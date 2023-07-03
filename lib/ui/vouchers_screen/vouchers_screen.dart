@@ -38,7 +38,6 @@ class _VouchersScreenState extends State<VouchersScreen> {
   }
 
   List points = [];
-
   fetchPoints() async {
     final response = await http.post(
         Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
