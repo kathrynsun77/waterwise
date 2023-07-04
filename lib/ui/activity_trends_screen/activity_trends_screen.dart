@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:async';
 import 'dart:io';
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import '../../widget/custom_button.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
-import 'package:open_file/open_file.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
@@ -28,7 +26,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
   String API = "http://172.28.200.128/water_wise/";
   Map user = {};
   List<BarData> barDataList = [];
-  Map pipeData = {};
+  List pipeData = [];
   String? pdfFlePath;
 
   void getUser() async {
@@ -37,7 +35,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchData();
-      fetchPoints();
+      generatePdf();
       setState(() {});
     }
   }
@@ -48,47 +46,67 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     super.initState();
   }
 
-  fetchPoints() async {
+  generatePdf() async {
     final response = await http.post(Uri.parse(API + 'pipe_data.php'), body: {
       'cust-id': user['customer_id'],
     });
-    // print('fetched');
+    print('fetched');
     if (response.statusCode == 200) {
       // Decode the JSON response
       print(response.body);
-      if (json.decode(response.body) is List<dynamic>) {
-        pipeData = json.decode(response.body);
-      } else if (json.decode(response.body) is Map<dynamic, dynamic>) {
-        pipeData = json.decode(response.body);
-      } else {
-        throw Exception('Invalid data type for pipeData');
-      }
+      // List list = jsonDecode(response.body);
+      pipeData = json.decode(response.body);
       setState(() {});
     } else {
       throw Exception('Failed to fetch data');
     }
-  }
 
-  generatePdf() async {
     final pdf = pw.Document();
     // Create a table
     final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status'];
-    final tableRows = pipeData.entries.map((e) {
-      final pipeName = e.value['pipe_name'].toString();
-      final meterValue = e.value['meter_value'].toString();
-      final leakStatus = e.value['leak_status'].toString();
+    final tableRows = pipeData.map((e) {
+      final pipeName = e['pipe_name'].toString();
+      final meterValue = e['meter_value'].toString();
+      final leakStatus = e['leak_status'].toString();
       return [pipeName, meterValue, leakStatus];
     }).toList();
 
-    pdf.addPage(pw.Page(
-      build: (pw.Context context) => pw.TableHelper.fromTextArray(
-        headers: tableHeaders,
-        data: tableRows,
-        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
-        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-        cellAlignment: pw.Alignment.center,
+
+// Add table to the PDF
+    pdf.addPage(
+      pw.MultiPage(
+        build: (context) => [
+          pw.TableHelper.fromTextArray(
+            context: context,
+            headers: tableHeaders,
+            data: tableRows,
+            cellAlignment: pw.Alignment.centerLeft,
+            headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+            cellStyle: const pw.TextStyle(),
+            headerDecoration: pw.BoxDecoration(
+              borderRadius: const pw.BorderRadius.all(pw.Radius.circular(2)),
+              color: PdfColors.grey300,
+            ),
+            rowDecoration: pw.BoxDecoration(
+              border: pw.Border(
+                bottom: pw.BorderSide(
+                  color: PdfColors.grey,
+                  width: 0.5,
+                ),
+              ),
+            ),
+            headerHeight: 25,
+            cellHeight: 40,
+            cellAlignments: {
+              0: pw.Alignment.centerLeft,
+              1: pw.Alignment.center,
+              2: pw.Alignment.center,
+            },
+          ),
+        ],
       ),
-    ));
+    );
+
 
     final output = await getApplicationDocumentsDirectory();
     final file = File("${output.path}/data.pdf");
@@ -147,6 +165,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                   height: getVerticalSize(16),
                   width: getHorizontalSize(9),
                   svgPath: ImageConstant.imgArrowleftIndigo800,
+                  margin: getMargin(top: 14, bottom: 2),
                   onTap: () {
                     onTapArrowleft(context);
                   },
@@ -168,7 +187,6 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
               variant: ButtonVariant.OutlineBluegray40001,
               fontStyle: ButtonFontStyle.PoppinsMedium8,
               onTap: () {
-                fetchPoints();
                 generatePdf();
                 if (pdfFlePath != null) {
                   Navigator.push(
@@ -181,14 +199,6 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                 }
               },
             ),
-            // if (pdfFlePath != null)
-            //   // Expanded(
-            //   //   child: Container(
-            //   //     child: PdfView(path: pdfFlePath!),
-            //   //   ),
-            //   // )
-            // else
-            //   Text("PDF is not loaded"),
           ],
         ),
         body: RefreshIndicator(
