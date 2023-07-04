@@ -13,8 +13,8 @@ main()  async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print ('token: ${fcmToken}');
+  final fcmToken1 = await FirebaseMessaging.instance.getToken();
+  print ('token: ${fcmToken1}');
   runApp(MyApp());
 }
 
