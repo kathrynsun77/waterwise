@@ -13,7 +13,7 @@ class BillingScreen extends StatefulWidget {
 
 // ignore_for_file: must_be_immutable
 class _BillingScreenState extends State<BillingScreen> {
-  String API= "http://10.33.133.168/water_wise/";
+  String API= "http://172.28.200.128/water_wise/";
   Map user = {};
 
   getUser() async {

@@ -1,20 +1,21 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
+import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
-import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter/services.dart';
-
-
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
 class ActivityTrendsScreen extends StatefulWidget {
   const ActivityTrendsScreen({Key? key}) : super(key: key);
@@ -24,18 +25,11 @@ class ActivityTrendsScreen extends StatefulWidget {
 }
 
 class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
-  String API= "http://10.33.133.168/water_wise/";
+  String API = "http://172.28.200.128/water_wise/";
   Map user = {};
   List<BarData> barDataList = [];
   Map pipeData = {};
   String? pdfFlePath;
-
-
-  @override
-  void initState() {
-    getUser();
-    super.initState();
-  }
 
   void getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -43,19 +37,35 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchData();
-      generatePdf();
+      fetchPoints();
       setState(() {});
     }
   }
 
-  void getPipe() async {
-    final pref = await SharedPreferences.getInstance();
-    String? userString = pref.getString("pipeData");
-    if (userString != null) {
-      pipeData = jsonDecode(userString);
-      fetchData();
-      generatePdf();
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  fetchPoints() async {
+    final response = await http.post(Uri.parse(API + 'pipe_data.php'), body: {
+      'cust-id': user['customer_id'],
+    });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      if (json.decode(response.body) is List<dynamic>) {
+        pipeData = json.decode(response.body);
+      } else if (json.decode(response.body) is Map<dynamic, dynamic>) {
+        pipeData = json.decode(response.body);
+      } else {
+        throw Exception('Invalid data type for pipeData');
+      }
       setState(() {});
+    } else {
+      throw Exception('Failed to fetch data');
     }
   }
 
@@ -63,10 +73,10 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     final pdf = pw.Document();
     // Create a table
     final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status'];
-    final tableRows = pipeData.entries.map((entry) {
-      final pipeName = entry.value['pipe_name'].toString();
-      final meterValue = entry.value['meter_value'].toString();
-      final leakStatus = entry.value['leak_status'].toString();
+    final tableRows = pipeData.entries.map((e) {
+      final pipeName = e.value['pipe_name'].toString();
+      final meterValue = e.value['meter_value'].toString();
+      final leakStatus = e.value['leak_status'].toString();
       return [pipeName, meterValue, leakStatus];
     }).toList();
 
@@ -79,77 +89,44 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
         cellAlignment: pw.Alignment.center,
       ),
     ));
-    print('generateddddd');
 
-    // // Get the directory for saving the PDF file
-    final directory = await getApplicationDocumentsDirectory();
-    final path = '${directory.path}/data_table.pdf';
-
-    print('path ok: ${path}');
-    return path;
-    // return OpenFile.open(user['photo']);
-    // return PdfView(path: '${path}');
-
-
-
-    // // Save the PDF file
-    // final file = File(path);
-    // await file.writeAsBytes(await pdf.save());
-    //
-    // // Check if the file exists
-    // if (await file.exists()) {
-    //   print('file exists');
-    //   // Open the PDF file using the open_file package
-    //   OpenFile.open(file.path);
-    // } else {
-    //   print('Failed to open PDF: File does not exist.');
-    // }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('PDF generated'),
-        backgroundColor: Color(0xFF6F9C95),
-      ),
-    );
-  }
-  void loadPdf() async {
-    pdfFlePath = await generatePdf();
+    final output = await getApplicationDocumentsDirectory();
+    final file = File("${output.path}/data.pdf");
+    await file.writeAsBytes(await pdf.save());
+    pdfFlePath = file.path;
     setState(() {});
+    return pdfFlePath;
   }
-
-
-
 
   fetchData() async {
-      final response = await http.post(
-        Uri.parse(API+'water_trends.php'),
-        body: {
-          'cust-id': user['customer_id'],
-        },
-      );
-      print('fetch data trends');
-      print(response.body);
-      if (response.statusCode == 200) {
-        // Parse the response data
-        final jsonData = jsonDecode(response.body);
-        List<BarData> data = [];
-        for (var item in jsonData) {
-          final barData = BarData(
-            label: item['transaction_date'],
-            value: int.parse(item['usage_amount']),
-          );
-          data.add(barData);
-        }
-        setState(() {
-          barDataList = data;
-        });
-        print('bar data list: ${barDataList.length}');
-      } else {
-        // Error handling
-        print('Failed to fetch data: ${response.statusCode}');
+    final response = await http.post(
+      Uri.parse(API + 'water_trends.php'),
+      body: {
+        'cust-id': user['customer_id'],
+      },
+    );
+    print('fetch data trends');
+    print(response.body);
+    if (response.statusCode == 200) {
+      // Parse the response data
+      final jsonData = jsonDecode(response.body);
+      List<BarData> data = [];
+      for (var item in jsonData) {
+        final barData = BarData(
+          label: item['transaction_date'],
+          value: int.parse(item['usage_amount']),
+        );
+        data.add(barData);
       }
+      setState(() {
+        barDataList = data;
+      });
+      print('bar data list: ${barDataList.length}');
+    } else {
+      // Error handling
+      print('Failed to fetch data: ${response.statusCode}');
     }
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,14 +163,32 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
             CustomButton(
               height: getVerticalSize(32),
               width: getHorizontalSize(90),
-              text: "Download Report",
+              text: "Generate Report",
               margin: getMargin(left: 18, top: 12, right: 18, bottom: 12),
               variant: ButtonVariant.OutlineBluegray40001,
               fontStyle: ButtonFontStyle.PoppinsMedium8,
               onTap: () {
-                loadPdf();
+                fetchPoints();
+                generatePdf();
+                if (pdfFlePath != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PdfViewerScreen(pdfFilePath: pdfFlePath!),
+                    ),
+                  );
+                }
               },
             ),
+            // if (pdfFlePath != null)
+            //   // Expanded(
+            //   //   child: Container(
+            //   //     child: PdfView(path: pdfFlePath!),
+            //   //   ),
+            //   // )
+            // else
+            //   Text("PDF is not loaded"),
           ],
         ),
         body: RefreshIndicator(
@@ -318,4 +313,55 @@ class BarData {
     required this.label,
     required this.value,
   });
+}
+
+class PdfViewerScreen extends StatelessWidget {
+  final String pdfFilePath;
+
+  const PdfViewerScreen({required this.pdfFilePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        height: getVerticalSize(50),
+        leadingWidth: 39,
+        leading: Container(
+          height: getVerticalSize(16),
+          width: getHorizontalSize(9),
+          margin: getMargin(left: 30, top: 26, bottom: 14),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              AppbarImage(
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                svgPath: ImageConstant.imgArrowleftIndigo800,
+                onTap: () {
+                  Navigator.maybePop(context); // Use Navigator.maybePop to handle back navigation
+                },
+              ),
+              AppbarImage(
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                svgPath: ImageConstant.imgArrowleftIndigo800,
+              ),
+            ],
+          ),
+        ),
+        title: Padding(
+          padding: getPadding(left: 30, top: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AppbarTitle(
+                text: "Water Usage Report",
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: PdfView(path: pdfFilePath),
+    );
+  }
 }
