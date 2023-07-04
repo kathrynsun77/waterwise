@@ -63,12 +63,13 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
 
     final pdf = pw.Document();
     // Create a table
-    final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status'];
+    final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status', 'Usage Status'];
     final tableRows = pipeData.map((e) {
       final pipeName = e['pipe_name'].toString();
       final meterValue = e['meter_value'].toString();
-      final leakStatus = e['leak_status'].toString();
-      return [pipeName, meterValue, leakStatus];
+      final leakStatus = int.parse(e['leak_status']) > 1 ? "Pipe Leaking" : "No Leak";
+      final usageStatus = int.parse(e['meter_value']) > 100 ? "High Usage" : "Low Usage";
+      return [pipeName, meterValue, leakStatus, usageStatus];
     }).toList();
 
 

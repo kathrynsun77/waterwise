@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
 
@@ -133,20 +134,44 @@ class _VouchersScreenState extends State<VouchersScreen> {
         child: Scaffold(
       backgroundColor: ColorConstant.whiteA700,
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(
-        height: getVerticalSize(83),
-        title: Padding(
-          padding: getPadding(left: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              AppbarTitle(
-                text: "Points",
+          appBar: CustomAppBar(
+            height: getVerticalSize(70),
+            leadingWidth: 39,
+            leading: Container(
+              height: getVerticalSize(16),
+              width: getHorizontalSize(9),
+              margin: getMargin(left: 30, top: 26, bottom: 14),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  AppbarImage(
+                    height: getVerticalSize(16),
+                    width: getHorizontalSize(9),
+                    svgPath: ImageConstant.imgArrowleftIndigo800,
+                    onTap: () {
+                      Navigator.maybePop(context); // Use Navigator.maybePop to handle back navigation
+                    },
+                  ),
+                  AppbarImage(
+                    height: getVerticalSize(16),
+                    width: getHorizontalSize(9),
+                    svgPath: ImageConstant.imgArrowleftIndigo800,
+                  ),
+                ],
               ),
-            ],
+            ),
+            title: Padding(
+              padding: getPadding(left: 30, top: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  AppbarTitle(
+                    text: "Points",
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: SingleChildScrollView(

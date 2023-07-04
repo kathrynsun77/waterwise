@@ -225,7 +225,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
   }
 
   void onTapImgArrowleft(BuildContext context) {
-      Navigator.pushNamed(context, AppRoutes.profileScreen);
+      Navigator.maybePop(context);
 
   }
 

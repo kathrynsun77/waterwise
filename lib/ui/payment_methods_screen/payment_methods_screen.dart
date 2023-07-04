@@ -394,6 +394,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void onTapImgArrowleft(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+    Navigator.maybePop(context);
   }
 }

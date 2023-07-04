@@ -215,7 +215,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   }
 
   onTapContactus(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profileScreen);
+    Navigator.maybePop(context);
   }
   onTapContactSend(BuildContext context) {
     addPayment();
