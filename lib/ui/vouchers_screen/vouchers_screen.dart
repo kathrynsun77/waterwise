@@ -15,6 +15,7 @@ class VouchersScreen extends StatefulWidget {
 }
 
 class _VouchersScreenState extends State<VouchersScreen> {
+  String API= "http://10.33.133.168/water_wise/";
   bool checkInClicked = false;
   Map user = {};
   DateTime lastCheckInDate = DateTime.now();
@@ -40,7 +41,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
   List points = [];
   fetchPoints() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        Uri.parse(API+'get_points.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -60,7 +61,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
 
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/points_page.php'),
+        Uri.parse(API+'points_page.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -83,7 +84,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
       String data = currentStep == 7 ? '0.4' : '0.1';
 
       final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/check_in.php'),
+        Uri.parse(API+'check_in.php'),
         body: {
           'cust-id': user['customer_id'],
           'value': data,

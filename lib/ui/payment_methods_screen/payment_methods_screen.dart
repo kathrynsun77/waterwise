@@ -16,6 +16,7 @@ class PaymentMethodsScreen extends StatefulWidget {
 
 // ignore_for_file: must_be_immutable
 class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
+  String API= "http://10.33.133.168/water_wise/";
   bool isCheckbox = false;
   bool isCheckbox1 = false;
   bool isCheckbox2 = false;
@@ -40,7 +41,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   List allCard = [];
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/payment_method.php'),
+      Uri.parse(API+'payment_method.php'),
       body: {
         'cust-id': user['customer_id'],
       },
@@ -59,7 +60,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
   deleteCard(String cardID) async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/delete_card.php'),
+      Uri.parse(API+'delete_card.php'),
       body: {
         'card-id': cardID,
         'cust-id': user['customer_id'],
@@ -96,7 +97,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void addPayment() async {
-    var url = 'http://172.28.200.128/water_wise/add_payment.php';
+    var url = API+'add_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'number': frameoneController.text,
@@ -132,7 +133,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void setDefaultCard(String cardID) async {
-    var url = 'http://172.28.200.128/water_wise/set_default_card.php';
+    var url = API+'set_default_card.php';
     var response = await http.post(Uri.parse(url), body: {
       'card-id': cardID,
       'cust-id': user['customer_id'],
@@ -393,6 +394,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   void onTapImgArrowleft(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profileScreen);
+    Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
 }

@@ -14,7 +14,7 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
-
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
 
   getUser() async {
@@ -22,7 +22,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     String? userString = pref.getString("user");
     if (userString != null) {
       user = jsonDecode(userString) as Map;
-      addPayment();
       setState(() {});
     }
   }
@@ -35,7 +34,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
 
     addPayment() async {
-    var url = 'http://172.28.200.128/water_wise/feedback.php';
+    var url = API+'feedback.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'message': messageController.text,

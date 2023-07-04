@@ -25,7 +25,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
   getUser() async{
     final pref = await SharedPreferences.getInstance();
@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/upload_photo.php'),
+        Uri.parse(API+'upload_photo.php'),
         body: {
           'id': user['id'],
           'photo':destination.toString(),

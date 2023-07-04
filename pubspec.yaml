@@ -29,6 +29,7 @@ dependencies:
   firebase_remote_config: ^4.2.3
   firebase_auth: ^4.6.3
   open_file: ^3.3.2
+  pdf_viewer_plugin: ^2.0.1
 #  d_method: 0.2.1
 
 

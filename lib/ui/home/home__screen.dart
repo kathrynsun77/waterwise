@@ -24,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
   getUser() async{
     final pref = await SharedPreferences.getInstance();
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List points = [];
   fetchPoints() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        Uri.parse(API+'get_points.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List allBill = [];
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/show_transaction.php'),
+        Uri.parse(API+'show_transaction.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -105,9 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
               AppbarCircleimage(
                   imagePath: user['photo'],
                   margin: getMargin(left: 30, top: 3, right: 30, bottom: 3),
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.profileScreen);
-                  },
               )
             ]),
         body: RefreshIndicator(

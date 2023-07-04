@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/custom_button.dart';
-import 'package:WaterWise/widgets/custom_text_form_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PopupScreen extends StatefulWidget {
@@ -14,7 +13,7 @@ class PopupScreen extends StatefulWidget {
 }
 
 class _PopupScreenState extends State<PopupScreen> {
-
+  String API= "http://10.33.133.168/water_wise/";
   TextEditingController promocodeinputController = TextEditingController();
   String? selectedCard; // Selected card
   Map<String, dynamic> user = {};
@@ -56,7 +55,7 @@ class _PopupScreenState extends State<PopupScreen> {
   List points = [];
   fetchPoints() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        Uri.parse(API+'get_points.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -77,7 +76,7 @@ class _PopupScreenState extends State<PopupScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/payment_method.php'),
+      Uri.parse(API+'payment_method.php'),
       body: {
         'cust-id': user['customer_id'],
       },
@@ -104,7 +103,7 @@ class _PopupScreenState extends State<PopupScreen> {
 
   void addTransaction(String amount, String usage, String point) async {
     String? savedInvoice = await getInvoice();
-    var url = 'http://172.28.200.128/water_wise/make_payment.php';
+    var url = API+'make_payment.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'usage': usage,
@@ -287,7 +286,7 @@ class _PopupScreenState extends State<PopupScreen> {
                       value: isSwitched, // Replace isSwitched with your own variable controlling the switch state
                       onChanged: (value) {
                         setState(() {
-                          point_value= int.parse(balance['total_point']);
+                          point_value= double.parse(balance['total_point']);
                           isSwitched = value; // Replace isSwitched with your own variable controlling the switch state
                         });
                       },

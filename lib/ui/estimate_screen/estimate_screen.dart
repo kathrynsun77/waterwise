@@ -14,7 +14,7 @@ class EstimateScreen extends StatefulWidget {
 }
 // ignore_for_file: must_be_immutable
 class _EstimateScreenState extends State<EstimateScreen> {
-
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
   List allBill = [];
 
@@ -30,7 +30,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/bill_detail.php'),
+      Uri.parse(API+'bill_detail.php'),
       body: {
         'id': user['id'],
       },

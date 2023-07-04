@@ -14,6 +14,7 @@ class ReceiptScreen extends StatefulWidget {
 
 class _ReceiptScreenState extends State<ReceiptScreen> {
   Map user = {};
+  String API= "http://10.33.133.168/water_wise/";
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -44,7 +45,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
   fetchData() async {
     String? savedInvoice = await getInvoice();
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/receipt.php'),
+      Uri.parse(API+'receipt.php'),
       body: {
         'cust-id': user['customer_id'].toString(), // Convert to string
         'invoice': savedInvoice.toString(), // Convert to string

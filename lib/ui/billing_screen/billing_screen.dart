@@ -13,6 +13,7 @@ class BillingScreen extends StatefulWidget {
 
 // ignore_for_file: must_be_immutable
 class _BillingScreenState extends State<BillingScreen> {
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
 
   getUser() async {
@@ -30,7 +31,7 @@ class _BillingScreenState extends State<BillingScreen> {
 
   fetchPoints() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/get_points.php'),
+        Uri.parse(API+'get_points.php'),
         body: {
           'cust-id': user['customer_id'],
         });
@@ -50,7 +51,7 @@ class _BillingScreenState extends State<BillingScreen> {
 
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/billing_config.php'),
+        Uri.parse(API+'billing_config.php'),
         body: {
           'id': user['id'],
         });

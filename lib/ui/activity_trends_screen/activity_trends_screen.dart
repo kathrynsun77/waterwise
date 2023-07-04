@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../widget/custom_button.dart';
-import 'dart:io';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
@@ -24,9 +24,12 @@ class ActivityTrendsScreen extends StatefulWidget {
 }
 
 class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
   List<BarData> barDataList = [];
   Map pipeData = {};
+  String? pdfFlePath;
+
 
   @override
   void initState() {
@@ -79,10 +82,15 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     print('generateddddd');
 
     // // Get the directory for saving the PDF file
-    // final directory = await getApplicationDocumentsDirectory();
-    // final path = '${directory.path}/data_table.pdf';
+    final directory = await getApplicationDocumentsDirectory();
+    final path = '${directory.path}/data_table.pdf';
 
-    // PdfApi.openFile(pdf as File);
+    print('path ok: ${path}');
+    return path;
+    // return OpenFile.open(user['photo']);
+    // return PdfView(path: '${path}');
+
+
 
     // // Save the PDF file
     // final file = File(path);
@@ -104,13 +112,17 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       ),
     );
   }
+  void loadPdf() async {
+    pdfFlePath = await generatePdf();
+    setState(() {});
+  }
 
 
 
 
   fetchData() async {
       final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/water_trends.php'),
+        Uri.parse(API+'water_trends.php'),
         body: {
           'cust-id': user['customer_id'],
         },
@@ -179,7 +191,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
               variant: ButtonVariant.OutlineBluegray40001,
               fontStyle: ButtonFontStyle.PoppinsMedium8,
               onTap: () {
-                generatePdf();
+                loadPdf();
               },
             ),
           ],

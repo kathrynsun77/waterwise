@@ -16,6 +16,8 @@ class ViewBillScreen extends StatefulWidget {
 class _ViewBillScreenState extends State<ViewBillScreen> {
   Map user = {};
   List allBill = [];
+  String API= "http://10.33.133.168/water_wise/";
+
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -29,7 +31,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
 
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/bill_detail.php'),
+      Uri.parse(API+'bill_detail.php'),
       body: {
         'id': user['id'],
       },

@@ -16,6 +16,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   bool isButtonPressed = false;
   Map user = {};
   List allBill = [];
+  String API= "http://10.33.133.168/water_wise/";
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -28,7 +29,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   void requestTech() async {
-    var url = 'http://172.28.200.128/water_wise/request_tech.php';
+    var url = API+'request_tech.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
     });
@@ -47,7 +48,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   bool _isRefreshing = false;
   fetchData() async {
     final response = await http.post(
-      Uri.parse('http://172.28.200.128/water_wise/bill_detail.php'),
+      Uri.parse(API+'bill_detail.php'),
       body: {
         'id': user['id']
       },

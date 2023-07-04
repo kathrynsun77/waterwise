@@ -19,9 +19,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String API= "http://10.33.133.168/water_wise/";
 
   loginUser(String email, String password) async {
-    var url = 'http://172.28.200.128/water_wise/login_config1.php';
+    var url = API+'login_config1.php';
     var response = await http.post(Uri.parse(url), body: {
       'email': email,
       'password': password,

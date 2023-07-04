@@ -15,6 +15,8 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   Map user = {};
+  String API= "http://10.33.133.168/water_wise/";
+
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -30,7 +32,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   fetchData() async {
     final response = await http.post(
-        Uri.parse('http://172.28.200.128/water_wise/show_notification.php'),
+        Uri.parse(API+'show_notification.php'),
         body: {
           'cust-id': user['customer_id'],
         });
