@@ -14,7 +14,6 @@ class PopupScreen extends StatefulWidget {
 
 class _PopupScreenState extends State<PopupScreen> {
   String API= "http://172.28.200.128/water_wise/";
-  TextEditingController promocodeinputController = TextEditingController();
   String? selectedCard; // Selected card
   Map<String, dynamic> user = {};
   List allBill=[];
