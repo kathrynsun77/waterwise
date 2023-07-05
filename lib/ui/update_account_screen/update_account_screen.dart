@@ -229,7 +229,4 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
 
   }
 
-  // onTapUpdateaccount(BuildContext context) {
-  //   Navigator.pushNamed(context, AppRoutes.profileScreen);
-  // }
 }

@@ -238,7 +238,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               TextSpan(
-                                text: " Sign In",
+                                text: "Sign In",
                                 style: TextStyle(
                                   color: ColorConstant.gray600,
                                   fontSize: getVerticalSize(12),
