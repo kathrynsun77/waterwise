@@ -11,6 +11,7 @@ import '../../widget/custom_image_view.dart';
 
 
 class IntroScreen extends StatelessWidget {
+  static const String routeName = 'IntroScreen()';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
