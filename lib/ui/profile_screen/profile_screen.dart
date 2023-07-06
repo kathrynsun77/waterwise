@@ -14,6 +14,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+
+import '../app_navigation_screen/app_navigation_screen.dart';
+import '../app_navigation_screen/app_navigation_screen.dart';
+import '../app_navigation_screen/app_navigation_screen.dart';
+import '../app_navigation_screen/app_navigation_screen.dart';
 // import '../../widget/custom_text_form_field.dart';
 // import '../update_account_screen/update_account_screen.dart';
 
@@ -267,8 +272,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 variant: ButtonVariant.OutlineBluegray700,
                 fontStyle: ButtonFontStyle.PoppinsMedium15,
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.loginScreen);
+                onTap: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  // Delete all shared preferences
+                  await prefs.clear();
+                  print('All shared preferences deleted.');
+                  Navigator.pushNamed(context, AppRoutes.introScreen);
                   if (mounted) {
                     setState(() {
                       // _isLoading = false;
@@ -285,12 +294,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
-        // bottomNavigationBar: CustomBottomBar(
-        //   onChanged: (BottomBarEnum type) {
-        //     Navigator.pushNamed(
-        //         navigatorKey.currentContext!, getCurrentRoute(type));
-        //   },
-        // ),
       ),
     );
   }
