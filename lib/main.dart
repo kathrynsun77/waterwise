@@ -7,7 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
 main()  async {
-  String API= "http://10.33.133.168/water_wise/";
+  String API= "http://172.28.200.128:8000/water_wise/";
   WidgetsFlutterBinding.ensureInitialized();;
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
