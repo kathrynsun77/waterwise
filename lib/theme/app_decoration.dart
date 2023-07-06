@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 
-
 class AppDecoration {
   static BoxDecoration get white => BoxDecoration(
         color: ColorConstant.whiteA700,
       );
+
   static BoxDecoration get green => BoxDecoration(
-    color: ColorConstant.blueGray700,
-  );
+        color: ColorConstant.blueGray700,
+      );
 
   static BoxDecoration get fillIndigo800 => BoxDecoration(
-    color: ColorConstant.indigo800,
-  );
+        color: ColorConstant.indigo800,
+      );
+
   static BoxDecoration get fillBluegray400 => BoxDecoration(
-    color: ColorConstant.blueGray400,
-  );
+        color: ColorConstant.blueGray400,
+      );
+
   static BoxDecoration get fillBluegray40001 => BoxDecoration(
-    color: ColorConstant.blueGray40001,
-  );
+        color: ColorConstant.blueGray40001,
+      );
 
   static BoxDecoration get fillGray50 => BoxDecoration(
-    color: ColorConstant.gray50,
-  );
-
+        color: ColorConstant.gray50,
+      );
 
   static BoxDecoration get outlineGray300 => BoxDecoration(
-    border: Border.all(
-      color: ColorConstant.gray300,
-      width: getHorizontalSize(
-        1,
-      ),
-    ),
-  );
+        border: Border.all(
+          color: ColorConstant.gray300,
+          width: getHorizontalSize(
+            1,
+          ),
+        ),
+      );
 
   static BoxDecoration get gradientBluegray700Bluegray500 => BoxDecoration(
         gradient: LinearGradient(
@@ -50,76 +51,76 @@ class AppDecoration {
           ],
         ),
       );
+
   static BoxDecoration get fillBluegray4003d => BoxDecoration(
         color: ColorConstant.blueGray4003d,
       );
 
   static BoxDecoration get outlineBlack9003f1 => BoxDecoration(
-    color: ColorConstant.whiteA700,
-    boxShadow: [
-      BoxShadow(
-        color: ColorConstant.black9003f,
-        spreadRadius: getHorizontalSize(
-          2,
-        ),
-        blurRadius: getHorizontalSize(
-          2,
-        ),
-        offset: Offset(
-          4.35,
-          5.43,
-        ),
-      ),
-    ],
-  );
+        color: ColorConstant.whiteA700,
+        boxShadow: [
+          BoxShadow(
+            color: ColorConstant.black9003f,
+            spreadRadius: getHorizontalSize(
+              2,
+            ),
+            blurRadius: getHorizontalSize(
+              2,
+            ),
+            offset: Offset(
+              4.35,
+              5.43,
+            ),
+          ),
+        ],
+      );
 
   static BoxDecoration get outlineBlack9003f => BoxDecoration(
-    color: ColorConstant.whiteA700,
-    boxShadow: [
-      BoxShadow(
-        color: ColorConstant.black9003f,
-        spreadRadius: getHorizontalSize(
-          2,
-        ),
-        blurRadius: getHorizontalSize(
-          2,
-        ),
-        offset: Offset(
-          0,
-          4,
-        ),
-      ),
-    ],
-  );
+        color: ColorConstant.whiteA700,
+        boxShadow: [
+          BoxShadow(
+            color: ColorConstant.black9003f,
+            spreadRadius: getHorizontalSize(
+              2,
+            ),
+            blurRadius: getHorizontalSize(
+              2,
+            ),
+            offset: Offset(
+              0,
+              4,
+            ),
+          ),
+        ],
+      );
 
   static BoxDecoration get txtOutlineGray300 => BoxDecoration(
-    border: Border.all(
-      color: ColorConstant.gray300,
-      width: getHorizontalSize(
-        1,
-      ),
-    ),
-  );
+        border: Border.all(
+          color: ColorConstant.gray300,
+          width: getHorizontalSize(
+            1,
+          ),
+        ),
+      );
 
   static BoxDecoration get outlineBlack90019 => BoxDecoration(
-    color: ColorConstant.whiteA700,
-    boxShadow: [
-      BoxShadow(
-        color: ColorConstant.black90019,
-        spreadRadius: getHorizontalSize(
-          2,
-        ),
-        blurRadius: getHorizontalSize(
-          2,
-        ),
-        offset: Offset(
-          0,
-          2,
-        ),
-      ),
-    ],
-  );
-
+        color: ColorConstant.whiteA700,
+        boxShadow: [
+          BoxShadow(
+            color: ColorConstant.black90019,
+            spreadRadius: getHorizontalSize(
+              2,
+            ),
+            blurRadius: getHorizontalSize(
+              2,
+            ),
+            offset: Offset(
+              0,
+              2,
+            ),
+          ),
+        ],
+      );
 }
 
 class BorderRadiusStyle {
@@ -166,7 +167,6 @@ class BorderRadiusStyle {
       ),
     ),
   );
-
 }
 
 // Comment/Uncomment the below code based on your Flutter SDK version.

@@ -14,6 +14,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:intl/intl.dart';
+
 
 class ActivityTrendsScreen extends StatefulWidget {
   const ActivityTrendsScreen({Key? key}) : super(key: key);
@@ -23,9 +25,10 @@ class ActivityTrendsScreen extends StatefulWidget {
 }
 
 class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
-  String API= "http://172.28.200.128/water_wise/";
+  String API = "http://172.28.200.128/water_wise/";
   Map user = {};
   List<BarData> barDataList = [];
+  List<RegionData> regionData = [];
   List pipeData = [];
   String? pdfFlePath;
 
@@ -36,6 +39,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       user = jsonDecode(userString);
       fetchData();
       generatePdf();
+      fetchRegion();
       setState(() {});
     }
   }
@@ -63,15 +67,21 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
 
     final pdf = pw.Document();
     // Create a table
-    final tableHeaders = ['Pipe Name', 'Meter Value', 'Leak Status', 'Usage Status'];
+    final tableHeaders = [
+      'Pipe Name',
+      'Meter Value',
+      'Leak Status',
+      'Usage Status'
+    ];
     final tableRows = pipeData.map((e) {
       final pipeName = e['pipe_name'].toString();
       final meterValue = e['meter_value'].toString();
-      final leakStatus = int.parse(e['leak_status']) > 1 ? "Pipe Leaking" : "No Leak";
-      final usageStatus = int.parse(e['meter_value']) > 100 ? "High Usage" : "Low Usage";
+      final leakStatus =
+          int.parse(e['leak_status']) > 1 ? "Pipe Leaking" : "No Leak";
+      final usageStatus =
+          int.parse(e['meter_value']) > 100 ? "High Usage" : "Low Usage";
       return [pipeName, meterValue, leakStatus, usageStatus];
     }).toList();
-
 
 // Add table to the PDF
     pdf.addPage(
@@ -108,7 +118,6 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       ),
     );
 
-
     final output = await getApplicationDocumentsDirectory();
     final file = File("${output.path}/data.pdf");
     await file.writeAsBytes(await pdf.save());
@@ -132,7 +141,7 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
       List<BarData> data = [];
       for (var item in jsonData) {
         final barData = BarData(
-          label: item['transaction_date'],
+          label: DateFormat('MMMM').format(DateTime.parse(item['transaction_date'])),
           value: int.parse(item['usage_amount']),
         );
         data.add(barData);
@@ -147,64 +156,96 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
     }
   }
 
+  fetchRegion() async {
+    final response = await http.post(
+      Uri.parse(API + 'region_trends.php'),
+      body: {
+        'cust-id': user['customer_id'],
+      },
+    );
+    print('fetch region trends');
+    print(response.body);
+    if (response.statusCode == 200) {
+      // Parse the response data
+      final jsonData = jsonDecode(response.body);
+      List<RegionData> region = [];
+      for (var item in jsonData) {
+        final data = RegionData(
+          label: DateFormat('MMMM').format(DateTime.parse(item['bill_date'])),
+          value: double.parse(item['avg_usage']),
+        );
+        region.add(data);
+      }
+      setState(() {
+        regionData = region;
+      });
+      print('bar data list: ${regionData.length}');
+    } else {
+      // Error handling
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.whiteA700,
-        appBar: CustomAppBar(
-          height: getVerticalSize(60),
-          leadingWidth: 39,
-          leading: Container(
-            height: getVerticalSize(16),
-            width: getHorizontalSize(9),
-            margin: getMargin(left: 30, top: 26, bottom: 14),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                AppbarImage(
-                  height: getVerticalSize(16),
-                  width: getHorizontalSize(9),
-                  svgPath: ImageConstant.imgArrowleftIndigo800,
-                  margin: getMargin(top: 14, bottom: 2),
-                  onTap: () {
-                    onTapArrowleft(context);
-                  },
-                ),
-                AppbarImage(
-                  height: getVerticalSize(16),
-                  width: getHorizontalSize(9),
-                  svgPath: ImageConstant.imgArrowleftIndigo800,
-                ),
-              ],
-            ),
+        child: Scaffold(
+      backgroundColor: ColorConstant.whiteA700,
+      appBar: CustomAppBar(
+        height: getVerticalSize(60),
+        leadingWidth: 39,
+        leading: Container(
+          height: getVerticalSize(16),
+          width: getHorizontalSize(9),
+          margin: getMargin(left: 30, top: 26, bottom: 14),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              AppbarImage(
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                svgPath: ImageConstant.imgArrowleftIndigo800,
+                margin: getMargin(top: 14, bottom: 2),
+                onTap: () {
+                  onTapArrowleft(context);
+                },
+              ),
+              AppbarImage(
+                height: getVerticalSize(16),
+                width: getHorizontalSize(9),
+                svgPath: ImageConstant.imgArrowleftIndigo800,
+              ),
+            ],
           ),
-          actions: [
-            CustomButton(
-              height: getVerticalSize(32),
-              width: getHorizontalSize(90),
-              text: "Generate Report",
-              margin: getMargin(left: 18, top: 12, right: 18, bottom: 12),
-              variant: ButtonVariant.OutlineBluegray40001,
-              fontStyle: ButtonFontStyle.PoppinsMedium8,
-              onTap: () {
-                generatePdf();
-                if (pdfFlePath != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PdfViewerScreen(pdfFilePath: pdfFlePath!),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
         ),
-        body: RefreshIndicator(
+        actions: [
+          CustomButton(
+            height: getVerticalSize(32),
+            width: getHorizontalSize(90),
+            text: "Generate Report",
+            margin: getMargin(left: 18, top: 12, right: 18, bottom: 12),
+            variant: ButtonVariant.OutlineBluegray40001,
+            fontStyle: ButtonFontStyle.PoppinsMedium8,
+            onTap: () {
+              generatePdf();
+              if (pdfFlePath != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        PdfViewerScreen(pdfFilePath: pdfFlePath!),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: RefreshIndicator(
           onRefresh: () async {
             fetchData();
+            fetchRegion();
           },
           child: Container(
             width: double.maxFinite,
@@ -255,18 +296,32 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: getPadding(
+                      top: 20,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      "Personal Usage",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: AppStyle.txtPoppinsSemiBold18Bluegray77.copyWith(
+                        letterSpacing: getHorizontalSize(1.0),
+                      ),
+                    ),
+                  ),
                   Container(
                     margin: getMargin(
                       left: 1,
-                      top: 30,
+                      top: 10,
                       right: 7,
                       bottom: 5,
                     ),
                     padding: getPadding(
                       left: 24,
-                      top: 25,
+                      top: 10,
                       right: 24,
-                      bottom: 25,
+                      bottom: 30,
                     ),
                     decoration: AppDecoration.outlineBlack9003f1.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder8,
@@ -298,13 +353,70 @@ class _ActivityTrendsScreenState extends State<ActivityTrendsScreen> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: getPadding(
+                      top: 20,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      "Regional Average Usage",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: AppStyle.txtPoppinsSemiBold18Bluegray77.copyWith(
+                        letterSpacing: getHorizontalSize(1.0),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: getMargin(
+                      left: 1,
+                      top: 10,
+                      right: 7,
+                      bottom: 5,
+                    ),
+                    padding: getPadding(
+                      left: 24,
+                      top: 25,
+                      right: 24,
+                      bottom: 25,
+                    ),
+                    decoration: AppDecoration.outlineBlack9003f1.copyWith(
+                      borderRadius: BorderRadiusStyle.roundedBorder8,
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: DChartBar(
+                        data: [
+                          {
+                            'id': 'Bar',
+                            'data': regionData.map(
+                              (e) {
+                                return {
+                                  'domain': e.label,
+                                  'measure': e.value,
+                                };
+                              },
+                            ).toList(),
+                          },
+                        ],
+                        domainLabelPaddingToAxisLine: 16,
+                        axisLineTick: 2,
+                        axisLinePointTick: 2,
+                        axisLinePointWidth: 10,
+                        axisLineColor: Color(0xFF6F9C95),
+                        measureLabelPaddingToAxisLine: 16,
+                        barColor: (barData, index, id) => Color(0xFF6F9C95),
+                        showBarValue: true,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
       ),
-    );
+    ));
   }
 
   void onTapUsage(BuildContext context) {
@@ -321,6 +433,16 @@ class BarData {
   final int value;
 
   BarData({
+    required this.label,
+    required this.value,
+  });
+}
+
+class RegionData {
+  final String label;
+  final double value;
+
+  RegionData({
     required this.label,
     required this.value,
   });
@@ -349,7 +471,8 @@ class PdfViewerScreen extends StatelessWidget {
                 width: getHorizontalSize(9),
                 svgPath: ImageConstant.imgArrowleftIndigo800,
                 onTap: () {
-                  Navigator.maybePop(context); // Use Navigator.maybePop to handle back navigation
+                  Navigator.maybePop(
+                      context); // Use Navigator.maybePop to handle back navigation
                 },
               ),
               AppbarImage(

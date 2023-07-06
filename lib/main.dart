@@ -16,16 +16,16 @@ main()  async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final fcmToken1 = await FirebaseMessaging.instance.getToken();
-    final response = await http.post(
-        Uri.parse(API+'sendMessage'),
-        body: {
-          'regis': fcmToken1.toString(),
-        });
-    if (response.statusCode == 200) {
-      // Decode the JSON response
-      print ('token: ${fcmToken1}');
-      print(response.body);
-    }
+    // final response = await http.post(
+    //     Uri.parse(API+'sendMessage'),
+    //     body: {
+    //       'regis': fcmToken1.toString(),
+    //     });
+    // if (response.statusCode == 200) {
+    //   // Decode the JSON response
+    //   print ('token: ${fcmToken1}');
+    //   print(response.body);
+    // }
   runApp(MyApp());
 }
 
