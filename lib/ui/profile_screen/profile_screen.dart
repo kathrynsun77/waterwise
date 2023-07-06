@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
-// import 'package:WaterWise/ui/home/home__screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_circleimage.dart';
 import '../../app_bar/appbar_image.dart';
@@ -14,11 +13,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-
-import '../app_navigation_screen/app_navigation_screen.dart';
-import '../app_navigation_screen/app_navigation_screen.dart';
-import '../app_navigation_screen/app_navigation_screen.dart';
-import '../app_navigation_screen/app_navigation_screen.dart';
 // import '../../widget/custom_text_form_field.dart';
 // import '../update_account_screen/update_account_screen.dart';
 
