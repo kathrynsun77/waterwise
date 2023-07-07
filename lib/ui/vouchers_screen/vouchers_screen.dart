@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
+import '../../core/utils/app_format.dart';
 
 class VouchersScreen extends StatefulWidget {
   const VouchersScreen({Key? key}) : super(key: key);
@@ -50,7 +51,6 @@ class _VouchersScreenState extends State<VouchersScreen> {
     if (response.statusCode == 200) {
       // Decode the JSON response
       print(response.body);
-      // List list = jsonDecode(response.body);
       points = json.decode(response.body);
       setState(() {});
     } else {
@@ -78,26 +78,32 @@ class _VouchersScreenState extends State<VouchersScreen> {
     }
   }
 
-  void onStepChanged(int currentStep) async {
+  void onStepChanged() async {
+    Map point = points[0];
+    int point_status = int.parse(point['point_status']);
+    DateTime pointDate = DateTime.parse(point['updated_at']).toLocal();
     DateTime currentDate = DateTime.now();
+    String pointDateString = AppFormat.justDate(pointDate);
+    String currentDateString = AppFormat.justDate(currentDate);
     // Check if the current date is different from the last check-in date
-    if (currentDate.day != lastCheckInDate.day) {
-      String data = currentStep == 7 ? '0.4' : '0.1';
+    if (pointDateString != currentDateString) {
+      String data = int.parse(points[0]['point_status']) == 7 ? '0.4' : '0.1';
 
       final response = await http.post(
         Uri.parse(API+'check_in.php'),
         body: {
           'cust-id': user['customer_id'],
           'value': data,
+          'status': (point_status+1)>7 ? '1' : (point_status+1).toString(),
         },
       );
 
       if (response.statusCode == 200) {
         // Data sent successfully
+        fetchPoints();
         print('Data sent to API: $data');
-        setState(() {
-          lastCheckInDate = currentDate; // Update the last check-in date
-        });
+        // setState(() {
+        // });
       } else {
         // Failed to send data
         print('Failed to send data to API');
@@ -196,10 +202,11 @@ class _VouchersScreenState extends State<VouchersScreen> {
                         ),
                         child: Column(
                           children: [
-                            ProgressBarSteppers(
-                              checkInClicked: checkInClicked,
-                              onStepChanged: onStepChanged,
-                            ),
+                            // ProgressBarSteppers(
+                            //   checkInClicked: checkInClicked,
+                            //   point: points[0]
+                            // ),
+                            progressBarStepper(),
                             SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,8 +236,7 @@ class _VouchersScreenState extends State<VouchersScreen> {
                                       checkInClicked = true;
                                     });
                                     if (onStepChanged != null) {
-                                      onStepChanged(
-                                          7); // Pass the current step as an argument
+                                      onStepChanged(); // Pass the current step as an argument
                                     }
                                   },
                                 ),
@@ -287,27 +293,9 @@ class _VouchersScreenState extends State<VouchersScreen> {
       ),
     ));
   }
-}
 
-onTapMyvouchers(BuildContext context) {
-  Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
-}
-
-class ProgressBarSteppers extends StatelessWidget {
-  final bool checkInClicked;
-  final Function(int) onStepChanged;
-
-  ProgressBarSteppers({
-    required this.checkInClicked,
-    required this.onStepChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    DateTime lastCheckInDate = DateTime.now();
-    DateTime currentDate = DateTime.now();
-    int currentStep = currentDate.difference(lastCheckInDate).inDays + 1;
-
+  progressBarStepper() {
+    int currentStep = int.parse(points[0]['point_status']);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -321,8 +309,47 @@ class ProgressBarSteppers extends StatelessWidget {
           ),
       ],
     );
+
   }
 }
+
+onTapMyvouchers(BuildContext context) {
+  Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+}
+
+// class ProgressBarSteppers extends StatelessWidget {
+//   final bool checkInClicked;
+//   // final Function(int) onStepChanged;
+//   final Map point;
+//
+//   ProgressBarSteppers({
+//     required this.checkInClicked,
+//     // required this.onStepChanged,
+//     required this.point,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     DateTime lastCheckInDate = DateTime.now();
+//     DateTime currentDate = DateTime.now();
+//     // int currentStep = currentDate.difference(lastCheckInDate).inDays + 1;
+//     int currentStep = int.parse(point['point_status']);
+//
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//       children: [
+//         for (int i = 1; i <= 7; i++)
+//           CircleAvatar(
+//             backgroundColor: i <= currentStep ? Color(0xFF6F9C95) : Colors.grey,
+//             child: Text(
+//               i == 7 ? '+0.4' : '+0.1',
+//               style: TextStyle(color: Colors.white),
+//             ),
+//           ),
+//       ],
+//     );
+//   }
+// }
 
 class PointHistoryItem extends StatelessWidget {
   final String text;
