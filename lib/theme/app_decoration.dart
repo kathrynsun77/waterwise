@@ -6,6 +6,25 @@ class AppDecoration {
         color: ColorConstant.whiteA700,
       );
 
+  static BoxDecoration get outlineBluegray700 => BoxDecoration(
+    color: ColorConstant.whiteA700,
+    border: Border.all(
+      color: ColorConstant.blueGray700,
+      width: getHorizontalSize(
+        1,
+      ),
+    ),
+  );
+
+  static BoxDecoration get txtOutlineBluegray100 => BoxDecoration(
+    border: Border.all(
+      color: ColorConstant.blueGray100,
+      width: getHorizontalSize(
+        1,
+      ),
+    ),
+  );
+
   static BoxDecoration get green => BoxDecoration(
         color: ColorConstant.blueGray700,
       );
@@ -152,6 +171,18 @@ class BorderRadiusStyle {
   static BorderRadius txtRoundedBorder8 = BorderRadius.circular(
     getHorizontalSize(
       8,
+    ),
+  );
+
+  static BorderRadius roundedBorder14 = BorderRadius.circular(
+    getHorizontalSize(
+      14,
+    ),
+  );
+
+  static BorderRadius txtCircleBorder11 = BorderRadius.circular(
+    getHorizontalSize(
+      11,
     ),
   );
 

@@ -344,4 +344,106 @@ class AppStyle {
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
+
+  static TextStyle txtPoppinsSemiBold1306 = TextStyle(
+    color: ColorConstant.gray900,
+    fontSize: getFontSize(
+      13.06,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsSemiBold1143 = TextStyle(
+    color: ColorConstant.blueGray700,
+    fontSize: getFontSize(
+      11.43,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsRegular1143 = TextStyle(
+    color: ColorConstant.blueGray400,
+    fontSize: getFontSize(
+      11.43,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+  );
+
+
+  static TextStyle txtPlusJakartaSansRomanSemiBold12 = TextStyle(
+    color: ColorConstant.gray900,
+    fontSize: getFontSize(
+      12,
+    ),
+    fontFamily: 'Plus Jakarta Sans',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsRegular32 = TextStyle(
+    color: ColorConstant.gray900,
+    fontSize: getFontSize(
+      32,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle txtPoppinsRegular1633 = TextStyle(
+    color: ColorConstant.gray900,
+    fontSize: getFontSize(
+      16.33,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle txtPoppinsSemiBold16 = TextStyle(
+    color: ColorConstant.gray600,
+    fontSize: getFontSize(
+      16,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsSemiBold1143Gray600 = TextStyle(
+    color: ColorConstant.gray600,
+    fontSize: getFontSize(
+      11.43,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsSemiBold1143Gray900 = TextStyle(
+    color: ColorConstant.gray900,
+    fontSize: getFontSize(
+      11.43,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsSemiBold10 = TextStyle(
+    color: ColorConstant.gray600,
+    fontSize: getFontSize(
+      10,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtPoppinsRegular14Gray500 = TextStyle(
+    color: ColorConstant.gray500,
+    fontSize: getFontSize(
+      14,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+  );
+
+
 }

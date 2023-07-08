@@ -84,5 +84,29 @@ class ImageConstant {
 
   static String imgListrik1 = 'assets/images/img_listrik1.svg';
 
+  static String imgIcbaselineplusGray900 =
+      'assets/images/img_icbaselineplus_gray_900.svg';
+
+  static String imgIcbaselineplus = 'assets/images/img_icbaselineplus.svg';
+
+  static String imgChopardperfume = 'assets/images/img_chopardperfume.png';
+
+  static String imgIcbaselineplusWhiteA700 =
+      'assets/images/img_icbaselineplus_white_a700.svg';
+
+  static String imgArrowleftGray900 =
+      'assets/images/img_arrowleft_gray_900.svg';
+
+  static String imgIonbagoutline = 'assets/images/img_ionbagoutline.svg';
+
+  static String imgIcbaselineplusGray90019x19 =
+      'assets/images/img_icbaselineplus_gray_900_19x19.svg';
+
+  static String imgSearch = 'assets/images/img_search.svg';
+
+  static String imgImage1 = 'assets/images/img_image1.png';
+
+  static String imgIcbaselineplusGray90001 =
+      'assets/images/img_icbaselineplus_gray_900_01.svg';
 
 }

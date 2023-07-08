@@ -64,6 +64,8 @@ class ColorConstant {
 
   static Color indigo800 = fromHex('#274591');
 
+  static Color gray900 = fromHex('#202020');
+
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');

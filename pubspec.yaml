@@ -32,8 +32,8 @@ dependencies:
   mockito: ^5.4.2
   awesome_notifications: ^0.7.4+1
   awesome_notifications_fcm: ^0.7.4+1
+  flutter_switch: ^0.3.2
 
-#  d_method: 0.2.1
 
 
 dev_dependencies:
@@ -46,7 +46,7 @@ flutter:
     - assets/
     - assets/images/
   fonts: 
-    - family: Poppins
+    - family: Poppins, Plus Jakarta Sans
       fonts: 
         - asset: assets/fonts/PoppinsSemiBold.ttf
           weight: 600
@@ -54,3 +54,5 @@ flutter:
           weight: 400
         - asset: assets/fonts/PoppinsMedium.ttf
           weight: 500
+        - asset: assets/fonts/PlusJakartaSansRomanSemiBold.ttf
+          weight: 600
