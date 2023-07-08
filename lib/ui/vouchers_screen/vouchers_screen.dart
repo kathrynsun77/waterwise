@@ -70,7 +70,6 @@ class _VouchersScreenState extends State<VouchersScreen> {
     if (response.statusCode == 200) {
       // Decode the JSON response
       print(response.body);
-      // List list = jsonDecode(response.body);
       allBill = json.decode(response.body);
       setState(() {});
     } else {
