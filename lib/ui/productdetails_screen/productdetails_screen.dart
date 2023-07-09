@@ -4,7 +4,15 @@ import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:WaterWise/widget/custom_button2.dart';
 
-class ProductdetailsScreen extends StatelessWidget {
+class ProductdetailsScreen extends StatefulWidget {
+  const ProductdetailsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProductdetailsScreen> createState() => _ProductdetailsScreenState();
+}
+
+class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

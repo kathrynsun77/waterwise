@@ -3,8 +3,14 @@ import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 
-class MarketplaceScreen extends StatelessWidget {
+class MarketplaceScreen extends StatefulWidget {
+  const MarketplaceScreen({Key? key}) : super(key: key);
+
   @override
+  State<MarketplaceScreen> createState() => _MarketplaceScreenState();
+}
+
+class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(

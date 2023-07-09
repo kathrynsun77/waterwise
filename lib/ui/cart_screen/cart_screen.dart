@@ -7,8 +7,14 @@ import 'package:WaterWise/widget/custom_button2.dart';
 import 'package:WaterWise/widget/custom_switch.dart';
 import 'package:WaterWise/widget/custom_text_form_field2.dart';
 
-// ignore_for_file: must_be_immutable
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  const CartScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
   TextEditingController itemscounterController = TextEditingController();
 
   bool isSelectedSwitch = false;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../ui/app_navigation_screen/app_navigation_screen.dart';
 import '../ui/bottom_bar/bottom_bar_menu.dart';
 import '../ui/home/home__screen.dart';
@@ -21,9 +20,9 @@ import '../ui/estimate_screen/estimate_screen.dart';
 import '../ui/popup_screen/popup_screen.dart';
 import '../ui/vouchers_screen/vouchers_screen.dart';
 import '../ui/receipt_screen/receipt_screen.dart';
-
-
-
+import '../ui/marketplace_screen/marketplace_screen.dart';
+import '../ui/cart_screen/cart_screen.dart';
+import '../ui/productdetails_screen/productdetails_screen.dart';
 
 
 class AppRoutes {
@@ -48,10 +47,9 @@ class AppRoutes {
   static const String bottomBarMenu = '/bottom_bar_menu';
   static const String vouchersScreen = '/vouchers_screen';
   static const String receiptScreen = '/receipt_screen';
-
-
-
-
+  static const String productdetailsScreen = '/productdetails_screen';
+  static const String marketplaceScreen = '/marketplace_screen';
+  static const String cartScreen = '/cart_screen';
 
   static Map<String, WidgetBuilder> routes = {
     introScreen: (context) => IntroScreen(),
@@ -75,10 +73,9 @@ class AppRoutes {
     bottomBarMenu: (context) => BottomBarMenu(),
     vouchersScreen: (context) => VouchersScreen(),
     receiptScreen: (context) => ReceiptScreen(),
-
-
-
-
+    marketplaceScreen: (context) => MarketplaceScreen(),
+    productdetailsScreen: (context) => ProductdetailsScreen(),
+    cartScreen: (context) => CartScreen(),
 
   };
 }

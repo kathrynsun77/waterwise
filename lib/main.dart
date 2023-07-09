@@ -3,19 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:WaterWise/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart' as http;
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:http/http.dart' as http;
 
 main()  async {
-  String API= "http://172.28.200.128:8000/water_wise/";
-  WidgetsFlutterBinding.ensureInitialized();;
+  // String API= "http://172.28.200.128:8000/water_wise/";
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final fcmToken1 = await FirebaseMessaging.instance.getToken();
+  // final fcmToken1 = await FirebaseMessaging.instance.getToken();
     // final response = await http.post(
     //     Uri.parse(API+'sendMessage'),
     //     body: {
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'WaterWise',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splashScreen,
+      initialRoute: AppRoutes.appNavigationScreen,
       routes: AppRoutes.routes,
     );
   }

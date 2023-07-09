@@ -81,7 +81,7 @@ class AppNavigationScreen extends StatelessWidget {
                                                                       bottom:
                                                                           10),
                                                               child: Text(
-                                                                  "before login",
+                                                                  "Market",
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -125,7 +125,7 @@ class AppNavigationScreen extends StatelessWidget {
                                                                       bottom:
                                                                           10),
                                                               child: Text(
-                                                                  "Login",
+                                                                  "Cart",
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -169,7 +169,7 @@ class AppNavigationScreen extends StatelessWidget {
                                                                       bottom:
                                                                           10),
                                                               child: Text(
-                                                                  "starting",
+                                                                  "Product",
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
@@ -196,14 +196,14 @@ class AppNavigationScreen extends StatelessWidget {
   }
 
   onTapBeforelogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.introScreen);
+    Navigator.pushNamed(context, AppRoutes.marketplaceScreen);
   }
 
   onTapLogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.loginScreen);
+    Navigator.pushNamed(context, AppRoutes.cartScreen);
   }
 
   onTapStarting(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.splashScreen);
+    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
   }
 }
