@@ -31,7 +31,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                     child: Text("Marketplace",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
-                        style: AppStyle.txtPoppinsSemiBold18
+                        style: AppStyle.txtPoppinsSemiBold2000
                             .copyWith(letterSpacing: getHorizontalSize(1.0)))),
                 styleType: Style.bgFillBluegray400),
             body: SizedBox(
