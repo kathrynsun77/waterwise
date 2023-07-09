@@ -30,7 +30,7 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                       AppbarImage(
                           height: getVerticalSize(14),
                           width: getHorizontalSize(7),
-                          svgPath: ImageConstant.imgArrowleft,
+                          svgPath:  ImageConstant.imgArrowleftIndigo800,
                           margin: getMargin(left: 8, right: 9, bottom: 16),
                           onTap: () {
                             onTapArrowleft1(context);
@@ -38,7 +38,7 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                       AppbarImage(
                           height: getSize(24),
                           width: getSize(24),
-                          svgPath: ImageConstant.imgArrowleftGray900,
+                          svgPath:  ImageConstant.imgArrowleftIndigo800,
                           margin: getMargin(top: 6),
                           onTap: () {
                             onTapArrowleftone(context);
