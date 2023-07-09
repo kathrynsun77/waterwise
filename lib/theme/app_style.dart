@@ -303,7 +303,7 @@ class AppStyle {
   static TextStyle txtPoppinsSemiBold20 = TextStyle(
     color: ColorConstant.gray800,
     fontSize: getFontSize(
-      20,
+      25,
     ),
     fontFamily: 'Poppins',
     fontWeight: FontWeight.w600,

@@ -5,7 +5,6 @@ import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:WaterWise/widget/custom_button2.dart';
 import 'package:WaterWise/widget/custom_switch.dart';
-import 'package:WaterWise/widget/custom_text_form_field2.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -15,7 +14,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  TextEditingController itemscounterController = TextEditingController();
 
   bool isSelectedSwitch = false;
 
@@ -37,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
                       AppbarImage(
                           height: getVerticalSize(14),
                           width: getHorizontalSize(7),
-                          svgPath: ImageConstant.imgArrowleft,
+                          svgPath:  ImageConstant.imgArrowleftIndigo800,
                           margin: getMargin(left: 8, right: 9, bottom: 16),
                           onTap: () {
                             onTapArrowleft2(context);
@@ -45,7 +43,7 @@ class _CartScreenState extends State<CartScreen> {
                       AppbarImage(
                           height: getSize(24),
                           width: getSize(24),
-                          svgPath: ImageConstant.imgArrowleftGray900,
+                          svgPath:  ImageConstant.imgArrowleftIndigo800,
                           margin: getMargin(top: 6),
                           onTap: () {
                             onTapArrowleftone1(context);
@@ -61,13 +59,13 @@ class _CartScreenState extends State<CartScreen> {
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
                           style: AppStyle.txtPoppinsSemiBold20),
-                      CustomTextFormField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: itemscounterController,
-                          hintText: "2 Items",
-                          margin: getMargin(left: 6, top: 11, right: 6),
-                          textInputAction: TextInputAction.done),
+                      Padding(
+                        padding: getPadding(left: 6, top: 31),
+                        child: Text("2 Items",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtPoppinsSemiBold20),
+                      ),
                       Padding(
                           padding: getPadding(left: 6, top: 31),
                           child: ListView.separated(
