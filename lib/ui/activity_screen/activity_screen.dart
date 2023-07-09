@@ -40,10 +40,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
     }
   }
 
-  void requestTech() async {
+  void requestTech(int id) async {
     var url = API+'request_tech.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
+      'pipe': id,
     });
     if (response.statusCode == 200) {
       print(response.body);
@@ -301,7 +302,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                 child: CustomButton(
                                                   height: getVerticalSize(32),
                                                   width: getHorizontalSize(100),
-                                                  text: isButtonPressed ? "Technician Requested" : "Request Technician",
+                                                  text: isButtonPressed || int.parse(item['pending']) > 0 ? "Help is on the way" : "Request Technician",
                                                   onTap: isButtonPressed
                                                       ? null
                                                       : () {
@@ -310,7 +311,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                                     });
                                                     // onTapRequestTech(context);
                                                     print('Button tapped'); // Test statement
-                                                    requestTech();
+                                                    requestTech(int.parse(item['pipe_id']));
                                                   },
                                                   variant: ButtonVariant.OutlineRed400,
                                                   fontStyle: ButtonFontStyle.PoppinsMedium8Red400,
@@ -397,9 +398,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   onTapImgArrowleft(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
   }
-  onTapRequestTech(BuildContext context) {
-    requestTech();
-  }
+
   onTapTrends(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.activityTrendsScreen);
   }
