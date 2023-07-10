@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/app_bar/appbar_image.dart';
@@ -18,13 +17,15 @@ class ProductdetailsScreen extends StatefulWidget {
 
 class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
   late int productId;
-  String API= "http://172.28.200.128/water_wise/";
+  String API = "http://172.28.200.128/water_wise/";
 
   @override
   void initState() {
     super.initState();
     productId = widget.productId;
+    fetchProducts();
   }
+
 
   List products = [];
   fetchProducts() async {
@@ -76,22 +77,37 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                           })
                     ]))),
             body: SingleChildScrollView(
-              child: Container(
+              child: ListView.builder(
+              itemCount: products.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+              Map item = products[index];
+              return Container(
                   width: double.maxFinite,
                   padding: getPadding(left: 15, top: 25, right: 15, bottom: 25),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        CustomImageView(
+                            svgPath: ImageConstant.imgIonbagoutline,
+                            height: getVerticalSize(24),
+                            width: getHorizontalSize(23),
+                            margin: getMargin(left: 300, top: 5),
+                            onTap: () {
+                              onTapImgIonbagoutline(context);
+                            }),
                         Padding(
                             padding: getPadding(left: 9, top: 20),
-                            child: Text("Pipa Abu-abu",
+                            child: Text(item['product_name'],
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                                style: AppStyle.txtPoppinsRegular32)),
+                                style: AppStyle.txtPoppinsRegular32)
+                        ),
                         Padding(
                             padding: getPadding(left: 9, top: 5),
-                            child: Text("249.00",
+                            child: Text("\$${item['product_price']}",
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtPoppinsSemiBold16)),
@@ -137,63 +153,37 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                         Container(
                             width: getHorizontalSize(329),
                             margin: getMargin(top: 15, right: 15),
-                            child: Text(
-                                "Paying tribute to this plant that is unique in the \nworld of perfumery, Dora Baghriche has played \nwith the rich, multiple nuances of its flowers, \nleaves, twigs and fruits.",
+                            child: Text("${item['product_description']}",
                                 maxLines: null,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtPoppinsRegular14Gray500)),
-                        Container(
-                            width: getHorizontalSize(156),
-                            margin: getMargin(top: 14),
-                            child: RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: "Expiry Date:",
-                                      style: TextStyle(
-                                          color: ColorConstant.gray600,
-                                          fontSize: getFontSize(12),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w400)),
-                                  TextSpan(
-                                      text: " 15 March 2027\n",
-                                      style: TextStyle(
-                                          color: ColorConstant.gray900,
-                                          fontSize: getFontSize(12),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600)),
-                                  TextSpan(
-                                      text: "Country of Origin",
-                                      style: TextStyle(
-                                          color: ColorConstant.gray600,
-                                          fontSize: getFontSize(12),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w400)),
-                                  TextSpan(
-                                      text: ": Italy",
-                                      style: TextStyle(
-                                          color: ColorConstant.gray900,
-                                          fontSize: getFontSize(12),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600))
-                                ]),
-                                textAlign: TextAlign.left))
-                      ])),
+                        CustomButton(
+                          text: "Add to cart",
+                          fontStyle: ButtonFontStyle.PoppinsSemiBold14WhiteA700,
+                          height: 40,
+                          prefixWidget: Container(
+                            margin: EdgeInsets.only(right: 8),
+                            child: CustomImageView(
+                              svgPath: ImageConstant.imgIcbaselineplusWhiteA700,
+                            ),
+                          ),
+                          onTap: () {
+                            // Add your logic here
+                          },
+                        ),
+                      ]));
+            }
             ),
-
-            bottomNavigationBar: CustomButton(
-                height: getVerticalSize(56),
-                text: "Add to cart",
-                margin: getMargin(left: 15, right: 15, bottom: 42),
-                padding: ButtonPadding.PaddingT17,
-                fontStyle: ButtonFontStyle.PoppinsSemiBold14WhiteA700,
-                prefixWidget: Container(
-                    margin: getMargin(right: 8),
-                    child: CustomImageView(
-                        svgPath: ImageConstant.imgIcbaselineplusWhiteA700)))));
+            )
+        )
+    );
   }
 
   onTapArrowleft1(BuildContext context) {
     Navigator.pop(context);
+  }
+  onTapImgIonbagoutline(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.cartScreen);
   }
 
   onTapArrowleftone(BuildContext context) {
