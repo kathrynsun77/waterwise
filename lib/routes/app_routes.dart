@@ -74,7 +74,7 @@ class AppRoutes {
     vouchersScreen: (context) => VouchersScreen(),
     receiptScreen: (context) => ReceiptScreen(),
     marketplaceScreen: (context) => MarketplaceScreen(),
-    productdetailsScreen: (context) => ProductdetailsScreen(),
+    productdetailsScreen: (context) => ProductdetailsScreen(productId: 1,),
     cartScreen: (context) => CartScreen(),
 
   };

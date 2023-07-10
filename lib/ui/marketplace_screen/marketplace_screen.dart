@@ -23,27 +23,17 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   @override
   void initState() {
     super.initState();
-    fetchProductData();
+    fetchProducts();
   }
 
-  Future<List<Product>> fetchProducts() async {
-    final response = await http.get(Uri.parse('https://your-api-url/products'));
+  fetchProducts() async {
+    final response = await http.get(Uri.parse('http://172.28.200.128/water_wise/marketplace.php'));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body);
-      return responseData.map((json) => Product.fromJson(json)).toList();
+      products = responseData.map((json) => Product.fromJson(json)).toList();
+      setState(() {});
     } else {
       throw Exception('Failed to fetch products');
-    }
-  }
-
-  Future<void> fetchProductData() async {
-    try {
-      final productList = await fetchProducts();
-      setState(() {
-        products = productList;
-      });
-    } catch (e) {
-      // Handle error
     }
   }
 
@@ -97,7 +87,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                               onTapImgIonbagoutline(context);
                                             }),
                                         Padding(
-                                          padding: getPadding(left:0),
+                                          padding: getPadding(left:10),
                                           child:
                                           SearchBarAnimation(
                                             textEditingController: searchController,
@@ -110,7 +100,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                             },
                                             onCollapseComplete: () {
                                               debugPrint(
-                                                  'Nothing');
+                                                  'Collapsed');
                                             },
                                             onPressButton: (isSearchBarOpens) {
                                               debugPrint(
@@ -134,49 +124,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                           ),
                                         ),
                                       ])),
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                      padding: getPadding(
-                                          left: 23, top: 23, right: 13),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                                padding: getPadding(top: 1),
-                                                child: Text("Pipe",
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: AppStyle
-                                                        .txtPoppinsSemiBold1143)),
-                                            Spacer(flex: 52),
-                                            Padding(
-                                                padding: getPadding(bottom: 1),
-                                                child: Text("Tools",
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: AppStyle
-                                                        .txtPoppinsRegular1143)),
-                                            Spacer(flex: 47),
-                                            Padding(
-                                                padding: getPadding(bottom: 1),
-                                                child: Text("Others",
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: AppStyle
-                                                        .txtPoppinsRegular1143))
-                                          ]))),
-                              SizedBox(
-                                  width: getHorizontalSize(90),
-                                  child: Divider(
-                                      height: getVerticalSize(3),
-                                      thickness: getVerticalSize(3),
-                                      color: ColorConstant.blueGray700,
-                                      indent: getHorizontalSize(17))),
                               Align(
                                   alignment: Alignment.centerRight,
                                   child: Container(
@@ -215,9 +162,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                                     padding:
                                                     getPadding(bottom: 142),
                                                     child: SizedBox(
-                                                        width:
-                                                        getHorizontalSize(
-                                                            281),
+                                                        width: getHorizontalSize(281),
                                                     )
                                                 )
                                             ),
@@ -247,7 +192,11 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                             child: ListTile(
                                               title: Text(product.name),
                                               subtitle: Text('Price: \$${product.price.toStringAsFixed(2)}'),
-                                              leading: Image.network(product.photoUrl),
+                                              leading: Image(
+                                                image: AssetImage('assets/images/img_girl.png'),
+                                          ),
+
+                                          // Image.network(product.photoUrl),
                                             ),
                                           );
                                         },
@@ -267,38 +216,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
   onTapImgIonbagoutline(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.cartScreen);
-  }
-
-  onTapColumnpipaabuab(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab1(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab2(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab3(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab4(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab5(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab6(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
-  }
-
-  onTapColumnpipaabuab7(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.productdetailsScreen);
   }
 
   onTapArrowleft(BuildContext context) {
@@ -321,10 +238,10 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      name: json['name'],
-      price: json['price'],
-      photoUrl: json['photoUrl'],
+      id: int.parse(json['product_id']),
+      name: json['product_name'],
+      price: double.parse(json['product_price']),
+      photoUrl: json['filenames'],
     );
   }
 }
