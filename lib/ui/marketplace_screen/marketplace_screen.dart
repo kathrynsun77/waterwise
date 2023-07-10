@@ -17,8 +17,9 @@ class MarketplaceScreen extends StatefulWidget {
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
   TextEditingController searchController = TextEditingController();
-
+  String API = "http://172.28.200.128/water_wise/";
   List<Product> products = [];
+  List<Product> searchProducts = [];
 
   @override
   void initState() {
@@ -27,10 +28,26 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   }
 
   fetchProducts() async {
-    final response = await http.get(Uri.parse('http://172.28.200.128/water_wise/marketplace.php'));
+    final response = await http.get(Uri.parse(API+'marketplace.php'));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body);
       products = responseData.map((json) => Product.fromJson(json)).toList();
+      setState(() {});
+    } else {
+      throw Exception('Failed to fetch products');
+    }
+  }
+
+
+  searchProduct() async {
+    final response = await http.post(
+        Uri.parse(API+'search_product.php'),
+        body: {
+          'keyword': searchController.text,
+        });
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body);
+      searchProducts = responseData.map((json) => Product.fromJson(json)).toList();
       setState(() {});
     } else {
       throw Exception('Failed to fetch products');
