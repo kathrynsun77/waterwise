@@ -18,6 +18,7 @@ class ProductdetailsScreen extends StatefulWidget {
 class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
   late int productId;
   String API = "http://172.28.200.128/water_wise/";
+  int quantity = 1;
 
   @override
   void initState() {
@@ -129,19 +130,39 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                                   svgPath: ImageConstant.imgIcbaselineplus,
                                   height: getSize(24),
                                   width: getSize(24),
+                                  onTap: () {
+                                    setState(() {
+                                      if (quantity > 1) {
+                                        quantity--;  // Decrement the quantity value, but ensure it doesn't go below 1
+                                      }
+                                    });
+                                  },
                                   margin: getMargin(top: 2, bottom: 2)),
                               CustomButton(
-                                  height: getVerticalSize(28),
-                                  width: getHorizontalSize(46),
-                                  text: "1",
-                                  margin: getMargin(left: 8),
-                                  variant: ButtonVariant.OutlineBluegray100,
-                                  shape: ButtonShape.CircleBorder14),
+                                height: getVerticalSize(28),
+                                width: getHorizontalSize(46),
+                                text: quantity.toString(),  // Display the current quantity value
+                                margin: getMargin(left: 8),
+                                variant: ButtonVariant.OutlineBluegray100,
+                                shape: ButtonShape.CircleBorder14,
+                                onTap: () {
+                                  setState(() {
+                                    quantity.toString();
+                                  });
+                                },
+                              ),
                               CustomImageView(
                                   svgPath:
                                   ImageConstant.imgIcbaselineplusGray90001,
                                   height: getSize(24),
                                   width: getSize(24),
+                                onTap: () {
+                                  setState(() {
+                                    if (quantity >= 1) {
+                                      quantity++;
+                                    }
+                                  });
+                                },
                                   margin: getMargin(left: 8, top: 2, bottom: 2))
                             ])),
                         Padding(
