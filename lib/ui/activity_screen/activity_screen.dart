@@ -10,7 +10,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
-
 import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
@@ -44,7 +43,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     var url = API+'request_tech.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
-      'pipe': id,
+      'pipe': id.toString(),
     });
     if (response.statusCode == 200) {
       print(response.body);
