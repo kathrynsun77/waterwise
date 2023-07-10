@@ -138,8 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   "Points",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  style: AppStyle.txtPoppinsRegular14.copyWith(letterSpacing: getHorizontalSize(1.0))
-                              ),
+                                  style: AppStyle.txtPoppinsSemiBold2000.copyWith(letterSpacing: getHorizontalSize(1.0))                              ),
                               Text(
                                   "1 Point = \$1",
                                   overflow: TextOverflow.ellipsis,

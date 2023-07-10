@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'package:WaterWise/ui/productdetails_screen/productdetails_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
+import 'package:searchbar_animation/searchbar_animation.dart';
 
 class MarketplaceScreen extends StatefulWidget {
   const MarketplaceScreen({Key? key}) : super(key: key);
@@ -10,7 +15,39 @@ class MarketplaceScreen extends StatefulWidget {
   State<MarketplaceScreen> createState() => _MarketplaceScreenState();
 }
 
-class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
+class _MarketplaceScreenState extends State<MarketplaceScreen> {
+  TextEditingController searchController = TextEditingController();
+
+  List<Product> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProductData();
+  }
+
+  Future<List<Product>> fetchProducts() async {
+    final response = await http.get(Uri.parse('https://your-api-url/products'));
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body);
+      return responseData.map((json) => Product.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch products');
+    }
+  }
+
+  Future<void> fetchProductData() async {
+    try {
+      final productList = await fetchProducts();
+      setState(() {
+        products = productList;
+      });
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -31,8 +68,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                     child: Text("Marketplace",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
-                        style: AppStyle.txtPoppinsSemiBold2000
-                            .copyWith(letterSpacing: getHorizontalSize(1.0)))),
+                        style: AppStyle.txtPoppinsSemiBold2000.copyWith(letterSpacing: getHorizontalSize(1.0))
+                    )
+                ),
                 styleType: Style.bgFillBluegray400),
             body: SizedBox(
                 width: size.width,
@@ -45,56 +83,56 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                  padding: getPadding(right: 6),
+                                  padding: getPadding(left: 0),
                                   child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      // mainAxisAlignment:
+                                      // MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Card(
-                                            clipBehavior: Clip.antiAlias,
-                                            elevation: 0,
-                                            margin: EdgeInsets.all(0),
-                                            color: ColorConstant.whiteA700,
-                                            shape: RoundedRectangleBorder(
-                                                side: BorderSide(
-                                                    color: ColorConstant
-                                                        .blueGray700,
-                                                    width:
-                                                    getHorizontalSize(1)),
-                                                borderRadius: BorderRadiusStyle
-                                                    .roundedBorder14),
-                                            child: Container(
-                                                height: getVerticalSize(29),
-                                                width: getHorizontalSize(215),
-                                                padding: getPadding(
-                                                    left: 11,
-                                                    top: 8,
-                                                    right: 11,
-                                                    bottom: 8),
-                                                decoration: AppDecoration
-                                                    .outlineBluegray700
-                                                    .copyWith(
-                                                    borderRadius:
-                                                    BorderRadiusStyle
-                                                        .roundedBorder14),
-                                                child: Stack(children: [
-                                                  CustomImageView(
-                                                      svgPath: ImageConstant
-                                                          .imgSearch,
-                                                      height: getSize(13),
-                                                      width: getSize(13),
-                                                      alignment:
-                                                      Alignment.centerRight)
-                                                ]))),
                                         CustomImageView(
-                                            svgPath:
-                                            ImageConstant.imgIonbagoutline,
+                                            svgPath: ImageConstant.imgIonbagoutline,
                                             height: getVerticalSize(24),
                                             width: getHorizontalSize(23),
-                                            margin: getMargin(bottom: 5),
+                                            margin: getMargin(left: 0, top: 10, bottom: 10),
                                             onTap: () {
                                               onTapImgIonbagoutline(context);
-                                            })
+                                            }),
+                                        Padding(
+                                          padding: getPadding(left:0),
+                                          child:
+                                          SearchBarAnimation(
+                                            textEditingController: searchController,
+                                            isOriginalAnimation: true,
+                                            enableKeyboardFocus: true,
+                                            searchBoxWidth: 250, // Adjust the collapsed width as per your requirements
+                                            onExpansionComplete: () {
+                                              debugPrint(
+                                                  'Search Product');
+                                            },
+                                            onCollapseComplete: () {
+                                              debugPrint(
+                                                  'Nothing');
+                                            },
+                                            onPressButton: (isSearchBarOpens) {
+                                              debugPrint(
+                                                  'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
+                                            },
+                                            trailingWidget: const Icon(
+                                              Icons.search,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            secondaryButtonWidget: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            buttonWidget: const Icon(
+                                              Icons.search,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
                                       ])),
                               Align(
                                   alignment: Alignment.center,
@@ -152,14 +190,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                                                 child: SizedBox(
                                                     height:
                                                     getVerticalSize(635),
-                                                    child: VerticalDivider(
-                                                        width:
-                                                        getHorizontalSize(
-                                                            1),
-                                                        thickness:
-                                                        getVerticalSize(1),
-                                                        color: ColorConstant
-                                                            .blueGray100))),
+                                                )),
                                             Align(
                                                 alignment: Alignment.topCenter,
                                                 child: Padding(
@@ -169,27 +200,14 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                                                         width:
                                                         getHorizontalSize(
                                                             281),
-                                                        child: Divider(
-                                                            height:
-                                                            getVerticalSize(
-                                                                1),
-                                                            thickness:
-                                                            getVerticalSize(
-                                                                1),
-                                                            color: ColorConstant
-                                                                .blueGray100)))),
+                                                       ))),
                                             Align(
                                                 alignment: Alignment.center,
                                                 child: SizedBox(
                                                     width:
                                                     getHorizontalSize(281),
-                                                    child: Divider(
-                                                        height:
-                                                        getVerticalSize(1),
-                                                        thickness:
-                                                        getVerticalSize(1),
-                                                        color: ColorConstant
-                                                            .blueGray100))),
+                                                )
+                                            ),
                                             Align(
                                                 alignment:
                                                 Alignment.bottomCenter,
@@ -200,611 +218,51 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
                                                         width:
                                                         getHorizontalSize(
                                                             281),
-                                                        child: Divider(
-                                                            height:
-                                                            getVerticalSize(
-                                                                1),
-                                                            thickness:
-                                                            getVerticalSize(
-                                                                1),
-                                                            color: ColorConstant
-                                                                .blueGray100)))),
+                                                    )
+                                                )
+                                            ),
                                             Align(
                                                 alignment: Alignment.topLeft,
                                                 child: SizedBox(
                                                     width:
                                                     getHorizontalSize(281),
-                                                    child: Divider(
-                                                        height:
-                                                        getVerticalSize(1),
-                                                        thickness:
-                                                        getVerticalSize(1),
-                                                        color: ColorConstant
-                                                            .blueGray100))),
-                                            Align(
-                                                alignment: Alignment.topLeft,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            left: 7, top: 14),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              CustomImageView(
-                                                                  imagePath:
-                                                                  ImageConstant
-                                                                      .imgImage1,
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      78),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      top:
-                                                                      5))
-                                                            ])))),
-                                            Align(
-                                                alignment: Alignment.topRight,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab1(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            top: 10, right: 25),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              CustomImageView(
-                                                                  imagePath:
-                                                                  ImageConstant
-                                                                      .imgImage1,
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5))
-                                                            ])))),
-                                            Align(
-                                                alignment: Alignment.topLeft,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab2(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            left: 10, top: 172),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              CustomImageView(
-                                                                  imagePath:
-                                                                  ImageConstant
-                                                                      .imgImage1,
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5))
-                                                            ])))),
-                                            Align(
-                                                alignment: Alignment.topRight,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab3(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            top: 172,
-                                                            right: 25),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              Container(
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      12),
-                                                                  child: Stack(
-                                                                      alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      children: [
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center),
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center)
-                                                                      ]))
-                                                            ])))),
-                                            Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab4(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            left: 12,
-                                                            bottom: 176),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              Container(
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5),
-                                                                  child: Stack(
-                                                                      alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      children: [
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center),
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center)
-                                                                      ]))
-                                                            ])))),
-                                            Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab5(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            left: 14),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              Container(
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5),
-                                                                  child: Stack(
-                                                                      alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      children: [
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center),
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center)
-                                                                      ]))
-                                                            ])))),
-                                            Align(
-                                                alignment:
-                                                Alignment.bottomRight,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab6(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            right: 23,
-                                                            bottom: 179),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              Container(
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5),
-                                                                  child: Stack(
-                                                                      alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      children: [
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center),
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center)
-                                                                      ]))
-                                                            ])))),
-                                            Align(
-                                                alignment:
-                                                Alignment.bottomRight,
-                                                child: GestureDetector(
-                                                    onTap: () {
-                                                      onTapColumnpipaabuab7(
-                                                          context);
-                                                    },
-                                                    child: Padding(
-                                                        padding: getPadding(
-                                                            right: 23),
-                                                        child: Column(
-                                                            mainAxisSize:
-                                                            MainAxisSize
-                                                                .min,
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Text(
-                                                                  "Pipa Abu-abu",
-                                                                  overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                                  style: AppStyle
-                                                                      .txtPoppinsRegular14),
-                                                              Padding(
-                                                                  padding:
-                                                                  getPadding(
-                                                                      top:
-                                                                      5),
-                                                                  child: Text(
-                                                                      "249.00",
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                      style: AppStyle
-                                                                          .txtPoppinsSemiBold10)),
-                                                              Container(
-                                                                  height:
-                                                                  getVerticalSize(
-                                                                      81),
-                                                                  width:
-                                                                  getHorizontalSize(
-                                                                      102),
-                                                                  margin:
-                                                                  getMargin(
-                                                                      left:
-                                                                      2,
-                                                                      top:
-                                                                      5),
-                                                                  child: Stack(
-                                                                      alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      children: [
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center),
-                                                                        CustomImageView(
-                                                                            imagePath:
-                                                                            ImageConstant.imgImage1,
-                                                                            height: getVerticalSize(81),
-                                                                            width: getHorizontalSize(102),
-                                                                            alignment: Alignment.center)
-                                                                      ]))
-                                                            ]))))
-                                          ])))
-                            ]))))));
+                                                )
+                                            ),
+                                        // Add the product list here
+                                        ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: products.length,
+                                        itemBuilder: (context, index) {
+                                          final product = products[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ProductdetailsScreen(productId: product.id),
+                                                ),
+                                              );
+                                            },
+                                            child: ListTile(
+                                              title: Text(product.name),
+                                              subtitle: Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                                              leading: Image.network(product.photoUrl),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                      )
+                                  )
+                              )
+                            ]
+                        )
+                    )
+                )
+            )
+        )
+    );
   }
 
   onTapImgIonbagoutline(BuildContext context) {
@@ -847,3 +305,27 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {  @override
     Navigator.pop(context);
   }
 }
+
+class Product {
+  final int id;
+  final String name;
+  final double price;
+  final String photoUrl;
+
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.photoUrl,
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      name: json['name'],
+      price: json['price'],
+      photoUrl: json['photoUrl'],
+    );
+  }
+}
+

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'WaterWise',
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splashScreen,
+      initialRoute: AppRoutes.appNavigationScreen,
       routes: AppRoutes.routes,
     );
   }
