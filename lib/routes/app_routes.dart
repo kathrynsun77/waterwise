@@ -18,6 +18,7 @@ import '../ui/payment_methods_screen/payment_methods_screen.dart';
 import '../ui/contact_us_screen/contact_us_screen.dart';
 import '../ui/estimate_screen/estimate_screen.dart';
 import '../ui/popup_screen/popup_screen.dart';
+import '../ui/popup_marketplace_screen/popup_marketplace_screen.dart';
 import '../ui/vouchers_screen/vouchers_screen.dart';
 import '../ui/receipt_screen/receipt_screen.dart';
 import '../ui/marketplace_screen/marketplace_screen.dart';
@@ -44,6 +45,7 @@ class AppRoutes {
   static const String paymentMethodsScreen = '/payment_methods_screen';
   static const String contactUsScreen = '/contact_us_screen';
   static const String popUpScreen = '/pop_up_screen';
+  static const String popUpMarketplaceScreen = '/pop_up_marketplace_screen';
   static const String bottomBarMenu = '/bottom_bar_menu';
   static const String vouchersScreen = '/vouchers_screen';
   static const String receiptScreen = '/receipt_screen';
@@ -70,6 +72,7 @@ class AppRoutes {
     contactUsScreen: (context) => ContactUsScreen(),
     estimateScreen: (context) => EstimateScreen(),
     popUpScreen: (context) => PopupScreen(),
+    popUpMarketplaceScreen: (context) => PopupMarketplaceScreen(),
     bottomBarMenu: (context) => BottomBarMenu(),
     vouchersScreen: (context) => VouchersScreen(),
     receiptScreen: (context) => ReceiptScreen(),

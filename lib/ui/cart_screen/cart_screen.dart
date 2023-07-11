@@ -260,8 +260,10 @@ class _CartScreenState extends State<CartScreen> {
                         CustomButton(
                             height: getVerticalSize(45),
                             text: "Checkout",
-                            margin:
-                            getMargin(left: 6, top: 41, right: 6, bottom: 5),
+                            margin: getMargin(left: 6, top: 41, right: 6, bottom: 5),
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.popUpMarketplaceScreen);
+                            },
                             padding: ButtonPadding.PaddingAll13,
                             fontStyle: ButtonFontStyle.PoppinsSemiBold1143)
                       ])),
