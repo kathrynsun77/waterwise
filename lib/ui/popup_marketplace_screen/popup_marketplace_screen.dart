@@ -19,6 +19,7 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
   bool isSwitched = false;
   var card;
   var point_value;
+  var address;
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -26,9 +27,11 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       card = user['default_payment_method_type'];
+      address = user['address_id'];
       fetchData();
       fetchPoints();
       fetchTotal();
+      fetchAddress();
       setState(() {});
     }
   }
@@ -93,11 +96,31 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
     }
   }
 
+  List<Map<String, dynamic>> allAddress = [];
+  fetchAddress() async {
+    final response = await http.post(
+      Uri.parse(API+'address.php'),
+      body: {
+        'cust-id': user['customer_id'],
+      },
+    );
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      // List list = jsonDecode(response.body);
+      allAddress = List<Map<String, dynamic>>.from(json.decode(response.body));
+      setState(() {});
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getUser();
     fetchTotal();
+    fetchAddress();
   }
 
   void addTransaction(String amount, String point) async {
@@ -107,6 +130,7 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
       'amount': amount,
       'payment-id': card,
       'point': point,
+      'address':address,
     });
     // print('transaction added');
     // print(card);
@@ -135,12 +159,34 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                "",
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.left,
-                style: AppStyle.txtPoppinsSemiBold14.copyWith(
-                  letterSpacing: getHorizontalSize(1.0),
+              Padding(
+                padding: getPadding(top: 20, left: 20),
+                child: DropdownButtonFormField<String>(
+                  value: address.toString(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      address = newValue!;
+                    });
+                    print('dropdown: $address');
+                  },
+                  items: allAddress.map<DropdownMenuItem<String>>((item) {
+                    return DropdownMenuItem<String>(
+                      value: item['address_id'].toString(),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 16),
+                          Text(
+                            item['building_street']+" "+item['postal_code']+" "+item['unit_no'],
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtPoppinsSemiBold14.copyWith(
+                              letterSpacing: getHorizontalSize(1.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               Padding(
@@ -155,9 +201,6 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
                   },
                   items: allCard.map<DropdownMenuItem<String>>((item) {
                     return DropdownMenuItem<String>(
-                      // value: (item['card_payment_id'].toString() == user['default_payment_method_type'].toString())
-                      //     ? item['card_payment_id']
-                      //     : '',
                       value: item['card_payment_id'].toString(),
                       child: Row(
                         children: [

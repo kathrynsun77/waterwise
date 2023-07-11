@@ -369,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child:
                                                         Text(
                                                           int.parse(item['transaction_type']) == 1
-                                                              ? "Bill Payment       \$${item['transaction_amount']}    ${item['transaction_date']}"
+                                                              ? "Payment/Purchase       \$${item['transaction_amount']}    ${item['transaction_date']}"
                                                               : int.parse(item['transaction_type']) == 2
                                                               ? "Point Redeem         -${item['transaction_amount']}    ${item['transaction_date']}"
                                                               : "Point Earned         +${item['transaction_amount']}    ${item['transaction_date']}",
