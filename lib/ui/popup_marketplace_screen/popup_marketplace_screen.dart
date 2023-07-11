@@ -41,7 +41,7 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
     final response = await http.post(
         Uri.parse(API+'total_price.php'),
         body: {
-          'cust-id': user['customer_id'],
+          'cust-id': user['customer_id'].toString(),
         });
     print(response.body);
     if (response.statusCode == 200) {
@@ -162,21 +162,25 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
               Padding(
                 padding: getPadding(top: 20, left: 20),
                 child: DropdownButtonFormField<String>(
-                  value: address.toString(),
+                  value: address != null ? address.toString() : null,
                   onChanged: (String? newValue) {
                     setState(() {
                       address = newValue!;
                     });
                     print('dropdown: $address');
+                    if (newValue == 'manage_address') {
+                      // Navigate to the address management page
+                      Navigator.pushNamed(context, AppRoutes.cartScreen);
+                    }
                   },
-                  items: allAddress.map<DropdownMenuItem<String>>((item) {
-                    return DropdownMenuItem<String>(
-                      value: item['address_id'].toString(),
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: 'manage_address',
                       child: Row(
                         children: [
                           SizedBox(width: 16),
                           Text(
-                            item['building_street']+" "+item['postal_code']+" "+item['unit_no'],
+                            'Manage Address',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                             style: AppStyle.txtPoppinsSemiBold14.copyWith(
@@ -185,9 +189,28 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
                           ),
                         ],
                       ),
-                    );
-                  }).toList(),
+                    ),
+                    ...allAddress.map<DropdownMenuItem<String>>((item) {
+                      return DropdownMenuItem<String>(
+                        value: item['address_id'].toString(),
+                        child: Row(
+                          children: [
+                            SizedBox(width: 16),
+                            Text(
+                              item['building_street'] + " " + item['postal_code'] + " " + item['unit_no'],
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                              style: AppStyle.txtPoppinsSemiBold14.copyWith(
+                                letterSpacing: getHorizontalSize(1.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
                 ),
+
               ),
               Padding(
                 padding: getPadding(top: 20, left: 20),
