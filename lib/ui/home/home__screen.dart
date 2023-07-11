@@ -251,20 +251,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           borderRadius:
                                                           BorderRadiusStyle
                                                               .roundedBorder5),
-                                                      child: Stack(children: [
-                                                        CustomImageView(
-                                                            svgPath:
-                                                            ImageConstant
-                                                                .imgMobile,
-                                                            height:
-                                                            getVerticalSize(
-                                                                23),
-                                                            width:
-                                                            getHorizontalSize(
-                                                                18),
-                                                            alignment:
-                                                            Alignment
-                                                                .center)
+                                                      child: Stack(
+                                                          children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.pushNamed(context, AppRoutes.marketplaceScreen);
+                                                          },
+                                                          child: CustomImageView(
+                                                              svgPath:
+                                                              ImageConstant.imgMobile,
+                                                              height:
+                                                              getVerticalSize(
+                                                                  23),
+                                                              width:
+                                                              getHorizontalSize(
+                                                                  18),
+                                                              alignment:
+                                                              Alignment
+                                                                  .center),
+                                                        )
                                                       ])))
                                             ])),
                                     Padding(
@@ -272,12 +277,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: Text("Marketplace",
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
-                                            style: AppStyle
-                                                .txtPoppinsRegular12Gray800
-                                                .copyWith(
-                                                letterSpacing:
-                                                getHorizontalSize(
-                                                    0.6))))
+                                            style: AppStyle.txtPoppinsRegular12Gray800.copyWith(
+                                                letterSpacing: getHorizontalSize(0.6))))
                                   ]),
                               GestureDetector(
                                   onTap: () {
@@ -291,8 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 45,
                                             width: 45,
                                             child: CustomImageView(
-                                                svgPath: ImageConstant
-                                                    .imgLamp)),
+                                                svgPath: ImageConstant.imgLamp)),
                                         Padding(
                                             padding: getPadding(top: 13),
                                             child: Text("Usage",
