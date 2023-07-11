@@ -146,7 +146,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                                 searchProduct();
                                               },
                                               child: Icon(
-                                                Icons.search,
+                                                Icons.close,
                                                 size: 20,
                                                 color: Colors.black,
                                               ),
