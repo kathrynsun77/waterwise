@@ -153,10 +153,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                               ),
                                             ),
                                             buttonWidget: GestureDetector(
-                                              onTap: () {
-                                                print('tapped');
-                                                searchProduct();
-                                              },
+                                              // onTap: () {
+                                              //   print('tapped');
+                                              //   searchProduct();
+                                              // },
                                               child: Icon(
                                                 Icons.search,
                                                 size: 20,
