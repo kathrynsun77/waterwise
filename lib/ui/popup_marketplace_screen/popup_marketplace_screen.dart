@@ -162,7 +162,7 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
               Padding(
                 padding: getPadding(top: 20, left: 20),
                 child: DropdownButtonFormField<String>(
-                  value: address != null ? address.toString() : null,
+                  value: address.toString(),
                   onChanged: (String? newValue) {
                     setState(() {
                       address = newValue!;
@@ -170,7 +170,7 @@ class _PopupMarketplaceScreenState extends State<PopupMarketplaceScreen> {
                     print('dropdown: $address');
                     if (newValue == 'manage_address') {
                       // Navigate to the address management page
-                      Navigator.pushNamed(context, AppRoutes.cartScreen);
+                      Navigator.pushNamed(context, AppRoutes.manageAddressScreen);
                     }
                   },
                   items: [
