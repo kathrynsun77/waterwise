@@ -5,7 +5,6 @@ import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:WaterWise/widget/custom_button2.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_add_to_cart_button/flutter_add_to_cart_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductdetailsScreen extends StatefulWidget {
