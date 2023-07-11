@@ -5,6 +5,8 @@ import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:WaterWise/widget/custom_button2.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_add_to_cart_button/flutter_add_to_cart_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductdetailsScreen extends StatefulWidget {
   final int productId;
@@ -19,11 +21,23 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
   late int productId;
   String API = "http://172.28.200.128/water_wise/";
   int quantity = 1;
+  Map user = {};
+
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString);
+      addToCart();
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     productId = widget.productId;
+    getUser();
     fetchProducts();
   }
 
@@ -40,6 +54,24 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
       // Decode the JSON response
       print(response.body);
       products = json.decode(response.body);
+      setState(() {});
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  addToCart() async {
+    final response = await http.post(
+        Uri.parse(API+'add_cart.php'),
+        body: {
+          'product': productId.toString(),
+          'cust-id': user['customer_id'].toString(),
+          'qty':quantity.toString(),
+        });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
       setState(() {});
     } else {
       throw Exception('Failed to fetch data');
@@ -189,7 +221,7 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                             ),
                           ),
                           onTap: () {
-                            // Add your logic here
+                          addToCart();
                           },
                         ),
                       ]));
