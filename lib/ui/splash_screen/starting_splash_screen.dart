@@ -21,7 +21,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
   openSplashScreen() async {
     //bisa diganti beberapa detik sesuai keinginan
-    var durasiSplash = const Duration(seconds: 3);
+    var durasiSplash = const Duration(seconds: 2);
     return Timer(durasiSplash, () {
       //pindah ke halaman intro screen
       Navigator.of(context).pushReplacement(
@@ -113,7 +113,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                       CustomImageView(
                         imagePath: ImageConstant.imgWaterwiselogo,
                         height: getVerticalSize(
-                          64,
+                          65,
                         ),
                         width: getHorizontalSize(
                           303,

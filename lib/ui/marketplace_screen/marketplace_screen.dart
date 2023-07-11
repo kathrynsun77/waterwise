@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:WaterWise/ui/productdetails_screen/productdetails_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/app_bar/appbar_image.dart';
