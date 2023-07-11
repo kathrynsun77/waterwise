@@ -48,7 +48,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body);
       searchProducts = responseData.map((json) => Product.fromJson(json)).toList();
-      setState(() {});
+      setState(() {
+        products = searchProducts;
+      });
     } else {
       throw Exception('Failed to fetch products');
     }
@@ -110,33 +112,56 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                             textEditingController: searchController,
                                             isOriginalAnimation: true,
                                             enableKeyboardFocus: true,
-                                            searchBoxWidth: 250, // Adjust the collapsed width as per your requirements
+                                            searchBoxWidth: 250,
                                             onExpansionComplete: () {
                                               debugPrint(
                                                   'Search Product');
                                             },
                                             onCollapseComplete: () {
-                                              debugPrint(
-                                                  'Collapsed');
+                                              debugPrint('Collapsed');
+                                              fetchProducts();
                                             },
                                             onPressButton: (isSearchBarOpens) {
                                               debugPrint(
-                                                  'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
+                                                  'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');},
+                                            onEditingComplete:(){
+
                                             },
-                                            trailingWidget: const Icon(
-                                              Icons.search,
-                                              size: 20,
-                                              color: Colors.black,
+                                            onFieldSubmitted:(){
+
+                                            },
+                                            trailingWidget: GestureDetector(
+                                              onTap: () {
+                                                print('tapped');
+                                                searchProduct();
+                                              },
+                                              child: Icon(
+                                                Icons.search,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                            secondaryButtonWidget: const Icon(
-                                              Icons.close,
-                                              size: 20,
-                                              color: Colors.black,
+                                            secondaryButtonWidget: GestureDetector(
+                                              onTap: () {
+                                                print('tapped');
+                                                searchProduct();
+                                              },
+                                              child: Icon(
+                                                Icons.search,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                            buttonWidget: const Icon(
-                                              Icons.search,
-                                              size: 20,
-                                              color: Colors.black,
+                                            buttonWidget: GestureDetector(
+                                              onTap: () {
+                                                print('tapped');
+                                                searchProduct();
+                                              },
+                                              child: Icon(
+                                                Icons.search,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ),
