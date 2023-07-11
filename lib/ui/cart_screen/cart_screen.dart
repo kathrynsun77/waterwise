@@ -16,7 +16,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
+  double totalAmount = 0;
   bool isSelectedSwitch = false;
   String API = "http://172.28.200.128/water_wise/";
   Map user = {};
@@ -28,6 +28,7 @@ class _CartScreenState extends State<CartScreen> {
     if (userString != null) {
       user = jsonDecode(userString);
       fetchProducts();
+      fetchTotal();
       setState(() {});
     }
   }
@@ -37,6 +38,7 @@ class _CartScreenState extends State<CartScreen> {
     super.initState();
     getUser();
     fetchProducts();
+    fetchTotal();
   }
 
   List cart = [];
@@ -46,13 +48,29 @@ class _CartScreenState extends State<CartScreen> {
         body: {
           'cust-id': user['customer_id'],
         });
-    // print('fetched');
     if (response.statusCode == 200) {
       // Decode the JSON response
       print(response.body);
       cart = json.decode(response.body);
       setState(() {
-        // quantity=int.parse(cart[0]['qty']);
+      });
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  List total = [];
+  fetchTotal() async {
+    final response = await http.post(
+        Uri.parse(API+'total_price.php'),
+        body: {
+          'cust-id': user['customer_id'],
+        });
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+      total = json.decode(response.body);
+      setState(() {
       });
     } else {
       throw Exception('Failed to fetch data');
@@ -76,8 +94,13 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    for (var item in cart) {
+      totalAmount += (double.parse(item['product_price'])*quantity);
+    }
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorConstant.whiteA700,
@@ -139,6 +162,7 @@ class _CartScreenState extends State<CartScreen> {
                                           removeCart(item['product_id'].toString());
                                           setState(() {
                                             fetchProducts();
+                                            fetchTotal();
                                           });
                                           },
                                         ),
@@ -181,23 +205,11 @@ class _CartScreenState extends State<CartScreen> {
                                             ],
                                           ),
                                         ),
-                                        CustomImageView(
-                                          svgPath: ImageConstant.imgIcbaselineplusGray900,
-                                          height: getSize(19,),
-                                          width: getSize(19,),
-                                          onTap: () {
-                                            setState(() {
-                                              if (quantity > 1) {
-                                                quantity--;  // Decrement the quantity value, but ensure it doesn't go below 1
-                                              }
-                                            });
-                                          },
-                                          margin: getMargin(left: 46, top: 32, bottom: 32,),
-                                        ),
                                         Container(
-                                          width: getHorizontalSize(37,),
-                                          margin: getMargin(left: 6, top: 31, bottom: 31,),
-                                          padding: getPadding(left: 16, top: 1, right: 16, bottom: 1,),
+                                          width: getHorizontalSize(40),
+                                          height: getVerticalSize(20),
+                                          margin: getMargin(left: 10, top: 31, bottom: 31,right:70),
+                                          padding: getPadding(top: 1, right: 15, bottom: 1,),
                                           decoration: AppDecoration.txtOutlineBluegray100.copyWith(
                                             borderRadius: BorderRadiusStyle.txtCircleBorder11,
                                           ),
@@ -206,19 +218,6 @@ class _CartScreenState extends State<CartScreen> {
                                             textAlign: TextAlign.left,
                                             style: AppStyle.txtPoppinsSemiBold1143Gray900,
                                           ),
-                                        ),
-                                        CustomImageView(
-                                          svgPath: ImageConstant.imgIcbaselineplusGray90019x19,
-                                          height: getSize(19),
-                                          width: getSize(19),
-                                          onTap: () {
-                                            setState(() {
-                                              if (quantity >= 1) {
-                                                quantity++;
-                                              }
-                                            });
-                                          },
-                                          margin: getMargin(left: 6, top: 32, bottom: 32,),
                                         ),
                                       ],
                                     ),
@@ -233,25 +232,7 @@ class _CartScreenState extends State<CartScreen> {
                                 indent: getHorizontalSize(4),
                                 endIndent: getHorizontalSize(8))),
                         Padding(
-                            padding: getPadding(left: 4, top: 8, right: 9),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                      padding: getPadding(bottom: 1),
-                                      child: Text("Redeem Points (20)",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle
-                                              .txtPoppinsSemiBold1143Gray900)),
-                                  CustomSwitch(
-                                      value: isSelectedSwitch,
-                                      onChanged: (value) {
-                                        isSelectedSwitch = value;
-                                      })
-                                ])),
-                        Padding(
-                            padding: getPadding(left: 4, top: 10, right: 5),
+                            padding: getPadding(left: 10, top: 10, right: 5),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -262,13 +243,14 @@ class _CartScreenState extends State<CartScreen> {
                                           textAlign: TextAlign.left,
                                           style: AppStyle
                                               .txtPoppinsSemiBold1143Gray900)),
-                                  Text("358.00",
+                                  Text(
+                                      total.isNotEmpty ? total[0]['total'].toString() : '0',
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsSemiBold1306)
                                 ])),
                         Padding(
-                            padding: getPadding(top: 7),
+                            padding: getPadding(top: 7, left:10),
                             child: Divider(
                                 height: getVerticalSize(1),
                                 thickness: getVerticalSize(1),
