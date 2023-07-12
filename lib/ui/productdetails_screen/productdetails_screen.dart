@@ -205,7 +205,32 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                         Container(
                             width: getHorizontalSize(329),
                             margin: getMargin(top: 15, right: 15),
-                            child: Text("${item['product_description']}",
+                            child: Text(
+                                "${item['product_description']}",
+                                maxLines: null,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtPoppinsRegular14Gray500)),
+                        Container(
+                            width: getHorizontalSize(329),
+                            margin: getMargin(top: 15, right: 15),
+                            child: Text(
+                                "Seller: ${item['fname']}",
+                                maxLines: null,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtPoppinsRegular14Gray500)),
+                        Container(
+                            width: getHorizontalSize(329),
+                            margin: getMargin(top: 15, right: 15),
+                            child: Text(
+                                "Seller Email: ${item['email']}",
+                                maxLines: null,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtPoppinsRegular14Gray500)),
+                        Container(
+                            width: getHorizontalSize(329),
+                            margin: getMargin(top: 15, right: 15),
+                            child: Text(
+                                "Seller Phone: ${item['mobile']}",
                                 maxLines: null,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtPoppinsRegular14Gray500)),

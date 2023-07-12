@@ -146,8 +146,7 @@ class _BillingScreenState extends State<BillingScreen> {
                                                   top: 16,
                                                   right: 30,
                                                   bottom: 16),
-                                              decoration:
-                                                  AppDecoration.fillGray50,
+                                              decoration: AppDecoration.fillGray50,
                                               child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,

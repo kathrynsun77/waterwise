@@ -88,7 +88,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     }),
                 title: Padding(
                     padding: getPadding(left: 22),
-                    child: Text("Orders",
+                    child: Text("My Orders",
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                         style: AppStyle.txtPoppinsSemiBold2000
@@ -98,77 +98,148 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onRefresh: _refreshData,
                 child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            itemCount: allOrders.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              Map item = allOrders[index];
-                              return Container(
-                                width: double.maxFinite,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => ReceiptMarketplaceScreen
-                                          (orderId: int.parse(item['order_id'])),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: getMargin(top: 10),
-                                    padding: getPadding(
-                                        left: 16,
-                                        top: 15,
-                                        right: 16,
-                                        bottom: 15),
-                                    decoration: AppDecoration.white.copyWith(
-                                        borderRadius:
-                                            BorderRadiusStyle.roundedBorder12),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item['tracking_number'],
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle
-                                              .txtPoppinsRegular12Gray800
-                                              .copyWith(
-                                              letterSpacing:
-                                              getHorizontalSize(
-                                                  1.0)),
+                            child: Container(
+                            margin: getMargin(top: 20),
+                            padding: getPadding(
+                            left: 10,
+                            top: 16,
+                            right: 10,
+                            bottom: 16),
+                            decoration: AppDecoration.fillGray50,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ListView.builder(
+                              itemCount: allOrders.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                Map item = allOrders[index];
+                                return Container(
+                                  width: double.maxFinite,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => ReceiptMarketplaceScreen
+                                            (orderId: int.parse(item['order_id'])),
                                         ),
-                                        Text(
-                                          item['transaction_date'],
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle
-                                                  .txtPoppinsRegular12Gray800
-                                                  .copyWith(
-                                                      letterSpacing:
-                                                          getHorizontalSize(
-                                                              1.0)),
-                                        ),
-                                        Padding(
-                                          padding: getPadding(top: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Order Number: " + item['order_number'],
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: getMargin(top: 10),
+                                      padding: getPadding(
+                                          left: 16,
+                                          top: 15,
+                                          right: 16,
+                                          bottom: 15),
+                                      decoration: AppDecoration.white.copyWith(
+                                          borderRadius:
+                                              BorderRadiusStyle.roundedBorder12),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            item['tracking_number'],
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: AppStyle
+                                                .txtPoppinsRegular12Gray800
+                                                .copyWith(
+                                                letterSpacing:
+                                                getHorizontalSize(
+                                                    1.0)),
+                                          ),
+                                          Text(
+                                            item['transaction_date'],
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: AppStyle
+                                                    .txtPoppinsRegular12Gray800
+                                                    .copyWith(
+                                                        letterSpacing:
+                                                            getHorizontalSize(
+                                                                1.0)),
+                                          ),
+                                          Padding(
+                                            padding: getPadding(top: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Order Number: " + item['order_number'],
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                        textAlign: TextAlign.left,
+                                                        style: AppStyle
+                                                                .txtPoppinsRegular12Gray800
+                                                                .copyWith(
+                                                                    letterSpacing:
+                                                                        getHorizontalSize(
+                                                                            1.0)),
+                                                      ),
+                                                      Padding(
+                                                        padding: getPadding(top: 4),
+                                                        child: Text(
+                                                          "Tracking Number: " + item['tracking_number'],
+                                                          overflow:
+                                                          TextOverflow.ellipsis,
+                                                          textAlign: TextAlign.left,
+                                                          style: AppStyle
+                                                              .txtPoppinsRegular12Gray800
+                                                              .copyWith(
+                                                              letterSpacing:
+                                                              getHorizontalSize(
+                                                                  1.0)),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              getPadding(top: 4),
+                                                          child: Text(
+                                                            "Card: ••••  ••••  ••••  ${item['card_name'].substring(item['card_name'].length - 4)}",
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: AppStyle
+                                                                    .txtPoppinsRegular12Gray800
+                                                                    .copyWith(
+                                                                        letterSpacing:
+                                                                            getHorizontalSize(1.0)),
+                                                          ),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                          getPadding(top: 4),
+                                                          child: Text(
+                                                            "Delivery Address: "+item['building_street'] + " " + item['postal_code'] + " " + item['unit_no']+
+                                                                "\n Phone Number:"+item['phone_number'],
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            textAlign:
+                                                            TextAlign.left,
+                                                            style: AppStyle
+                                                                .txtPoppinsRegular12Gray800
+                                                                .copyWith(
+                                                                letterSpacing:
+                                                                getHorizontalSize(1.0)),
+                                                          ))
+                                                    ]),
+                                                Padding(
+                                                    padding: getPadding(
+                                                        top: 11, bottom: 11),
+                                                    child: Text(
+                                                      "\$" + item['transaction_amount'],
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       textAlign: TextAlign.left,
@@ -176,81 +247,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               .txtPoppinsRegular12Gray800
                                                               .copyWith(
                                                                   letterSpacing:
-                                                                      getHorizontalSize(
-                                                                          1.0)),
-                                                    ),
-                                                    Padding(
-                                                      padding: getPadding(top: 4),
-                                                      child: Text(
-                                                        "Tracking Number: " + item['tracking_number'],
-                                                        overflow:
-                                                        TextOverflow.ellipsis,
-                                                        textAlign: TextAlign.left,
-                                                        style: AppStyle
-                                                            .txtPoppinsRegular12Gray800
-                                                            .copyWith(
-                                                            letterSpacing:
-                                                            getHorizontalSize(
-                                                                1.0)),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                        padding:
-                                                            getPadding(top: 4),
-                                                        child: Text(
-                                                          "Card: ••••  ••••  ••••  ${item['card_name'].substring(item['card_name'].length - 4)}",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: AppStyle
-                                                                  .txtPoppinsRegular12Gray800
-                                                                  .copyWith(
-                                                                      letterSpacing:
-                                                                          getHorizontalSize(1.0)),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding:
-                                                        getPadding(top: 4),
-                                                        child: Text(
-                                                          "Delivery Address: "+item['building_street'] + " " + item['postal_code'] + " " + item['unit_no']+
-                                                              "\n Phone Number:"+item['phone_number'],
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                          TextAlign.left,
-                                                          style: AppStyle
-                                                              .txtPoppinsRegular12Gray800
-                                                              .copyWith(
-                                                              letterSpacing:
-                                                              getHorizontalSize(1.0)),
-                                                        ))
-                                                  ]),
-                                              Padding(
-                                                  padding: getPadding(
-                                                      top: 11, bottom: 11),
-                                                  child: Text(
-                                                    "\$" + item['transaction_amount'],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: AppStyle
-                                                            .txtPoppinsRegular12Gray800
-                                                            .copyWith(
-                                                                letterSpacing:
-                                                                    getHorizontalSize(1.0)),
-                                                  ))
-                                            ],
+                                                                      getHorizontalSize(1.0)),
+                                                    ))
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ])))));
+                                );
+                              },
+                            ),
+                          ]),
+                    )))));
   }
 }
