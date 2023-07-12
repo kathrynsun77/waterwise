@@ -1,3 +1,4 @@
+import 'package:WaterWise/ui/orders_screen/orders_screen.dart';
 import 'package:flutter/material.dart';
 import '../ui/app_navigation_screen/app_navigation_screen.dart';
 import '../ui/bottom_bar/bottom_bar_menu.dart';
@@ -6,6 +7,7 @@ import '../ui/intro_screen/intro_screen.dart';
 import '../ui/login_screen/login_screen.dart';
 import '../ui/manage_address_screen/manage_address_screen.dart';
 import '../ui/notification_screen/notification_screen.dart';
+import '../ui/receipt_marketplace_screen/receipt_marketplace_screen.dart';
 import '../ui/sign_up_screen/sign_up_screen.dart';
 import '../ui/splash_screen/starting_splash_screen.dart';
 import '../ui/profile_screen/profile_screen.dart';
@@ -54,6 +56,9 @@ class AppRoutes {
   static const String marketplaceScreen = '/marketplace_screen';
   static const String cartScreen = '/cart_screen';
   static const String manageAddressScreen = '/manage_address_screen';
+  static const String receiptMarketplaceScreen = '/receipt_marketplace_screen';
+  static const String ordersScreen = '/orders_screen';
+
 
 
   static Map<String, WidgetBuilder> routes = {
@@ -83,6 +88,9 @@ class AppRoutes {
     productdetailsScreen: (context) => ProductdetailsScreen(productId: 1,),
     cartScreen: (context) => CartScreen(),
     manageAddressScreen: (context) => ManageAddressScreen(),
+    receiptMarketplaceScreen: (context) => ReceiptMarketplaceScreen(orderId: 1,),
+    ordersScreen: (context) => OrdersScreen(),
+
 
 
   };

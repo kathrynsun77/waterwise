@@ -96,6 +96,20 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                       // mainAxisAlignment:
                                       // MainAxisAlignment.spaceBetween,
                                       children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(context, AppRoutes.ordersScreen);
+                                          },
+                                          child: Padding(
+                                            padding: getPadding(right: 14),
+                                            child: Icon(
+                                              Icons.access_time_filled_outlined,
+                                              size: getVerticalSize(24),
+                                              color: Color(0xFF6F9C95),
+                                              // Add any additional properties for customization
+                                            ),
+                                          ),
+                                        ),
                                         CustomImageView(
                                             svgPath: ImageConstant.imgIonbagoutline,
                                             height: getVerticalSize(24),
@@ -152,10 +166,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                               ),
                                             ),
                                             buttonWidget: GestureDetector(
-                                              // onTap: () {
-                                              //   print('tapped');
-                                              //   searchProduct();
-                                              // },
                                               child: Icon(
                                                 Icons.search,
                                                 size: 20,
