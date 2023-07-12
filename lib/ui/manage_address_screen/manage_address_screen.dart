@@ -58,7 +58,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     }
   }
 
-  deleteCard(String address) async {
+  deleteAddress(String address) async {
     final response = await http.post(
       Uri.parse(API+'delete_address.php'),
       body: {
@@ -85,14 +85,14 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     super.initState();
   }
 
-  void addPayment() async {
-    var url = API+'add_payment.php';
+  void addAddress() async {
+    var url = API+'add_address.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
-      'number': frameoneController.text,
-      'month': frameoneoneController.text,
-      'cvv': frameonetwoController.text,
-      'bank_name': bankNameController.text
+      'building_street': frameoneController.text,
+      'postal_code': frameoneoneController.text,
+      'unit_no': frameonetwoController.text,
+      'phone_number': bankNameController.text
     });
 
     if (response.statusCode == 200) {
@@ -111,10 +111,10 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
     }
   }
 
-  void setDefaultCard(String cardID) async {
-    var url = API+'set_default_card.php';
+  void setDefaultAddress(String id) async {
+    var url = API+'set_default_address.php';
     var response = await http.post(Uri.parse(url), body: {
-      'card-id': cardID,
+      'address_id': id,
       'cust-id': user['customer_id'],
     });
 
@@ -126,7 +126,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
         Map user = responseBody['data'];
         final pref = await SharedPreferences.getInstance();
         pref.setString('user', jsonEncode(user));
-        Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+        Navigator.pushNamed(context, AppRoutes.manageAddressScreen);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Default Card Changed!'),
@@ -271,7 +271,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
               width: getHorizontalSize(137),
               text: "Add",
               onTap: () {
-                addPayment();
+                addAddress();
               },
               margin: getMargin(top: 20, bottom: 5),
               alignment: Alignment.center,
@@ -329,7 +329,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                   value: item['address_id'] == user['address_id'],
                                   onChange: (value) {
                                     setState(() {
-                                      setDefaultCard(item['address_id']);
+                                      setDefaultAddress(item['address_id'].toString());
                                     });
                                   },
                                   fontStyle: CheckboxFontStyle.PoppinsRegular8,
@@ -337,8 +337,8 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
-                                    deleteCard(item['address_id']);
-                                    Navigator.pushNamed(context, AppRoutes.paymentMethodsScreen);
+                                    deleteAddress(item['address_id'].toString());
+                                    Navigator.pushNamed(context, AppRoutes.manageAddressScreen);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Address Deleted'),
