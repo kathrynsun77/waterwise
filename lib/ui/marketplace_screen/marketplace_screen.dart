@@ -16,7 +16,8 @@ class MarketplaceScreen extends StatefulWidget {
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
   TextEditingController searchController = TextEditingController();
-  String API = "http://172.28.200.128/water_wise/";
+  // String API = "http://172.28.200.128/water_wise/";
+  String API= "http://10.33.133.168/water_wise/";
   List<Product> products = [];
   List<Product> searchProducts = [];
 

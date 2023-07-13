@@ -14,7 +14,8 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
-  String API= "http://172.28.200.128/water_wise/";
+  // String API= "http://172.28.200.128/water_wise/";
+  String API= "http://10.33.133.168/water_wise/";
   Map user = {};
 
   getUser() async {
