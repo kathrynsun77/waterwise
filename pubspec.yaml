@@ -30,11 +30,10 @@ dependencies:
   open_file: ^3.3.2
   pdf_viewer_plugin: ^2.0.1
   mockito: ^5.4.2
-  awesome_notifications: ^0.7.4+1
-  awesome_notifications_fcm: ^0.7.4+1
   flutter_switch: ^0.3.2
   searchbar_animation: ^0.0.4
   flutter_add_to_cart_button: ^1.1.0
+  firebase_analytics: ^10.4.4
 
 
 dev_dependencies:
@@ -46,7 +45,8 @@ flutter:
   assets: 
     - assets/
     - assets/images/
-  fonts: 
+    - android/app/src/main/res/drawable/app_icon.png
+  fonts:
     - family: Poppins, Plus Jakarta Sans
       fonts: 
         - asset: assets/fonts/PoppinsSemiBold.ttf
