@@ -6,7 +6,7 @@ import '../../app_bar/custom_app_bar.dart';
 import '../../core/app_export.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import '../../API.dart';
 import '../../fcm_handler.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Map user = {};
   // String API= "http://172.28.200.128/water_wise/";
   // String API = "http://192.168.137.107/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
 
 
   getUser() async {

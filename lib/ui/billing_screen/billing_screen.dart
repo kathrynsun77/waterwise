@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../API.dart';
+
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class BillingScreen extends StatefulWidget {
 class _BillingScreenState extends State<BillingScreen> {
   // String API= "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
   Map user = {};
 
   getUser() async {

@@ -7,6 +7,7 @@ import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:WaterWise/widget/custom_button2.dart';
 import 'package:WaterWise/widget/custom_switch.dart';
+import '../../API.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isSelectedSwitch = false;
   // String API = "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
 
   Map user = {};
   int quantity = 1;

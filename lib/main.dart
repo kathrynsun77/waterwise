@@ -7,69 +7,115 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-main()  async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+
+  // Inisialisasi plugin notifikasi lokal
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
   );
 
-  // Initialize FlutterLocalNotificationsPlugin
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
-  final InitializationSettings initializationSettings =
-  InitializationSettings(android: initializationSettingsAndroid);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-// Get the FCM token
-  String? fcmToken = await FirebaseMessaging.instance.getToken();
-  print('FCM Token: $fcmToken');
-
-// Configure Firebase messaging
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  // Send notification data to Laravel when needed
-  if (fcmToken != null) {
-    NotificationSender.sendNotificationToLaravel(fcmToken, "abc", "abcd");
-  }
 
   runApp(MyApp());
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Handling a background message: ${message.messageId}');
-  print('Notification title: ${message.notification!.title}');
-  print('Notification body: ${message.notification!.body}');
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
-  // Initialize FlutterLocalNotificationsPlugin
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  // Define the notification details
+Future<void> showNotification() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
-    'water_wise_1', // Replace with your notification channel ID
-    'water_wise_1', // Replace with your channel name
+    'channel_id', // ID unik untuk channel notifikasi
+    'water_wise_1', // Nama channel notifikasi
+    // 'channel_description', // Deskripsi channel notifikasi
     importance: Importance.max,
     priority: Priority.high,
+    playSound: true,
   );
 
-  const NotificationDetails platformChannelSpecifics =
-  NotificationDetails(android: androidPlatformChannelSpecifics);
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+  IOSNotificationDetails();
 
-  // Show the notification
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  // Menampilkan notifikasi dengan ID unik 0
   await flutterLocalNotificationsPlugin.show(
-    0, // Replace with a unique ID for each notification if needed
-    message.notification!.title!, // Title of the notification received from Firebase
-    message.notification!.body!, // Body of the notification received from Firebase
+    0,
+    'Notification Title',
+    'Notification Body',
     platformChannelSpecifics,
   );
 }
 
+//   WidgetsFlutterBinding.ensureInitialized();
+//   SystemChrome.setPreferredOrientations([
+//     DeviceOrientation.portraitUp,
+//   ]);
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//
+//   // Initialize FlutterLocalNotificationsPlugin
+//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+//   const AndroidInitializationSettings initializationSettingsAndroid =
+//   AndroidInitializationSettings('app_icon');
+//   final InitializationSettings initializationSettings =
+//   InitializationSettings(android: initializationSettingsAndroid);
+//   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+//
+// // Get the FCM token
+//   String? fcmToken = await FirebaseMessaging.instance.getToken();
+//   print('FCM Token: $fcmToken');
+//
+// // Configure Firebase messaging
+//   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+//
+//   // Send notification data to Laravel when needed
+//   if (fcmToken != null) {
+//     NotificationSender.sendNotificationToLaravel(fcmToken, "abc", "abcd");
+//   }
+//
+//   runApp(MyApp());
+// }
 
+// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print('Handling a background message: ${message.messageId}');
+//   print('Notification title: ${message.notification!.title}');
+//   print('Notification body: ${message.notification!.body}');
+//
+//   // Initialize FlutterLocalNotificationsPlugin
+//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//   FlutterLocalNotificationsPlugin();
+//
+//   // Define the notification details
+//   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+//   AndroidNotificationDetails(
+//     'water_wise_1', // Replace with your notification channel ID
+//     'water_wise_1', // Replace with your channel name
+//     importance: Importance.max,
+//     priority: Priority.high,
+//   );
+//
+//   const NotificationDetails platformChannelSpecifics =
+//   NotificationDetails(android: androidPlatformChannelSpecifics);
+//
+//   // Show the notification
+//   await flutterLocalNotificationsPlugin.show(
+//     0, // Replace with a unique ID for each notification if needed
+//     message.notification!.title!, // Title of the notification received from Firebase
+//     message.notification!.body!, // Body of the notification received from Firebase
+//     platformChannelSpecifics,
+//   );
+//
+//   print("Ini test Notif $firebaseMessagingBackgroundHandler");
+// }
 
 class MyApp extends StatelessWidget {
   @override

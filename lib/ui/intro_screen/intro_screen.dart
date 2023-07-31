@@ -1,3 +1,4 @@
+import 'package:WaterWise/main.dart';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/widgets/custom_button2.dart';
 import 'package:mysql1/mysql1.dart';
@@ -22,6 +23,16 @@ class IntroScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              //script text on pressed
+              TextButton(
+                  onPressed: () {
+                    showNotification( );
+                  }, child: Text('TekanTextIni')),
+              SizedBox(
+                height: getVerticalSize(
+                  20,
+                ),
+              ),
               Spacer(),
               CustomImageView(
                 svgPath: ImageConstant.imgBeforeloginicon,
@@ -85,22 +96,22 @@ class IntroScreen extends StatelessWidget {
                         ),
                       ),
                       CustomButton(
-                        height: getVerticalSize(
-                          51,
-                        ),
-                        width: getHorizontalSize(
-                          149,
-                        ),
-                        text: "Login",
-                        margin: getMargin(
-                          top: 35,
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.loginScreen,
-                          );
-                        }
+                          height: getVerticalSize(
+                            51,
+                          ),
+                          width: getHorizontalSize(
+                            149,
+                          ),
+                          text: "Login",
+                          margin: getMargin(
+                            top: 35,
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.loginScreen,
+                            );
+                          }
                       ),
                       CustomButton(
                         height: getVerticalSize(

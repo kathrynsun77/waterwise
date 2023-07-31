@@ -5,6 +5,8 @@ import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
+import '../../API.dart';
+
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen> {
   // String API= "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
 
   Map user = {};
 

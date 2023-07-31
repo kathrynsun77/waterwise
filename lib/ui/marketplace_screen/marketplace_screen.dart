@@ -6,6 +6,7 @@ import 'package:WaterWise/core/app_export.dart';
 import 'package:WaterWise/widget/app_bar/appbar_image.dart';
 import 'package:WaterWise/widget/app_bar/custom_app_bar.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
+import '../../API.dart';
 
 class MarketplaceScreen extends StatefulWidget {
   const MarketplaceScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   TextEditingController searchController = TextEditingController();
   // String API = "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
   List<Product> products = [];
   List<Product> searchProducts = [];
 

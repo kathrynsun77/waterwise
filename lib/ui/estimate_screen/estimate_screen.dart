@@ -5,6 +5,8 @@ import 'package:WaterWise/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
+import '../../API.dart';
+
 
 class EstimateScreen extends StatefulWidget {
   const EstimateScreen({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class EstimateScreen extends StatefulWidget {
 // ignore_for_file: must_be_immutable
 class _EstimateScreenState extends State<EstimateScreen> {
   // String API= "http://172.28.200.128/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
   Map user = {};
   List allBill = [];
 

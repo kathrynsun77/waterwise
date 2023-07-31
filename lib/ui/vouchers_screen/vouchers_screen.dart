@@ -8,6 +8,7 @@ import '../../app_bar/appbar_image.dart';
 import '../../app_bar/appbar_title.dart';
 import '../../app_bar/custom_app_bar.dart';
 import '../../core/utils/app_format.dart';
+import '../../API.dart';
 
 class VouchersScreen extends StatefulWidget {
   const VouchersScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class VouchersScreen extends StatefulWidget {
 class _VouchersScreenState extends State<VouchersScreen> {
   // String API= "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
   bool checkInClicked = false;
   Map user = {};
   DateTime lastCheckInDate = DateTime.now();

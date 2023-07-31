@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_form_field.dart';
+import '../../API.dart';
 
 class UpdateAccountScreen extends StatefulWidget {
   const UpdateAccountScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class UpdateAccountScreen extends StatefulWidget {
 class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
   // String API= "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
 
   Map user = {};
   getUser() async{

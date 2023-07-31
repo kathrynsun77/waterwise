@@ -6,6 +6,8 @@ import '../../widget/custom_button.dart';
 import '../../widget/custom_checkbox.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
+import '../../API.dart';
+
 
 class ManageAddressScreen extends StatefulWidget {
   const ManageAddressScreen({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class ManageAddressScreen extends StatefulWidget {
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
   // String API= "http://172.28.200.128/water_wise/";
   // String API= "http://10.33.133.168/water_wise/";
-  String API= "http://192.168.1.12/water_wise/";
+  // String API= "http://192.168.1.12/water_wise/";
   bool isCheckbox = false;
   bool isCheckbox1 = false;
   bool isCheckbox2 = false;
