@@ -10,7 +10,6 @@ void main() {
           MaterialApp(
             home: SplashScreenPage(),
             routes: {
-              IntroScreen.routeName: (context) => IntroScreen(),
             },
           ),
         );

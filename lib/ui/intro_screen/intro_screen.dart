@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:WaterWise/main.dart';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/widgets/custom_button2.dart';
-import 'package:mysql1/mysql1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';
 import '../../core/utils/size_utils.dart';
@@ -9,10 +11,100 @@ import '../../routes/app_routes.dart';
 import '../../theme/app_decoration.dart';
 import '../../theme/app_style.dart';
 import '../../widget/custom_image_view.dart';
+import 'package:http/http.dart' as http;
+import '../../API.dart';
 
 
-class IntroScreen extends StatelessWidget {
-  static const String routeName = 'IntroScreen()';
+class IntroScreen extends StatefulWidget {
+  const IntroScreen({Key? key}) : super(key: key);
+
+  @override
+  State<IntroScreen> createState() => _IntroScreenState();
+}
+
+// ignore_for_file: must_be_immutable
+class _IntroScreenState extends State<IntroScreen> {
+  Map user = {};
+  bool notificationSent = false; // Add this boolean flag
+  getUser() async {
+    final pref = await SharedPreferences.getInstance();
+    String? userString = pref.getString("user");
+    if (userString != null) {
+      user = jsonDecode(userString);
+      checkLeakStatus();
+      setState(() {});
+    }
+  }
+
+  Timer? _timer;
+  void checkLeakStatus() async {
+    const Duration updateInterval = Duration(seconds: 3);
+
+    _timer = Timer.periodic(updateInterval, (timer) async {
+      // Make the HTTP POST request to get the leak_status
+      final response = await http.post(
+        Uri.parse(API + 'pipe_data.php'),
+        body: {'cust-id': user['customer_id'].toString()},
+      );
+
+      if (response.statusCode == 200) {
+        // Parse the JSON response
+        final jsonData = json.decode(response.body);
+
+        bool newNotificationRequired = false; // Flag to track if a new notification is required
+
+        // Check if leak_status is 2 in any of the rounds and set the flag accordingly
+        for (var data in jsonData) {
+          int meter = int.parse(data['meter_value']);
+          if (meter > 100 && !notificationSent) {
+            newNotificationRequired = true;
+            break;
+          }
+        }
+
+        if (newNotificationRequired) {
+          highUsage(); // Send the notification if required
+          notificationSent = true; // Set the flag to true
+        } else {
+          notificationSent = false; // Reset the flag for the next change in data
+        }
+      } else {
+        // Handle API error or non-200 response here
+        print('Error: Unable to fetch leak_status');
+      }
+    });
+  }
+
+  void scheduleWeeklyWaterSaving() {
+    const oneWeek = Duration(days: 7);
+    // Create a periodic timer with a duration of one week
+    Timer.periodic(oneWeek, (timer) {
+      // Call the waterSaving() function at the beginning of each week
+      waterSaving();
+    });
+  }
+
+  void serviceNotif() {
+    const midYear = Duration(days: 182); // Approximately 6 months (considering 30 days/month)
+    // Create a timer for the mid-year notification
+    Timer(midYear, () {
+      // Call the waterSaving() function for the mid-year notification
+      waterSaving();
+    });
+  }
+
+  void initState() {
+    getUser();
+    scheduleWeeklyWaterSaving();
+    serviceNotif();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,8 +118,8 @@ class IntroScreen extends StatelessWidget {
               //script text on pressed
               TextButton(
                   onPressed: () {
-                    showNotification( );
-                  }, child: Text('TekanTextIni')),
+                    scheduleWeeklyWaterSaving();
+                  }, child: Text('Notif tests')),
               SizedBox(
                 height: getVerticalSize(
                   20,

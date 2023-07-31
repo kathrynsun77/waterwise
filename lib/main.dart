@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:WaterWise/routes/app_routes.dart';
@@ -26,7 +28,7 @@ void main() async {
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
-Future<void> showNotification() async {
+Future<void> billDue() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
     'channel_id', // ID unik untuk channel notifikasi
@@ -48,74 +50,108 @@ Future<void> showNotification() async {
   // Menampilkan notifikasi dengan ID unik 0
   await flutterLocalNotificationsPlugin.show(
     0,
-    'Notification Title',
-    'Notification Body',
+    'Water Bill Due',
+    'Monthly Water Bill Due',
     platformChannelSpecifics,
   );
 }
 
-//   WidgetsFlutterBinding.ensureInitialized();
-//   SystemChrome.setPreferredOrientations([
-//     DeviceOrientation.portraitUp,
-//   ]);
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//
-//   // Initialize FlutterLocalNotificationsPlugin
-//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-//   const AndroidInitializationSettings initializationSettingsAndroid =
-//   AndroidInitializationSettings('app_icon');
-//   final InitializationSettings initializationSettings =
-//   InitializationSettings(android: initializationSettingsAndroid);
-//   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-//
-// // Get the FCM token
-//   String? fcmToken = await FirebaseMessaging.instance.getToken();
-//   print('FCM Token: $fcmToken');
-//
-// // Configure Firebase messaging
-//   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-//
-//   // Send notification data to Laravel when needed
-//   if (fcmToken != null) {
-//     NotificationSender.sendNotificationToLaravel(fcmToken, "abc", "abcd");
-//   }
-//
-//   runApp(MyApp());
-// }
+Future<void> highUsage() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  AndroidNotificationDetails(
+    'channel_id', // ID unik untuk channel notifikasi
+    'water_wise_1', // Nama channel notifikasi
+    // 'channel_description', // Deskripsi channel notifikasi
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+  );
 
-// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   print('Handling a background message: ${message.messageId}');
-//   print('Notification title: ${message.notification!.title}');
-//   print('Notification body: ${message.notification!.body}');
-//
-//   // Initialize FlutterLocalNotificationsPlugin
-//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//   FlutterLocalNotificationsPlugin();
-//
-//   // Define the notification details
-//   const AndroidNotificationDetails androidPlatformChannelSpecifics =
-//   AndroidNotificationDetails(
-//     'water_wise_1', // Replace with your notification channel ID
-//     'water_wise_1', // Replace with your channel name
-//     importance: Importance.max,
-//     priority: Priority.high,
-//   );
-//
-//   const NotificationDetails platformChannelSpecifics =
-//   NotificationDetails(android: androidPlatformChannelSpecifics);
-//
-//   // Show the notification
-//   await flutterLocalNotificationsPlugin.show(
-//     0, // Replace with a unique ID for each notification if needed
-//     message.notification!.title!, // Title of the notification received from Firebase
-//     message.notification!.body!, // Body of the notification received from Firebase
-//     platformChannelSpecifics,
-//   );
-//
-//   print("Ini test Notif $firebaseMessagingBackgroundHandler");
-// }
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+  IOSNotificationDetails();
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  // Menampilkan notifikasi dengan ID unik 0
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'High Usage Detected',
+    'Check your pipe status on activity page',
+    platformChannelSpecifics,
+  );
+}
+
+Future<void> serviceNotif() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  AndroidNotificationDetails(
+    'channel_id', // ID unik untuk channel notifikasi
+    'water_wise_1', // Nama channel notifikasi
+    // 'channel_description', // Deskripsi channel notifikasi
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+  );
+
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+  IOSNotificationDetails();
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  // Menampilkan notifikasi dengan ID unik 0
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Household Pipe Free Service/Check',
+    'Please contact us if you do need service',
+    platformChannelSpecifics,
+  );
+}
+
+Future<void> waterSaving() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  AndroidNotificationDetails(
+    'channel_id', // Unique ID for the notification channel
+    'water_wise_1', // Notification channel name
+    // 'channel_description', // Notification channel description
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+  );
+
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+  IOSNotificationDetails();
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  // List of random texts
+  List<String> randomTexts = [
+    "Remember to turn off the faucet while brushing your teeth.",
+    "Fix any leaking pipes or faucets to save water.",
+    "Use a broom instead of a hose to clean driveways and sidewalks.",
+    "Collect rainwater for your plants and garden.",
+    "Take shorter showers to conserve water.",
+  ];
+
+  // Randomly select a text from the list
+  Random random = Random();
+  String randomText = randomTexts[random.nextInt(randomTexts.length)];
+
+  // Show notification with the randomly selected text
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Weekly Water Saving Advice',
+    randomText,
+    platformChannelSpecifics,
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
