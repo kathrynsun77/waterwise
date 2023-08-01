@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:WaterWise/routes/app_routes.dart';
@@ -84,7 +83,7 @@ Future<void> highUsage() async {
   );
 }
 
-Future<void> serviceNotif() async {
+Future<void> serviceNot() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
     'channel_id', // ID unik untuk channel notifikasi

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:WaterWise/main.dart';
 import 'package:flutter/material.dart';
 import 'package:WaterWise/widgets/custom_button2.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';
@@ -14,6 +16,11 @@ import '../../widget/custom_image_view.dart';
 import 'package:http/http.dart' as http;
 import '../../API.dart';
 
+class IntroController extends GetxController{
+  final _listMeter = [].obs;
+  List get listMeter => _listMeter;
+  set listMeter(List n) => _listMeter.value = n;
+}
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);
@@ -26,6 +33,7 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   Map user = {};
   bool notificationSent = false; // Add this boolean flag
+  final introController = Get.put(IntroController());
   getUser() async {
     final pref = await SharedPreferences.getInstance();
     String? userString = pref.getString("user");
@@ -38,7 +46,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Timer? _timer;
   void checkLeakStatus() async {
-    const Duration updateInterval = Duration(seconds: 3);
+    const Duration updateInterval = Duration(seconds: 7);
 
     _timer = Timer.periodic(updateInterval, (timer) async {
       // Make the HTTP POST request to get the leak_status
@@ -46,28 +54,34 @@ class _IntroScreenState extends State<IntroScreen> {
         Uri.parse(API + 'pipe_data.php'),
         body: {'cust-id': user['customer_id'].toString()},
       );
+      print('request ke -'+ timer.tick.toString());
+      print(response.body);
 
       if (response.statusCode == 200) {
         // Parse the JSON response
         final jsonData = json.decode(response.body);
-
         bool newNotificationRequired = false; // Flag to track if a new notification is required
 
         // Check if leak_status is 2 in any of the rounds and set the flag accordingly
-        for (var data in jsonData) {
-          int meter = int.parse(data['meter_value']);
-          if (meter > 100 && !notificationSent) {
-            newNotificationRequired = true;
-            break;
+        List newlistMeter = jsonData.where((item)=> int.parse(item['meter_value'])>100).toList();
+        print('listMeter:');
+        print(newlistMeter);
+        if (newlistMeter.length > 0){
+          for (var data in introController.listMeter) {
+            int index = newlistMeter.indexWhere((e)=> e['pipe_id'] == data['pipe_id']);
+            if (index<0) continue;
+            if (data['meter_value']!=newlistMeter[index]['meter_value']){
+              print("notif tampil");
+              highUsage(); // Send the notification if required
+              // newNotificationRequired = true;
+              break;
+            }
+            print('notif tidak tampil');
+            print(data['meter_value']);
+            print (newlistMeter[index]['meter_value']);
           }
-        }
-
-        if (newNotificationRequired) {
-          highUsage(); // Send the notification if required
-          notificationSent = true; // Set the flag to true
-        } else {
-          notificationSent = false; // Reset the flag for the next change in data
-        }
+            introController.listMeter = newlistMeter;
+          }
       } else {
         // Handle API error or non-200 response here
         print('Error: Unable to fetch leak_status');
@@ -89,7 +103,7 @@ class _IntroScreenState extends State<IntroScreen> {
     // Create a timer for the mid-year notification
     Timer(midYear, () {
       // Call the waterSaving() function for the mid-year notification
-      waterSaving();
+      serviceNot();
     });
   }
 
@@ -97,6 +111,7 @@ class _IntroScreenState extends State<IntroScreen> {
     getUser();
     scheduleWeeklyWaterSaving();
     serviceNotif();
+    checkLeakStatus();
     super.initState();
   }
 
@@ -118,7 +133,7 @@ class _IntroScreenState extends State<IntroScreen> {
               //script text on pressed
               TextButton(
                   onPressed: () {
-                    scheduleWeeklyWaterSaving();
+                    waterSaving();
                   }, child: Text('Notif tests')),
               SizedBox(
                 height: getVerticalSize(
