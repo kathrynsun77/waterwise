@@ -1,11 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:WaterWise/routes/app_routes.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'fcm_handler.dart';
-import 'firebase_options.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+// import '../ui/notification_screen/notification_screen.dart';
+import '../../API.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
@@ -53,6 +50,7 @@ Future<void> billDue() async {
     'Monthly Water Bill Due',
     platformChannelSpecifics,
   );
+  addToNotif('Water Bill Due', 'Monthly Water Bill Due');
 }
 
 Future<void> highUsage() async {
@@ -81,6 +79,8 @@ Future<void> highUsage() async {
     'Check your pipe status on activity page',
     platformChannelSpecifics,
   );
+  addToNotif('High Usage Detected', 'Check your pipe status on activity page');
+
 }
 
 Future<void> serviceNot() async {
@@ -109,6 +109,8 @@ Future<void> serviceNot() async {
     'Please contact us if you do need service',
     platformChannelSpecifics,
   );
+  addToNotif('Household Pipe Free Service/Check', 'Please contact us if you do need service');
+
 }
 
 Future<void> waterSaving() async {
@@ -142,14 +144,18 @@ Future<void> waterSaving() async {
   // Randomly select a text from the list
   Random random = Random();
   String randomText = randomTexts[random.nextInt(randomTexts.length)];
+  String text = randomText;
 
   // Show notification with the randomly selected text
   await flutterLocalNotificationsPlugin.show(
     0,
     'Weekly Water Saving Advice',
-    randomText,
+    text,
     platformChannelSpecifics,
   );
+
+  addToNotif('Weekly Water Saving Advice', 'text');
+
 }
 
 class MyApp extends StatelessWidget {
