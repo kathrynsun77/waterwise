@@ -2,17 +2,25 @@
 class Assets {
   Assets._();
 
+  static const String assetsAppIcon = 'assets/app_icon.png';
   static const String assetsImagesImgProfile1 = 'assets/images/img_profile1.svg';
+  static const String fontsInterRegular = 'assets/fonts/InterRegular.ttf';
+  static const String fontsPlusJakartaSansRomanSemiBold = 'assets/fonts/PlusJakartaSansRomanSemiBold.ttf';
+  static const String fontsPoppinsBold = 'assets/fonts/PoppinsBold.ttf';
+  static const String fontsPoppinsLight = 'assets/fonts/PoppinsLight.ttf';
   static const String fontsPoppinsMedium = 'assets/fonts/PoppinsMedium.ttf';
   static const String fontsPoppinsRegular = 'assets/fonts/PoppinsRegular.ttf';
   static const String fontsPoppinsSemiBold = 'assets/fonts/PoppinsSemiBold.ttf';
+  static const String fontsRobotoRegular = 'assets/fonts/RobotoRegular.ttf';
   static const String imagesImageNotFound = 'assets/images/image_not_found.png';
   static const String imagesImgAir1 = 'assets/images/img_air1.svg';
   static const String imagesImgArrowleft = 'assets/images/img_arrowleft.svg';
+  static const String imagesImgArrowleftGray900 = 'assets/images/img_arrowleft_gray_900.svg';
   static const String imagesImgArrowleftIndigo800 = 'assets/images/img_arrowleft_indigo_800.svg';
   static const String imagesImgBag = 'assets/images/img_bag.svg';
   static const String imagesImgBeforeloginicon = 'assets/images/img_beforeloginicon.svg';
   static const String imagesImgCall = 'assets/images/img_call.svg';
+  static const String imagesImgChopardperfume = 'assets/images/img_chopardperfume.png';
   static const String imagesImgDavid1 = 'assets/images/img_david1.png';
   static const String imagesImgDown2 = 'assets/images/img_down2.svg';
   static const String imagesImgEdit = 'assets/images/img_edit.svg';
@@ -25,7 +33,14 @@ class Assets {
   static const String imagesImgHistory1BlueGray700 = 'assets/images/img_history1_blue_gray_700.svg';
   static const String imagesImgHome1 = 'assets/images/img_home1.svg';
   static const String imagesImgHome1BlueGray10001 = 'assets/images/img_home1_blue_gray_100_01.svg';
+  static const String imagesImgIcbaselineplus = 'assets/images/img_icbaselineplus.svg';
+  static const String imagesImgIcbaselineplusGray900 = 'assets/images/img_icbaselineplus_gray_900.svg';
+  static const String imagesImgIcbaselineplusGray90001 = 'assets/images/img_icbaselineplus_gray_900_01.svg';
+  static const String imagesImgIcbaselineplusGray90019x19 = 'assets/images/img_icbaselineplus_gray_900_19x19.svg';
+  static const String imagesImgIcbaselineplusWhiteA700 = 'assets/images/img_icbaselineplus_white_a700.svg';
   static const String imagesImgIllustration = 'assets/images/img_illustration.png';
+  static const String imagesImgImage1 = 'assets/images/img_image1.png';
+  static const String imagesImgIonbagoutline = 'assets/images/img_ionbagoutline.svg';
   static const String imagesImgLamp = 'assets/images/img_lamp.svg';
   static const String imagesImgLine3 = 'assets/images/img_line3.svg';
   static const String imagesImgLine4 = 'assets/images/img_line4.svg';
@@ -38,6 +53,7 @@ class Assets {
   static const String imagesImgProfile1 = 'assets/images/img_profile1.png';
   static const String imagesImgProfile1BlueGray10001 = 'assets/images/img_profile1_blue_gray_100_01.svg';
   static const String imagesImgProfile1BlueGray700 = 'assets/images/img_profile1_blue_gray_700.svg';
+  static const String imagesImgSearch = 'assets/images/img_search.svg';
   static const String imagesImgSignupTheme = 'assets/images/img_signup_theme.svg';
   static const String imagesImgSignupillustration = 'assets/images/img_signupillustration.svg';
   static const String imagesImgVisa1 = 'assets/images/img_visa1.png';
