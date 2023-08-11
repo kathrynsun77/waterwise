@@ -131,10 +131,10 @@ class _IntroScreenState extends State<IntroScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               //script text on pressed
-              TextButton(
-                  onPressed: () {
-                    waterSaving();
-                  }, child: Text('Notif tests')),
+              // TextButton(
+              //     onPressed: () {
+              //       waterSaving();
+              //     }, child: Text('Notif tests')),
               SizedBox(
                 height: getVerticalSize(
                   20,

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-String API= "https://legit-chances.000webhostapp.com/";
+String API= "https://api.waterwise-app.com/";
 
 Map user = {};
 
