@@ -16,11 +16,9 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
-  // String API= "http://172.28.200.128/water_wise/";
-  // String API= "http://10.33.133.168/water_wise/";
-  // String API= "http://192.168.1.12/water_wise/";
 
   Map user = {};
+  String dropdownValue = 'Feedback'; // Default value for dropdown
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -30,6 +28,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       setState(() {});
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,8 +37,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   }
 
 
-    addPayment() async {
-    var url = API+'feedback.php';
+  addPayment() async {
+    var url = API + 'feedback.php';
     var response = await http.post(Uri.parse(url), body: {
       'cust-id': user['customer_id'],
       'message': messageController.text,
@@ -52,6 +51,29 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Feedback Sent!'),
+          backgroundColor: Color(0xFF6F9C95),
+        ),
+      );
+    } else {
+      print('failed bye');
+      // Handle the HTTP request failure here
+    }
+  }
+
+  reqService() async {
+    var url = API + 'request_service.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'cust-id': user['customer_id'],
+      'message': messageController.text,
+    });
+
+    if (response.statusCode == 200) {
+      print('success');
+      print(response.body);
+      Navigator.pushNamed(context, AppRoutes.bottomBarMenu);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Service Request Sent!'),
           backgroundColor: Color(0xFF6F9C95),
         ),
       );
@@ -137,7 +159,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 21,left:30),
+              padding: EdgeInsets.only(top: 21, left: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -154,6 +176,20 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     controller: messageController,
                     hintText: "Enter Message",
                     margin: getMargin(top: 2),
+                  ),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['Feedback', 'Service'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -222,7 +258,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   onTapContactus(BuildContext context) {
     Navigator.maybePop(context);
   }
+
   onTapContactSend(BuildContext context) {
-    addPayment();
+    if (dropdownValue == 'Feedback') {
+      addPayment();
+    } else if (dropdownValue == 'Service') {
+      reqService();
+    }
   }
 }
