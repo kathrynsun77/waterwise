@@ -50,7 +50,6 @@ Future<void> billDue() async {
     'Monthly Water Bill Due',
     platformChannelSpecifics,
   );
-  addToNotif('Water Bill Due', 'Monthly Water Bill Due');
 }
 
 Future<void> highUsage() async {
@@ -79,7 +78,6 @@ Future<void> highUsage() async {
     'Check your pipe status on activity page',
     platformChannelSpecifics,
   );
-  addToNotif('High Usage Detected', 'Check your pipe status on activity page');
 
 }
 
@@ -109,7 +107,6 @@ Future<void> serviceNot() async {
     'Please contact us if you do need service',
     platformChannelSpecifics,
   );
-  addToNotif('Household Pipe Free Service/Check', 'Please contact us if you do need service');
 
 }
 
@@ -153,8 +150,6 @@ Future<void> waterSaving() async {
     text,
     platformChannelSpecifics,
   );
-
-  addToNotif('Weekly Water Saving Advice', 'text');
 
 }
 

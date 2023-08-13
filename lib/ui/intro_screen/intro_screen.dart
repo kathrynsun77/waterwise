@@ -34,18 +34,36 @@ class _IntroScreenState extends State<IntroScreen> {
   Map user = {};
   bool notificationSent = false; // Add this boolean flag
   final introController = Get.put(IntroController());
+
   getUser() async {
     final pref = await SharedPreferences.getInstance();
     String? userString = pref.getString("user");
     if (userString != null) {
       user = jsonDecode(userString);
-      checkLeakStatus();
+      checkHighStatus();
       setState(() {});
     }
   }
 
+  addToNotif(String title, String body) async {
+    final response = await http.post(
+        Uri.parse(API+'add_notif.php'),
+        body: {
+          'title': title.toString(),
+          'body': body.toString(),
+          'cust-id': user['customer_id'].toString(),
+        });
+    // print('fetched');
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      print(response.body);
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
   Timer? _timer;
-  void checkLeakStatus() async {
+  void checkHighStatus() async {
     const Duration updateInterval = Duration(seconds: 7);
 
     _timer = Timer.periodic(updateInterval, (timer) async {
@@ -73,6 +91,7 @@ class _IntroScreenState extends State<IntroScreen> {
             if (data['meter_value']!=newlistMeter[index]['meter_value']){
               print("notif tampil");
               highUsage(); // Send the notification if required
+              addToNotif('High Usage Detected','Check your pipe status on activity page');
               // newNotificationRequired = true;
               break;
             }
@@ -90,28 +109,68 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   void scheduleWeeklyWaterSaving() {
-    const oneWeek = Duration(days: 7);
-    // Create a periodic timer with a duration of one week
-    Timer.periodic(oneWeek, (timer) {
-      // Call the waterSaving() function at the beginning of each week
+    final now = DateTime.now();
+    final nextMonday = now.add(Duration(days: DateTime.monday - now.weekday + 7));
+
+    final timeUntilNextMonday = nextMonday.difference(now);
+
+    // Calculate the time until the next first day of the week (Monday)
+    final duration = Duration(days: timeUntilNextMonday.inDays);
+
+    // Create a timer with the calculated duration
+    Timer(duration, () {
+      // Call the waterSaving() function when the next first day of the week arrives
       waterSaving();
+      // addToNotif(title, body);
+      // Schedule the next execution for the next week
+      scheduleWeeklyWaterSaving();
     });
   }
 
-  void serviceNotif() {
-    const midYear = Duration(days: 182); // Approximately 6 months (considering 30 days/month)
-    // Create a timer for the mid-year notification
-    Timer(midYear, () {
-      // Call the waterSaving() function for the mid-year notification
+  void scheduleBillDue() {
+    final now = DateTime.now();
+    final nextMonth = DateTime(now.year, now.month + 1, 1);
+
+    final timeUntilNextMonth = nextMonth.difference(now);
+
+    // Calculate the time until the next first day of the month
+    final duration = Duration(days: timeUntilNextMonth.inDays);
+
+    // Create a timer with the calculated duration
+    Timer(duration, () {
+      // Call the billDue() function when the next first day of the month arrives
+      billDue();
+      addToNotif('Water Bill Due', 'Monthly Water Bill Due');
+      // Schedule the next execution for the next month
+      scheduleBillDue();
+    });
+  }
+
+  void scheduleMidYearService() {
+    final now = DateTime.now();
+    final nextJune = DateTime(now.year + 1, 6, 1);
+
+    final timeUntilNextJune = nextJune.difference(now);
+
+    // Calculate the time until the next June 1st
+    final duration = Duration(days: timeUntilNextJune.inDays);
+
+    // Create a timer with the calculated duration
+    Timer(duration, () {
+      // Call the serviceNot() function when the next June 1st arrives
       serviceNot();
+      addToNotif('Household Pipe Free Service/Check', 'Please contact us if you do need service');
+      // Schedule the next execution for the next year
+      scheduleMidYearService();
     });
   }
 
   void initState() {
     getUser();
     scheduleWeeklyWaterSaving();
-    serviceNotif();
-    checkLeakStatus();
+    scheduleMidYearService();
+    checkHighStatus();
+    scheduleBillDue();
     super.initState();
   }
 
