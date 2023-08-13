@@ -170,10 +170,11 @@ class _CartScreenState extends State<CartScreen> {
                                           });
                                           },
                                         ),
-                                        CustomImageView(
-                                          imagePath: ImageConstant.imgChopardperfume,
-                                          height: getVerticalSize(84,),
-                                          width: getHorizontalSize(40,),
+                                        Image.network(
+                                          'https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png',
+                                          // item['filenames'],
+                                          height: getVerticalSize(84),
+                                          width: getHorizontalSize(40),
                                         ),
                                         Padding(
                                           padding: getPadding(

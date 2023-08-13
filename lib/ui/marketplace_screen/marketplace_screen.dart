@@ -246,11 +246,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                             child: ListTile(
                                               title: Text(product.name),
                                               subtitle: Text('Price: \$${product.price.toStringAsFixed(2)}'),
-                                              leading: Image(
-                                                image: AssetImage('assets/images/img_girl.png'),
-                                          ),
-
-                                          // Image.network(product.photoUrl),
+                                              // leading: Image.network('${product.photoUrl.toString()}'),
+                                              leading: Image.network('https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png',
+                                              ),
                                             ),
                                           );
                                         },

@@ -147,11 +147,15 @@ class _ProductdetailsScreenState extends State<ProductdetailsScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtPoppinsSemiBold16)),
-                        CustomImageView(
-                            imagePath: ImageConstant.imgImage1,
-                            height: getVerticalSize(220),
-                            width: getHorizontalSize(285),
-                            margin: getMargin(left: 10, top: 38)),
+                        Padding(
+                          padding: getPadding(left: 10, top: 38),
+                          child: Image.network(
+                            'https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png',
+                              // item['filenames'],
+                              height: getVerticalSize(220),
+                              width: getHorizontalSize(285),
+                              ),
+                        ),
                         Padding(
                             padding: getPadding(top: 25),
                             child: Divider(
