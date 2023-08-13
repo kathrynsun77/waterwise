@@ -163,7 +163,7 @@ class _ViewBillScreenState extends State<ViewBillScreen> {
                                   Padding(
                                     padding: getPadding(bottom: 1),
                                     child: Text(
-                                      "${item['meter_value']}L",
+                                      "${item['meter_value']} cu/M",
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                       style: AppStyle.txtPoppinsRegular12Bluegray700.copyWith(

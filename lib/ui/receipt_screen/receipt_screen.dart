@@ -184,7 +184,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                         getPadding(bottom: 1),
                                         child: Text(
                                             item['usage_amount'] +
-                                                "L",
+                                                "cu/M",
                                             overflow:
                                             TextOverflow
                                                 .ellipsis,

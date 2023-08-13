@@ -199,7 +199,7 @@ class _EstimateScreenState extends State<EstimateScreen> {
                                                       child:
                                                       CustomTextFormField(
                                                         maxLines: null,
-                                                        hintText: "Insert Usage in L",
+                                                        hintText: "Insert Usage in cu/M",
                                                         controller: userInputController,
                                                       ),)),
                                               Align(
