@@ -187,7 +187,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     items: <String>['Feedback', 'Service'].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: AppStyle.txtPoppinsSemiBold14.copyWith(
+                            letterSpacing: getHorizontalSize(1.0),
+                          ),
+                        ),
                       );
                     }).toList(),
                   ),
