@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/custom_button2.dart';
@@ -11,6 +12,7 @@ import '../../routes/app_routes.dart';
 import '../../theme/app_style.dart';
 import '../../widget/custom_image_view.dart';
 import '../../API.dart';
+import '../sign_up_screen/sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,9 +22,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // String API= "http://172.28.200.128/water_wise/";
-  // String API= "http://10.33.133.168/water_wise/";
-  // String API= "http://192.168.1.12/water_wise/";
 
   loginUser(String email, String password) async {
     var url = API+'login_config1.php';
@@ -70,8 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
         resizeToAvoidBottomInset: false,
-        body: Form(
-          key: _formKey,
+        body: SingleChildScrollView(
+          reverse: true,
           child: Container(
             width: double.maxFinite,
             padding: getPadding(
@@ -189,20 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: getPadding(
-                      top: 11,
-                    ),
-                    child: Text(
-                      "Forgot Password?",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: AppStyle.txtPoppinsMedium12,
-                    ),
-                  ),
-                ),
+                // Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)),
                 CustomButton(
                   height: getVerticalSize(
                     51,
@@ -214,13 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     right: 40,
                   ),
                   onTap: () {
-                    if (_formKey.currentState!.validate())
-                     {
                       loginUser(emailController.text, passwordController.text);
-                    } else
-                    {
-                      print("Not Validated");
-                    }
                   },
                 ),
                 Padding(
@@ -252,17 +232,28 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.w400,
                           ),
-                        ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        // Perform the action when "Sign Up" is tapped
+                        // For example, navigate to the sign-up screen
+                        Navigator.pushNamed(context, AppRoutes.registerScreen);
+                      },
+                  ),
                       ],
                     ),
                     textAlign: TextAlign.left,
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)),
               ],
             ),
           ),
         ),
-      ),
-    );
+        ),
+  );
   }
 }
+
+
+
+

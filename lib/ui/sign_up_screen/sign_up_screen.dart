@@ -19,9 +19,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  // String API= "http://172.28.200.128/water_wise/";
-  // String API= "http://10.33.133.168/water_wise/";
-  // String API= "http://192.168.1.12/water_wise/";
 
   TextEditingController lastnameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
@@ -70,14 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
         backgroundColor: ColorConstant.whiteA700,
         resizeToAvoidBottomInset: false,
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SingleChildScrollView(
-            physics: MediaQuery.of(context).viewInsets.bottom > 0
-                ? BouncingScrollPhysics()
-                : NeverScrollableScrollPhysics(),
+        body:SingleChildScrollView(
+          reverse: true,
             child: Form(
               key: _formKey,
               child: Container(
@@ -226,28 +217,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       alignment: Alignment.center,
                     ),
                     Align(
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.center,
                       child: Padding(
-                        padding: getPadding(top: 31, right: 75, bottom: 5),
+                        padding: getPadding(top: 31, right: 100, bottom: 5, left:70),
                         child: RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Already have an account?",
+                                text: "Already have an account? ",
                                 style: TextStyle(
-                                  color: ColorConstant.gray600,
-                                  fontSize: getVerticalSize(12),
-                                  fontFamily: "Poppins",
+                                  color: ColorConstant.indigo100,
+                                  fontSize: getFontSize(
+                                    10,
+                                  ),
+                                  fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                               TextSpan(
                                 text: "Sign In",
                                 style: TextStyle(
-                                  color: ColorConstant.gray600,
-                                  fontSize: getVerticalSize(12),
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
+                                  color: ColorConstant.blueGray400,
+                                  fontSize: getFontSize(
+                                    10,
+                                  ),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
                                 ),
                                 // Add navigation to the sign-in screen here
                                 recognizer: TapGestureRecognizer()
@@ -260,13 +255,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
+                    Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)),
                   ],
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
