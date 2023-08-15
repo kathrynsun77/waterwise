@@ -17,10 +17,6 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   Map user = {};
-  // String API= "http://172.28.200.128/water_wise/";
-  // String API = "http://192.168.137.107/water_wise/";
-  // String API= "http://192.168.1.12/water_wise/";
-
 
   getUser() async {
     final pref = await SharedPreferences.getInstance();
@@ -101,10 +97,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   Map item = allBill[index];
+                                  bool isExpanded = false; // Track whether the text is expanded
                                   return GestureDetector(
                                       onTap: () {
-                                        // Navigator.pushNamed(context, item['url']);
-                                      },
+                                        setState(() {
+                                          isExpanded = !isExpanded; // Toggle the expanded state
+                                        });                                      },
                                       child: Container(
                                         width: double.maxFinite,
                                         margin: getMargin(
@@ -118,6 +116,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           right: 50,
                                           bottom: 15,
                                         ),
+                                        height: 100, // Adjust the height as needed
                                         decoration: AppDecoration.outlineBlack90019
                                             .copyWith(
                                           borderRadius:
@@ -146,21 +145,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               thickness: 1,
                                             ),
                                             Text(
-                                              item['message'].toString(),
+                                              isExpanded
+                                                  ? item['message'].toString()
+                                                  : truncateText(item['message'].toString()),
                                               overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: AppStyle
-                                                  .txtPoppinsRegular12Gray400
-                                                  .copyWith(
-                                                letterSpacing:
-                                                getHorizontalSize(1.0),
-                                              ),
+                                              maxLines: isExpanded ? null : 2,
+                                              style: AppStyle.txtPoppinsRegular12Gray400,
                                             ),
                                           ],
                                         ),
-                                      ));
-                                })
+                                      ),
+                                  );
+                                },
+                      )
                           ]),
                     )))));
   }
+  String truncateText(String text) {
+    if (text.length > 100) {
+      return text.substring(0, 100) + '...';
+    }
+    return text;
+  }
 }
+
