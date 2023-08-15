@@ -171,7 +171,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                 left: 40,
               ),
               child: Text(
-                "Delivery Address",
+                "Manage Address",
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
                 style: AppStyle.txtPoppinsSemiBold18Gray800.copyWith(

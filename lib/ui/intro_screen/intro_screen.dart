@@ -64,7 +64,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Timer? _timer;
   void checkHighStatus() async {
-    const Duration updateInterval = Duration(seconds: 7);
+    const Duration updateInterval = Duration(seconds: 15);
 
     _timer = Timer.periodic(updateInterval, (timer) async {
       // Make the HTTP POST request to get the leak_status
@@ -189,11 +189,11 @@ class _IntroScreenState extends State<IntroScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              //script text on pressed
-              // TextButton(
-              //     onPressed: () {
-              //       waterSaving();
-              //     }, child: Text('Notif tests')),
+              // script text on pressed
+              TextButton(
+                  onPressed: () {
+                    waterSaving();
+                  }, child: Text('Notif tests')),
               SizedBox(
                 height: getVerticalSize(
                   20,

@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                             padding: getPadding(left: 30, top: 21),
-                            child: Text("Pay Bill",
+                            child: Text("Menu",
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
                                 style: AppStyle.txtPoppinsSemiBold18.copyWith(
